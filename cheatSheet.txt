@@ -11,6 +11,7 @@ https://www.google.com/design/spec/material-design/introduction.html#
 Examples:
 
 https://github.com/antoniolg/MaterializeYourApp
+https://github.com/frogermcs/InstaMaterial
 
 Optimizing layout display:
 !https://developer.android.com/training/improving-layouts/index.html

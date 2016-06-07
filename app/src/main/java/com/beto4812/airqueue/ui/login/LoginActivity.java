@@ -25,6 +25,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+//TODO: Refactor class according new parent classes
 public class LoginActivity extends BaseActivity {
 
     private ProgressDialog mAuthProgressDialog;

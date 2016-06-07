@@ -7,14 +7,23 @@ import android.os.PersistableBundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 
+import com.beto4812.airqueue.R;
 import com.beto4812.airqueue.ui.login.LoginActivity;
 import com.beto4812.airqueue.ui.register.CreateAccountActivity;
 import com.beto4812.airqueue.utils.Constants;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class BaseActivity extends AppCompatActivity {
+
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
 
     /*Firebase*/
     protected Firebase mFirebaseRef;
@@ -49,12 +58,24 @@ public class BaseActivity extends AppCompatActivity {
                         sharedPrefsEditor.putString(Constants.KEY_USER_LAST_NAME, null);
                         sharedPrefsEditor.apply();
 
-                        onUnauth();
+                        //onUnauth();
                     }
                 }
             };
             mFirebaseRef.addAuthStateListener(mAuthStateListener);
         }
+    }
+
+
+    protected void logout() {
+        mFirebaseRef.unauth();
+    }
+
+    private void onUnauth() {
+        Intent intent = new Intent(BaseActivity.this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
 
     @Override
@@ -71,14 +92,37 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    protected void logout() {
-        mFirebaseRef.unauth();
+    @Override
+    public void setContentView(int layoutResID) {
+        super.setContentView(layoutResID);
+        bindViews();
     }
 
-    private void onUnauth() {
-        Intent intent = new Intent(BaseActivity.this, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
+    protected void bindViews() {
+        ButterKnife.bind(this);
+        setupToolbar();
     }
+
+    public void setContentViewWithoutInject(int layoutResId) {
+        super.setContentView(layoutResId);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    protected void setupToolbar() {
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            //toolbar.setNavigationIcon(R.drawable.ic_menu_white);
+        }
+    }
+
+    public Toolbar getToolbar() {
+        return toolbar;
+    }
+
 }
