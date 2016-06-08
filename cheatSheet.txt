@@ -4,6 +4,10 @@ http://docs.aws.amazon.com/mobile/sdkforandroid/developerguide/
 http://docs.aws.amazon.com/mobile/sdkforandroid/developerguide/setup.html
 http://docs.aws.amazon.com/mobile/sdkforandroid/developerguide/getting-started-store-query-app-data.html
 
+  Sign In: https://326028913233.signin.aws.amazon.com/console
+
+  Persistence Model: http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBMapper.html
+
 Android:
 
 https://www.google.com/design/spec/material-design/introduction.html#
@@ -12,6 +16,7 @@ Examples:
 
 https://github.com/antoniolg/MaterializeYourApp
 https://github.com/frogermcs/InstaMaterial
+https://github.com/awslabs/aws-sdk-android-samples
 
 Optimizing layout display:
 !https://developer.android.com/training/improving-layouts/index.html
@@ -21,3 +26,9 @@ https://developer.android.com/guide/practices/screens_support.html
 
 Libraries:
 http://square.github.io/picasso/
+
+Visualization:
+
+https://developers.arcgis.com/
+https://github.com/lecho/hellocharts-android
+https://github.com/PhilJay/MPAndroidChart

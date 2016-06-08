@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 
 import com.beto4812.airqueue.R;
+import com.beto4812.airqueue.aws.AWSClientManager;
 import com.beto4812.airqueue.ui.login.LoginActivity;
 import com.beto4812.airqueue.ui.register.CreateAccountActivity;
 import com.beto4812.airqueue.utils.Constants;
@@ -24,6 +25,7 @@ public class BaseActivity extends AppCompatActivity {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
+    public static AWSClientManager clientManager = null;
 
     /*Firebase*/
     protected Firebase mFirebaseRef;
@@ -37,6 +39,9 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        clientManager = new AWSClientManager(this);
+        clientManager.ddb(); //Test db access
 
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(BaseActivity.this);
 

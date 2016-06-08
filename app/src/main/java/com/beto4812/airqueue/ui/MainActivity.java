@@ -4,6 +4,9 @@ import android.os.Bundle;
 
 import com.beto4812.airqueue.R;
 import com.beto4812.airqueue.ui.register.BaseDrawerActivity;
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.dynamodbv2.*;
 
 public class MainActivity extends BaseDrawerActivity {
 

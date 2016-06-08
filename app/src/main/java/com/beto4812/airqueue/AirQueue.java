@@ -16,10 +16,6 @@ public class AirQueue extends Application {
         Firebase.setAndroidContext(this);
         Firebase.getDefaultConfig().setLogLevel(Logger.Level.DEBUG);
 
-        CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
-                getApplicationContext(),    /* get the context for the application */
-                "COGNITO_IDENTITY_POOL",    /* Identity Pool ID */
-                Regions.US_EAST_1           /* Region for your identity pool--US_EAST_1 or EU_WEST_1*/
-        );
+
     }
 }
