@@ -106,7 +106,12 @@ public class LoginActivity extends BaseActivity {
     }
 
     public void signInPassword() {
-        String email = mEditTextEmail.getText().toString();
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+
+        /*String email = mEditTextEmail.getText().toString();
         String password = mEditTextPassword.getText().toString();
 
         if(email.matches("")){
@@ -120,7 +125,7 @@ public class LoginActivity extends BaseActivity {
         }
 
         mAuthProgressDialog.show();
-        mFirebaseRef.authWithPassword(email, password, new LoginAuthResultHandler());
+        mFirebaseRef.authWithPassword(email, password, new LoginAuthResultHandler());*/
     }
 
     private class LoginAuthResultHandler implements Firebase.AuthResultHandler {

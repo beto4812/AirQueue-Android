@@ -4,6 +4,7 @@
 
     <!--Activities-->
     <string name="activity_label_login">AirQueue</string>
+    <string name="activity_label_register">Sign In</string>
 
     <!--Navigation drawer-->
     <string name="navigation_drawer_open">Open navigation drawer</string>

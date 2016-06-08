@@ -16,7 +16,7 @@
     <dimen name="margin_small">16dp</dimen>
 
     <!--Text-->
-    <dimen name="login_text_size">16sp</dimen>
+    <dimen name="login_text_size">15.5sp</dimen>
     <dimen name="input_drawable_padding">12dp</dimen>
 
     <!--Sizes-->
