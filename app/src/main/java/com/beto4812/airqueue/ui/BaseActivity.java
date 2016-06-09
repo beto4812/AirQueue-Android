@@ -14,7 +14,6 @@ import android.view.Menu;
 import com.beto4812.airqueue.R;
 import com.beto4812.airqueue.aws.AWSClientManager;
 import com.beto4812.airqueue.ui.login.LoginActivity;
-import com.beto4812.airqueue.ui.register.CreateAccountActivity;
 import com.beto4812.airqueue.utils.Constants;
 import com.firebase.client.Firebase;
 
@@ -23,7 +22,7 @@ import butterknife.ButterKnife;
 
 public class BaseActivity extends AppCompatActivity {
 
-    private static final String LOG_TAG = "AmazonClientManager";
+    private static final String LOG_TAG = "BaseActivity";
     /*Firebase*/
     protected Firebase mFirebaseRef;
     protected Firebase.AuthStateListener mAuthStateListener;
@@ -32,19 +31,15 @@ public class BaseActivity extends AppCompatActivity {
     protected String userEmail;
     protected String userName;
     protected String userLastName;
-
-
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-    private AWSClientManager clientManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.v(LOG_TAG, "---------4");
+        Log.v(LOG_TAG, "---------5");
 
-        clientManager = new AWSClientManager(getApplicationContext());
-        clientManager.getDynamoDBClient();
+        AWSClientManager.initializeMobileClientIfNecessary(getApplicationContext());
 
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(BaseActivity.this);
 
@@ -95,9 +90,9 @@ public class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        if (!((this instanceof LoginActivity) || (this instanceof CreateAccountActivity))) {
+        /*if (!((this instanceof LoginActivity) || (this instanceof CreateAccountActivity))) {
             mFirebaseRef.removeAuthStateListener(mAuthStateListener);
-        }
+        }*/
     }
 
     @Override
