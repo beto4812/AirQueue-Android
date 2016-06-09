@@ -4,70 +4,43 @@ package com.beto4812.airqueue.aws;
 import android.content.Context;
 import android.util.Log;
 
-import com.amazonaws.AmazonServiceException;
-import com.amazonaws.auth.CognitoCachingCredentialsProvider;
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
+import com.amazonaws.ClientConfiguration;
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 
 public class AWSClientManager {
 
-    private static final String LOG_TAG = "AmazonClientManager";
+    private static final String LOG_TAG = "AWSClientManager";
 
-    private AmazonDynamoDBClient ddb = null;
+    private AmazonDynamoDBClient dynamoDBClient = null;
+    private AWSIdentityManager identityManager;
+    private DynamoDBMapper dynamoDBMapper;
+    private ClientConfiguration clientConfiguration;
     private Context context;
 
     public AWSClientManager(Context context) {
         this.context = context;
+        this.clientConfiguration = new ClientConfiguration();
+        this.identityManager = new AWSIdentityManager(context, clientConfiguration);
+        this.dynamoDBClient = new AmazonDynamoDBClient(identityManager.getCredentialsProvider(), clientConfiguration);
+        initClients();
     }
 
-    public AmazonDynamoDBClient ddb() {
+    public AmazonDynamoDBClient getDynamoDBClient() {
         Log.v(LOG_TAG, "ddb() called");
-        validateCredentials();
-        return ddb;
-    }
-
-    public void validateCredentials() {
-        if (ddb == null) {
-            initClients();
-        }
+        return dynamoDBClient;
     }
 
     private void initClients() {
-        CognitoCachingCredentialsProvider credentials = new CognitoCachingCredentialsProvider(
-                context,
-                AWSConstants.IDENTITY_POOL_ID,
-                Regions.US_EAST_1);
-
-        ddb = new AmazonDynamoDBClient(credentials);
-        ddb.setRegion(Region.getRegion(Regions.EU_CENTRAL_1));
-    }
-
-    public boolean wipeCredentialsOnAuthError(AmazonServiceException ex) {
-        Log.e(LOG_TAG, "Error, wipeCredentialsOnAuthError called" + ex);
-        if (
-            // STS
-            // http://docs.amazonwebservices.com/STS/latest/APIReference/CommonErrors.html
-                ex.getErrorCode().equals("IncompleteSignature")
-                        || ex.getErrorCode().equals("InternalFailure")
-                        || ex.getErrorCode().equals("InvalidClientTokenId")
-                        || ex.getErrorCode().equals("OptInRequired")
-                        || ex.getErrorCode().equals("RequestExpired")
-                        || ex.getErrorCode().equals("ServiceUnavailable")
-
-                        // DynamoDB
-                        // http://docs.amazonwebservices.com/amazondynamodb/latest/developerguide/ErrorHandling.html#APIErrorTypes
-                        || ex.getErrorCode().equals("AccessDeniedException")
-                        || ex.getErrorCode().equals("IncompleteSignatureException")
-                        || ex.getErrorCode().equals(
-                        "MissingAuthenticationTokenException")
-                        || ex.getErrorCode().equals("ValidationException")
-                        || ex.getErrorCode().equals("InternalFailure")
-                        || ex.getErrorCode().equals("InternalServerError")) {
-
-            return true;
-        }
-
-        return false;
+        identityManager.getUserID(new AWSIdentityManager.IdentityHandler() {
+            @Override
+            public void handleIdentityID(String identityId) {
+                Log.d(LOG_TAG, "handleIdentityID(): " + identityId);
+            }
+            @Override
+            public void handleError(Exception exception) {
+                Log.d(LOG_TAG, "initClients(): " + Log.getStackTraceString(exception));
+            }
+        });
     }
 }

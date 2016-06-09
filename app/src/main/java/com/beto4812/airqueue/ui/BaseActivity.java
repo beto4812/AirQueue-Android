@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 
 import com.beto4812.airqueue.R;
@@ -15,7 +16,6 @@ import com.beto4812.airqueue.aws.AWSClientManager;
 import com.beto4812.airqueue.ui.login.LoginActivity;
 import com.beto4812.airqueue.ui.register.CreateAccountActivity;
 import com.beto4812.airqueue.utils.Constants;
-import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 
 import butterknife.Bind;
@@ -23,10 +23,7 @@ import butterknife.ButterKnife;
 
 public class BaseActivity extends AppCompatActivity {
 
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
-    public static AWSClientManager clientManager = null;
-
+    private static final String LOG_TAG = "AmazonClientManager";
     /*Firebase*/
     protected Firebase mFirebaseRef;
     protected Firebase.AuthStateListener mAuthStateListener;
@@ -36,12 +33,18 @@ public class BaseActivity extends AppCompatActivity {
     protected String userName;
     protected String userLastName;
 
+
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    private AWSClientManager clientManager;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.v(LOG_TAG, "---------4");
 
-        clientManager = new AWSClientManager(this);
-        clientManager.ddb(); //Test db access
+        clientManager = new AWSClientManager(getApplicationContext());
+        clientManager.getDynamoDBClient();
 
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(BaseActivity.this);
 
@@ -50,7 +53,7 @@ public class BaseActivity extends AppCompatActivity {
         userName = sharedPreferences.getString(Constants.KEY_USER_NAME, null);
         userLastName = sharedPreferences.getString(Constants.KEY_USER_LAST_NAME, null);
 
-        if(!((this instanceof LoginActivity) || (this instanceof CreateAccountActivity))) {
+        /*if(!((this instanceof LoginActivity) || (this instanceof CreateAccountActivity))) {
             mFirebaseRef = new Firebase(Constants.FIREBASE_URL);
             mAuthStateListener = new Firebase.AuthStateListener() {
                 @Override
@@ -68,7 +71,7 @@ public class BaseActivity extends AppCompatActivity {
                 }
             };
             mFirebaseRef.addAuthStateListener(mAuthStateListener);
-        }
+        }*/
     }
 
 
