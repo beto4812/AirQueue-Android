@@ -5,37 +5,43 @@ import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBHashKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
 import com.beto4812.airqueue.aws.AWSConstants;
 
+import java.util.List;
+
 @DynamoDBTable(tableName = AWSConstants.TABLE_NAME)
 public class SensorReading {
     private String sourceIDLastUpdated;
-    private String coordinates;
+    private List<String> coordinates;
     private String dateInserted;
     private String lastUpdated;
     private String source;
     private String sourceID;
-    private String no;
-    private String no_2;
-    private String no_x;
-    private String pm_10;
-    private String v_pm_10;
-    private String pm_2p5;
-    private String pm_1;
-    private String nv_pm_2p5;
-    private String v_pm_2p5;
-    private String so_2;
-    private String co;
+    private List<String> no;
+    private List<String> no_2;
+    private List<String> no_x;
+    private List<String> pm_10;
+    private List<String> v_pm_10;
+    private List<String> pm_2p5;
+    private List<String> pm_1;
+    private List<String> nv_pm_2p5;
+    private List<String> v_pm_2p5;
+    private List<String> so_2;
+    private List<String> co;
 
     @DynamoDBHashKey(attributeName = "sourceID_lastUpdated")
     public String getKey() {
         return sourceIDLastUpdated;
     }
 
+    public void setKey(String key){
+        this.sourceIDLastUpdated = key;
+    }
+
     @DynamoDBAttribute(attributeName = "coordinates")
-    public String getCoordinates() {
+    public List<String> getCoordinates() {
         return coordinates;
     }
 
-    public void setCoordinates(String coordinates){
+    public void setCoordinates(List<String> coordinates){
         this.coordinates = coordinates;
     }
 
@@ -76,101 +82,101 @@ public class SensorReading {
     }
 
     @DynamoDBAttribute(attributeName = "no")
-    public String getNo() {
+    public List<String> getNo() {
         return no;
     }
 
-    public void setNo(String no){
+    public void setNo(List<String> no){
         this.no = no;
     }
 
     @DynamoDBAttribute(attributeName = "no_2")
-    public String getNo2() {
+    public List<String> getNo2() {
         return no_2;
     }
 
-    public void setNo_2(String no_2){
+    public void setNo2(List<String> no_2){
         this.no_2 = no_2;
     }
 
     @DynamoDBAttribute(attributeName = "no_x")
-    public String getNo_x() {
+    public List<String> getNox() {
         return no_x;
     }
 
-    public void setNo_x(String no_x){
+    public void setNox(List<String> no_x){
         this.no_x = no_x;
     }
 
     @DynamoDBAttribute(attributeName = "pm_10")
-    public String getPm_10() {
+    public List<String> getPm10() {
         return pm_10;
     }
 
-    public void setPm_10(String pm_10){
+    public void setPm10(List<String> pm_10){
         this.pm_10 = pm_10;
     }
 
     @DynamoDBAttribute(attributeName = "v_pm_10")
-    public String getV_pm_10() {
+    public List<String> getVpm10() {
         return v_pm_10;
     }
 
-    public void setV_pm_10(String v_pm_10){
+    public void setVpm10(List<String> v_pm_10){
         this.v_pm_10 = v_pm_10;
     }
 
     @DynamoDBAttribute(attributeName = "pm_2p5")
-    public String getPm_2p5() {
+    public List<String> getPm2p5() {
         return pm_2p5;
     }
 
-    public void setPm_2p5(String pm_2p5){
+    public void setPm2p5(List<String> pm_2p5){
         this.pm_2p5 = pm_2p5;
     }
 
     @DynamoDBAttribute(attributeName = "pm_1")
-    public String getPm1() {
+    public List<String> getPm1() {
         return pm_1;
     }
 
-    public void setPm_1(String pm_1){
+    public void setPm1(List<String> pm_1){
         this.pm_1 = pm_1;
     }
 
     @DynamoDBAttribute(attributeName = "nv_pm_2p5")
-    public String getNv_pm_2p5() {
+    public List<String> getNvpm2p5() {
         return nv_pm_2p5;
     }
 
-    public void setNv_pm_2p5(String nv_pm_2p5){
+    public void setNvpm2p5(List<String> nv_pm_2p5){
         this.nv_pm_2p5 = nv_pm_2p5;
     }
 
     @DynamoDBAttribute(attributeName = "v_pm_2p5")
-    public String getV_pm_2p5() {
+    public List<String> getVpm2p5() {
         return v_pm_2p5;
     }
 
-    public void setV_pm_2p5(String v_pm_2p5){
+    public void setVpm2p5(List<String> v_pm_2p5){
         this.v_pm_2p5 = v_pm_2p5;
     }
 
     @DynamoDBAttribute(attributeName = "so_2")
-    public String getSo_2() {
+    public List<String> getSo2() {
         return so_2;
     }
 
-    public void setSo_2(String so_2){
+    public void setSo2(List<String> so_2){
         this.so_2 = so_2;
     }
 
     @DynamoDBAttribute(attributeName = "co")
-    public String getCo() {
+    public List<String> getCo() {
         return co;
     }
 
-    public void setCo(String co){
+    public void setCo(List<String> co){
         this.co = co;
     }
 
