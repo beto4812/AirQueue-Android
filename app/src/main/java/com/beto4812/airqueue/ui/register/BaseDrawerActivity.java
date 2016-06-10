@@ -19,6 +19,8 @@ import butterknife.Bind;
 
 public class BaseDrawerActivity extends BaseActivity{
 
+    private static final String LOG_TAG = "BaseDrawerActivity";
+
     @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
     @Bind(R.id.nav_view)
@@ -57,7 +59,7 @@ public class BaseDrawerActivity extends BaseActivity{
     }
 
     private void setup(){
-        Log.v("avazq", "setup()");
+        Log.v(LOG_TAG, "setup()");
         drawerToggle = new ActionBarDrawerToggle(
                 this, drawerLayout, getToolbar(), R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.setDrawerListener(drawerToggle);

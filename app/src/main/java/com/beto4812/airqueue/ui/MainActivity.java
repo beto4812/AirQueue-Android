@@ -23,7 +23,7 @@ public class MainActivity extends BaseDrawerActivity {
         fetchUserIdentity();
 
         this.dynamoDbManager = AWSClientManager.defaultMobileClient().getDynamoDbManager();
-        new GetReadings().execute();
+        //new GetReadings().execute();
 
     }
 

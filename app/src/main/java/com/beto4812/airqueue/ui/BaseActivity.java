@@ -2,6 +2,7 @@ package com.beto4812.airqueue.ui;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.preference.PreferenceManager;
@@ -16,6 +17,8 @@ import com.beto4812.airqueue.aws.AWSClientManager;
 import com.beto4812.airqueue.ui.login.LoginActivity;
 import com.beto4812.airqueue.utils.Constants;
 import com.firebase.client.Firebase;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -23,6 +26,10 @@ import butterknife.ButterKnife;
 public class BaseActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "BaseActivity";
+
+    public static GoogleApiClient googleApiClient;
+    public SharedPreferences sharedPreferences;
+
     /*Firebase*/
     protected Firebase mFirebaseRef;
     protected Firebase.AuthStateListener mAuthStateListener;
@@ -37,11 +44,45 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.v(LOG_TAG, "---------7");
+        Log.v(LOG_TAG, "---------8");
 
         AWSClientManager.initializeMobileClientIfNecessary(getApplicationContext());
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(BaseActivity.this);
+        if (googleApiClient == null) {
+            googleApiClient = new GoogleApiClient.Builder(this)
+                    //.addConnectionCallbacks(this)
+                    //.addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
+
+        googleApiClient.registerConnectionCallbacks(
+                new GoogleApiClient.ConnectionCallbacks() {
+                    @Override
+                    public void onConnected(@Nullable Bundle bundle) {
+                        Log.v(LOG_TAG, "onConnected");
+                        try{
+                            Location location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+                            if (location != null) {
+                                sharedPreferences.edit().putString("lastLatitude", String.valueOf(location.getLatitude()));
+                                sharedPreferences.edit().putString("lastLongitude", String.valueOf(location.getLongitude()));
+                                Log.v(LOG_TAG, "lastLocation: " + String.valueOf(location.getLatitude()) + " , " + String.valueOf(location.getLongitude()));
+                            }else{
+                                Log.v(LOG_TAG, "null location");
+                            }
+                        }catch (SecurityException e){
+                            Log.v(LOG_TAG, Log.getStackTraceString(e));
+                        }
+                    }
+
+                    @Override
+                    public void onConnectionSuspended(int i) {
+
+                    }
+                }
+
+        );
 
         userUid = sharedPreferences.getString(Constants.KEY_USER_UID, null);
         userEmail = sharedPreferences.getString(Constants.KEY_USER_EMAIL, null);
@@ -80,6 +121,17 @@ public class BaseActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+    protected void onStart() {
+        googleApiClient.connect();
+        super.onStart();
+    }
+
+    protected void onStop() {
+        googleApiClient.disconnect();
+        super.onStop();
+    }
+
 
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {

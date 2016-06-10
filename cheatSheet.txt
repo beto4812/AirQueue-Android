@@ -12,7 +12,7 @@ Android:
 
 https://www.google.com/design/spec/material-design/introduction.html#
 
-Examples:
+Android development Examples:
 
 https://github.com/antoniolg/MaterializeYourApp
 https://github.com/frogermcs/InstaMaterial
@@ -29,6 +29,19 @@ http://square.github.io/picasso/
 
 Visualization:
 
-https://developers.arcgis.com/
-https://github.com/lecho/hellocharts-android
-https://github.com/PhilJay/MPAndroidChart
+  Charts:
+  https://developers.arcgis.com/
+  https://github.com/lecho/hellocharts-android
+  https://github.com/PhilJay/MPAndroidChart
+
+  Ui:
+  https://github.com/wasabeef/awesome-android-ui
+
+    Progress Bars:
+    https://github.com/lzyzsd/CircleProgress
+    https://github.com/Shinelw/ColorArcProgressBar
+
+App Inspiration Examples:
+
+https://play.google.com/store/apps/details?id=org.cleanairinlondon.cities
+http://yelin.in/works/instano2.html

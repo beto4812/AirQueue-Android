@@ -26,14 +26,11 @@ public class AWSDynamoDbManager {
         Log.v(LOG_TAG, "getReadingsList(): ");
 
         DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
-        Log.v(LOG_TAG, "getReadingsList(): 1");
         try {
             PaginatedScanList<SensorReading> result = dynamoDBMapper.scan(
                     SensorReading.class, scanExpression);
-            Log.v(LOG_TAG, "getReadingsList(): 2");
 
             ArrayList<SensorReading> resultList = new ArrayList<>();
-            Log.v(LOG_TAG, "getReadingsList(): 3");
             for (SensorReading up : result) {
                 Log.v(LOG_TAG, "result: " + up.getSourceID());
                 resultList.add(up);
