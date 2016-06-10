@@ -44,7 +44,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.v(LOG_TAG, "---------8");
+        Log.v(LOG_TAG, "---------2");
 
         AWSClientManager.initializeMobileClientIfNecessary(getApplicationContext());
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);

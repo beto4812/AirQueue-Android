@@ -25,8 +25,6 @@ public class BaseDrawerActivity extends BaseActivity{
     DrawerLayout drawerLayout;
     @Bind(R.id.nav_view)
     NavigationView vNavigation;
-    @Bind(R.id.fab)
-    FloatingActionButton fab;
     ActionBarDrawerToggle drawerToggle;
 
     @Override
@@ -85,14 +83,6 @@ public class BaseDrawerActivity extends BaseActivity{
                 }
 
         );
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
     }
 
     @Override
