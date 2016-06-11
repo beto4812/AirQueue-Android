@@ -1,9 +1,7 @@
-package com.beto4812.airqueue.ui.register;
+package com.beto4812.airqueue.ui.main;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -29,7 +27,7 @@ public class BaseDrawerActivity extends BaseActivity{
 
     @Override
     public void setContentView(int layoutResID) {
-        super.setContentViewWithoutInject(R.layout.activity_drawer);
+        super.setContentViewWithoutInject(R.layout.activity_main);
         bindViews();
         setup();
     }
@@ -71,9 +69,12 @@ public class BaseDrawerActivity extends BaseActivity{
                         // Handle navigation view item clicks here.
                         int id = item.getItemId();
 
-                        if (id == R.id.nav_log_out) {
-                            //logout();
-                            Log.v("avazquez", "R.id.nav_log_out selected");
+                        switch (id) {
+                            case R.id.nav_home:
+                                break;
+                            case R.id.nav_log_out:
+                                Log.v("avazquez", "R.id.nav_log_out selected");
+                                break;
                         }
 
                         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -1,4 +1,4 @@
-package com.beto4812.airqueue.ui;
+package com.beto4812.airqueue.ui.main;
 
 
 

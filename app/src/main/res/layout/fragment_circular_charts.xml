@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal">
+
+        <com.hookedonplay.decoviewlib.DecoView
+            xmlns:custom="https://schemas.android.com/apk/res-auto"
+            custom:dv_lineWidth="26dp"
+            android:id="@+id/text_circular_chart"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/textView9"/>
+
+        <com.hookedonplay.decoviewlib.DecoView
+            xmlns:custom="https://schemas.android.com/apk/res-auto"
+            custom:dv_lineWidth="26dp"
+            android:id="@+id/single_circular_chart"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Single"
+            android:id="@+id/textView2"/>
+
+        <com.hookedonplay.decoviewlib.DecoView
+            xmlns:custom="https://schemas.android.com/apk/res-auto"
+            custom:dv_lineWidth="26dp"
+            android:id="@+id/multiple_circular_chart"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Multiple"
+            android:id="@+id/textView6"/>
+
+        <com.hookedonplay.decoviewlib.DecoView
+            xmlns:custom="https://schemas.android.com/apk/res-auto"
+            custom:dv_lineWidth="26dp"
+            android:id="@+id/no_background_circular_chart"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="No Background"
+            android:id="@+id/textView7"/>
+
+        <com.hookedonplay.decoviewlib.DecoView
+            xmlns:custom="https://schemas.android.com/apk/res-auto"
+            custom:dv_lineWidth="26dp"
+            android:id="@+id/inset_circular_chart"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Inset"
+            android:id="@+id/textView8"/>
+
+        <com.hookedonplay.decoviewlib.DecoView
+            xmlns:custom="https://schemas.android.com/apk/res-auto"
+            custom:dv_lineWidth="26dp"
+            android:id="@+id/complex_circular_chart"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Label"
+            android:id="@+id/textView10"/>
+    </LinearLayout>
+</ScrollView>

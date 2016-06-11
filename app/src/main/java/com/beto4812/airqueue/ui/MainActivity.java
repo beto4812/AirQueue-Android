@@ -1,68 +1,108 @@
 package com.beto4812.airqueue.ui;
 
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.beto4812.airqueue.R;
 import com.beto4812.airqueue.aws.AWSClientManager;
 import com.beto4812.airqueue.aws.AWSDynamoDbManager;
 import com.beto4812.airqueue.aws.AWSIdentityManager;
-import com.beto4812.airqueue.ui.register.BaseDrawerActivity;
+import com.beto4812.airqueue.ui.main.home.HomeFragment;
+import com.beto4812.airqueue.ui.main.BaseDrawerActivity;
+import com.beto4812.airqueue.ui.main.settings.SettingsFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 
-public class MainActivity extends BaseDrawerActivity {
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String LOG_TAG = "AWSClientManager";
 
     private static AWSDynamoDbManager dynamoDbManager = null;
-
-    @Bind(R.id.main_tabs)
-    TabLayout tabLayout;
-    @Bind(R.id.viewpager)
-    ViewPager viewPager;
-    @Bind(R.id.fab)
-    FloatingActionButton fab;
+    
+    private FragmentManager mFragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.app_bar_main);
+        setContentView(R.layout.activity_main);
+
         fetchUserIdentity();
 
         this.dynamoDbManager = AWSClientManager.defaultMobileClient().getDynamoDbManager();
         //new GetReadings().execute(); //This to retrieve AWS SensorReadings
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
 
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        mFragmentManager = getSupportFragmentManager();
+        mFragmentManager.beginTransaction().replace(R.id.frame_content, HomeFragment.newInstance()).commit();
+
+        /*ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new FragmentTest1(), "ONE");
         adapter.addFragment(new FragmentTest1(), "TWO");
         adapter.addFragment(new FragmentTest1(), "THREE");
         viewPager.setAdapter(adapter);
 
-        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setupWithViewPager(viewPager);*/
+    }
 
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.nav_home:
+                Log.i("NSAN", "Home");
+                mFragmentManager.beginTransaction().replace(R.id.frame_content, HomeFragment.newInstance()).commit();
+                break;
+            case R.id.nav_settings:
+                Log.i("NSAN", "Settings");
+                mFragmentManager.beginTransaction().replace(R.id.frame_content, SettingsFragment.newInstance()).commit();
+                break;
+            case R.id.nav_log_out:
+                Log.i("NSAN", "Log out");
+                break;
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private void fetchUserIdentity() {
