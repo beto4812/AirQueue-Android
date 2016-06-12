@@ -1,34 +1,22 @@
 package com.beto4812.airqueue.ui;
 
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.beto4812.airqueue.R;
 import com.beto4812.airqueue.aws.AWSClientManager;
 import com.beto4812.airqueue.aws.AWSDynamoDbManager;
 import com.beto4812.airqueue.aws.AWSIdentityManager;
 import com.beto4812.airqueue.ui.main.home.HomeFragment;
-import com.beto4812.airqueue.ui.main.BaseDrawerActivity;
 import com.beto4812.airqueue.ui.main.settings.SettingsFragment;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import butterknife.Bind;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -62,14 +50,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         mFragmentManager = getSupportFragmentManager();
         mFragmentManager.beginTransaction().replace(R.id.frame_content, HomeFragment.newInstance()).commit();
-
-        /*ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new FragmentTest1(), "ONE");
-        adapter.addFragment(new FragmentTest1(), "TWO");
-        adapter.addFragment(new FragmentTest1(), "THREE");
-        viewPager.setAdapter(adapter);
-
-        tabLayout.setupWithViewPager(viewPager);*/
     }
 
     @Override
@@ -130,35 +110,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         protected Void doInBackground(Void... params) {
             dynamoDbManager.getReadingsList();
             return null;
-        }
-    }
-
-    class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
         }
     }
 
