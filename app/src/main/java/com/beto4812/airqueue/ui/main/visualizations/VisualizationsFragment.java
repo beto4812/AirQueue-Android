@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.beto4812.airqueue.R;
 import com.beto4812.airqueue.ui.main.home.charts.PieChartsFragment;
+import com.beto4812.airqueue.ui.main.visualizations.viewHolder.OverviewFragment;
 
 public class VisualizationsFragment extends Fragment {
 
@@ -63,11 +64,11 @@ public class VisualizationsFragment extends Fragment {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return CircularVisualizationFragment.newInstance();
+                    return OverviewFragment.newInstance();
                 case 1:
-                    return LinearVisualizationFragment.newInstance();
+                    return CircularVisualizationFragment.newInstance();
                 case 2:
-                    return PieChartsFragment.newInstance();
+                    return LinearVisualizationFragment.newInstance();
                 default:
                     return CircularVisualizationFragment.newInstance();
             }

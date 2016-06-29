@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient1">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@color/colorAccent"
+        android:id="@+id/view1"
+        android:layout_marginRight="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Closest Sensor"
+        android:id="@+id/textView12"
+        android:textColor="#ffffff"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/view1"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Last Updated"
+        android:id="@+id/textView13"
+        android:textColor="#ffffff"
+        android:layout_marginLeft="5dp"
+        android:layout_below="@+id/textView12"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp" />
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:id="@+id/imageView3"
+        android:background="@android:drawable/ic_menu_gallery"
+        android:layout_alignParentTop="true"
+        android:layout_alignEnd="@+id/view1" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@android:color/darker_gray"
+        android:id="@+id/view"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_below="@+id/view1"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Personalized Sensibility Level"
+        android:id="@+id/textView14"
+        android:textColor="#ffffff"
+        android:layout_marginLeft="5dp"
+        android:layout_below="@+id/view1"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp" />
+
+    <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
+        android:layout_width="fill_parent"
+        android:layout_height="30dp"
+        app:rcProgress="3.33"
+        app:rcMax="10"
+        app:rcRadius="30dp"
+        app:rcBackgroundPadding="10dp"
+        app:rcReverse="false"
+        app:rcProgressColor="#ffffff"
+        app:rcBackgroundColor="#1E88E5"
+        android:id="@+id/overview_sensibility_bar"
+        android:layout_below="@+id/textView14"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Air Quality Index"
+        android:id="@+id/textView3"
+        android:textColor="#ffffff"
+        android:layout_below="@+id/overview_sensibility_bar"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp" />
+
+    <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
+        android:layout_width="fill_parent"
+        android:layout_height="30dp"
+        app:rcProgress="3.33"
+        app:rcMax="10"
+        app:rcRadius="30dp"
+        app:rcBackgroundPadding="10dp"
+        app:rcReverse="false"
+        app:rcProgressColor="#ffffff"
+        app:rcBackgroundColor="#1E88E5"
+        android:id="@+id/overview_pollution_bar"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@+id/textView3"
+        android:layout_alignParentEnd="true" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@android:color/darker_gray"
+        android:id="@+id/view3"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_below="@+id/overview_pollution_bar"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Advice"
+        android:id="@+id/textView15"
+        android:textColor="#ffffff"
+        android:layout_marginLeft="5dp"
+        android:layout_alignParentStart="false"
+        android:layout_below="@+id/view3" />
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/chart1"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/textView17" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:id="@+id/textView11"
+        android:layout_below="@+id/textView12"
+        android:layout_alignStart="@+id/textView12" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:id="@+id/textView16"
+        android:layout_below="@+id/textView13"
+        android:layout_alignStart="@+id/textView13" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Enjoy your usual outdoor activities."
+        android:id="@+id/textView17"
+        android:layout_below="@+id/textView15"
+        android:layout_alignStart="@+id/textView15"
+        android:layout_toStartOf="@+id/chart1" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Live pollutants"
+        android:id="@+id/textView18"
+        android:layout_below="@+id/view3"
+        android:layout_toEndOf="@+id/textView14"
+        android:textColor="#ffffff" />
+
+
+</RelativeLayout>

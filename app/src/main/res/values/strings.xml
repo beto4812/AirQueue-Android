@@ -51,8 +51,8 @@
 
     <string-array name="vis_tabs_titles">
         <item>Overview</item>
-        <item>Linear</item>
-        <item>Pie</item>
+        <item>Pollutants</item>
+        <item>Graphics</item>
     </string-array>
 
     <!-- Facebook -->
