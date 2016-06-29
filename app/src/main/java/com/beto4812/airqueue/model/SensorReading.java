@@ -1,15 +1,25 @@
 package com.beto4812.airqueue.model;
 
+import android.util.Log;
+
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBAttribute;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBHashKey;
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBRangeKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
 import com.beto4812.airqueue.aws.AWSConstants;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
-@DynamoDBTable(tableName = AWSConstants.TABLE_NAME)
+@DynamoDBTable(tableName = AWSConstants.SENSOR_READINGS_TABLE_NAME)
+/**
+ * Each sensor provides information of different pollutants at a given time
+ */
 public class SensorReading {
-    private String sourceIDLastUpdated;
+    private static final String LOG_TAG = "SensorReading";
+    //private String sourceIDLastUpdated;
     private List<String> coordinates;
     private String dateInserted;
     private String lastUpdated;
@@ -26,14 +36,16 @@ public class SensorReading {
     private List<String> v_pm_2p5;
     private List<String> so_2;
     private List<String> co;
+    private List<String> o3;
+    private HashMap<String, Pollutant> pollutants = new HashMap<>();
 
-    @DynamoDBHashKey(attributeName = "sourceID_lastUpdated")
+    @DynamoDBHashKey(attributeName = "sourceID")
     public String getKey() {
-        return sourceIDLastUpdated;
+        return sourceID;
     }
 
     public void setKey(String key){
-        this.sourceIDLastUpdated = key;
+        this.sourceID = key;
     }
 
     @DynamoDBAttribute(attributeName = "coordinates")
@@ -45,7 +57,6 @@ public class SensorReading {
         this.coordinates = coordinates;
     }
 
-    @DynamoDBAttribute(attributeName = "date_inserted")
     public String getDateInserted() {
         return dateInserted;
     }
@@ -54,7 +65,7 @@ public class SensorReading {
         this.dateInserted = dateInserted;
     }
 
-    @DynamoDBAttribute(attributeName = "lastUpdated")
+    @DynamoDBRangeKey(attributeName = "lastUpdated")
     public String getLastUpdated() {
         return lastUpdated;
     }
@@ -86,17 +97,9 @@ public class SensorReading {
         return no;
     }
 
-    public void setNo(List<String> no){
-        this.no = no;
-    }
-
     @DynamoDBAttribute(attributeName = "no_2")
     public List<String> getNo2() {
         return no_2;
-    }
-
-    public void setNo2(List<String> no_2){
-        this.no_2 = no_2;
     }
 
     @DynamoDBAttribute(attributeName = "no_x")
@@ -104,17 +107,9 @@ public class SensorReading {
         return no_x;
     }
 
-    public void setNox(List<String> no_x){
-        this.no_x = no_x;
-    }
-
     @DynamoDBAttribute(attributeName = "pm_10")
     public List<String> getPm10() {
         return pm_10;
-    }
-
-    public void setPm10(List<String> pm_10){
-        this.pm_10 = pm_10;
     }
 
     @DynamoDBAttribute(attributeName = "v_pm_10")
@@ -122,17 +117,9 @@ public class SensorReading {
         return v_pm_10;
     }
 
-    public void setVpm10(List<String> v_pm_10){
-        this.v_pm_10 = v_pm_10;
-    }
-
     @DynamoDBAttribute(attributeName = "pm_2p5")
     public List<String> getPm2p5() {
         return pm_2p5;
-    }
-
-    public void setPm2p5(List<String> pm_2p5){
-        this.pm_2p5 = pm_2p5;
     }
 
     @DynamoDBAttribute(attributeName = "pm_1")
@@ -140,17 +127,9 @@ public class SensorReading {
         return pm_1;
     }
 
-    public void setPm1(List<String> pm_1){
-        this.pm_1 = pm_1;
-    }
-
     @DynamoDBAttribute(attributeName = "nv_pm_2p5")
     public List<String> getNvpm2p5() {
         return nv_pm_2p5;
-    }
-
-    public void setNvpm2p5(List<String> nv_pm_2p5){
-        this.nv_pm_2p5 = nv_pm_2p5;
     }
 
     @DynamoDBAttribute(attributeName = "v_pm_2p5")
@@ -158,17 +137,9 @@ public class SensorReading {
         return v_pm_2p5;
     }
 
-    public void setVpm2p5(List<String> v_pm_2p5){
-        this.v_pm_2p5 = v_pm_2p5;
-    }
-
     @DynamoDBAttribute(attributeName = "so_2")
     public List<String> getSo2() {
         return so_2;
-    }
-
-    public void setSo2(List<String> so_2){
-        this.so_2 = so_2;
     }
 
     @DynamoDBAttribute(attributeName = "co")
@@ -176,9 +147,115 @@ public class SensorReading {
         return co;
     }
 
-    public void setCo(List<String> co){
-        this.co = co;
+    @DynamoDBAttribute(attributeName = "o3")
+    public List<String> getO3() {
+        return o3;
+    }
+
+    public Pollutant getPollutant(String key){
+        Pollutant temp = pollutants.get(key);
+        return temp;
+    }
+
+    public void setNo(List<String> p){
+        this.pollutants.put(Pollutant.NITRIC_OXIDE,
+                new Pollutant(Pollutant.NITRIC_OXIDE, p.get(0), p.get(1)));
     }
 
 
+    public void setNo2(List<String> p){
+        this.pollutants.put(Pollutant.NITROGEN_DIOXIDE,
+                new Pollutant(Pollutant.NITROGEN_DIOXIDE, p.get(0), p.get(1)));
+    }
+
+    public void setNox(List<String> p){
+        this.pollutants.put(Pollutant.OXIDES_OF_NITROGEN,
+                new Pollutant(Pollutant.OXIDES_OF_NITROGEN, p.get(0), p.get(1)));
+    }
+
+    public void setPm10(List<String> p){
+        this.pollutants.put(Pollutant.PARTICULATE_MATTER_10_MICROMETRE,
+                new Pollutant(Pollutant.PARTICULATE_MATTER_10_MICROMETRE, p.get(0), p.get(1)));
+    }
+
+    public void setVpm10(List<String> p){
+        this.pollutants.put(Pollutant.VOLATILE_PARTICULATE_MATTER_10_MICROMETRE,
+                new Pollutant(Pollutant.VOLATILE_PARTICULATE_MATTER_10_MICROMETRE, p.get(0), p.get(1)));
+    }
+
+
+    public void setPm2p5(List<String> p){
+        this.pollutants.put(Pollutant.PARTICULATE_MATTER_2_5_MICROMETRE,
+                new Pollutant(Pollutant.PARTICULATE_MATTER_2_5_MICROMETRE, p.get(0), p.get(1)));
+    }
+
+
+    public void setPm1(List<String> p){
+        this.pollutants.put(Pollutant.PARTICULATE_MATTER_1_MICROMETRE,
+                new Pollutant(Pollutant.PARTICULATE_MATTER_1_MICROMETRE, p.get(0), p.get(1)));
+    }
+
+
+    public void setNvpm2p5(List<String> p){
+        this.pollutants.put(Pollutant.NON_VOLATILE_PARTICULATE_MATTER_2_5_MICROMETRE,
+                new Pollutant(Pollutant.NON_VOLATILE_PARTICULATE_MATTER_2_5_MICROMETRE, p.get(0), p.get(1)));
+    }
+
+
+    public void setVpm2p5(List<String> p){
+        this.pollutants.put(Pollutant.VOLATILE_PARTICULATE_MATTER_2_5_MICROMETRE,
+                new Pollutant(Pollutant.VOLATILE_PARTICULATE_MATTER_2_5_MICROMETRE, p.get(0), p.get(1)));
+    }
+
+
+    public void setSo2(List<String> p){
+        this.pollutants.put(Pollutant.SULFUR_DIOXIDE,
+                new Pollutant(Pollutant.SULFUR_DIOXIDE, p.get(0), p.get(1)));
+    }
+
+
+    public void setCo(List<String> p){
+        this.pollutants.put(Pollutant.CARBON_MONOXIDE,
+                new Pollutant(Pollutant.CARBON_MONOXIDE, p.get(0), p.get(1)));
+    }
+
+    public void setO3(List<String> p){
+        this.pollutants.put(Pollutant.OZONE,
+                new Pollutant(Pollutant.OZONE, p.get(0), p.get(1)));
+    }
+
+    public String getTextCoordinates() {
+        return coordinates.get(0) + "," + coordinates.get(1);
+    }
+
+    public double getDistanceToCoordinates(double currentLat, double currentLong) {
+        double latitude = Double.parseDouble(coordinates.get(0));
+        double longitude = Double.parseDouble(coordinates.get(1));
+        return Math.sqrt(Math.pow(latitude - currentLat, 2) + Math.pow(longitude - currentLong, 2));
+    }
+
+
+    public void printPollutants(){
+        Iterator it = this.pollutants.values().iterator();
+        while(it.hasNext()){
+            Log.v(LOG_TAG,it.next().toString());
+        }
+    }
+
+    public Collection<Pollutant> getAvailablePollutants(){
+        return pollutants.values();
+    }
+
+    public Pollutant getPollutantByCode(String code){
+        return pollutants.get(code);
+    }
+
+    public String toString(){
+        String out = "lastUpdated: " + lastUpdated + " sourceID: " + sourceID + " pollutants: ";
+        Iterator it = pollutants.keySet().iterator();
+        while(it.hasNext()){
+            out+=it.next()+ " ";
+        }
+        return out;
+    }
 }

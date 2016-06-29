@@ -21,10 +21,11 @@
         tools:context=".ui.login.LoginActivity"
         >
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/linear_layout_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:paddingBottom="@dimen/activity_vertical_margin"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
@@ -37,16 +38,13 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/list_view_padding_title"
                 android:id="@+id/imageAirQueueLogo"
-                android:layout_alignParentStart="false"
-                android:layout_alignParentEnd="false"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/img_logo_white"/>
+                android:src="@drawable/img_logo_white"
+                android:layout_gravity="center_horizontal"/>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/til_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/imageAirQueueLogo"
                 app:hintTextAppearance="@style/HintText">
 
                 <EditText
@@ -69,15 +67,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:id="@+id/viewDividerEmail"
-                android:background="@android:color/white"
-                android:layout_below="@id/til_email"/>
+                android:background="@android:color/white"/>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/til_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:hintTextAppearance="@style/HintText"
-                android:layout_below="@id/viewDividerEmail">
+                app:hintTextAppearance="@style/HintText">
 
                 <EditText
                     android:id="@+id/edit_text_password"
@@ -100,8 +96,7 @@
                 android:layout_height="1dp"
                 android:id="@+id/viewDividerPassword"
                 android:background="@android:color/white"
-                android:layout_marginBottom="@dimen/margin_normal"
-                android:layout_below="@id/til_password"/>
+                android:layout_marginBottom="@dimen/margin_normal"/>
 
             <Button
                 android:layout_width="match_parent"
@@ -112,13 +107,21 @@
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:id="@+id/buttonLogin"
                 android:onClick="onSignInPressed"
-                android:layout_below="@id/viewDividerPassword"
                 />
+
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/loginButtonFacebook"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:paddingTop="@dimen/input_drawable_padding"
+                android:paddingBottom="@dimen/input_drawable_padding"
+                android:layout_gravity="center_horizontal"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/buttonLogin"
                 android:gravity="center_horizontal">
 
                 <TextView
@@ -143,7 +146,7 @@
                     android:layout_below="@id/text_dont_have_account"/>
             </RelativeLayout>
 
-        </RelativeLayout>
+        </LinearLayout>
 
     </ScrollView>
 

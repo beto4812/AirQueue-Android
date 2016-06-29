@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="PollutantView">
+        <attr name="pollutantName" format="string" />
+        <attr name="pollutantValue" format="string"/>
+    </declare-styleable>
+</resources>

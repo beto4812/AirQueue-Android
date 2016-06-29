@@ -1,6 +1,5 @@
 package com.beto4812.airqueue.ui;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -10,6 +9,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.beto4812.airqueue.R;
 import com.beto4812.airqueue.aws.AWSClientManager;
@@ -17,14 +19,23 @@ import com.beto4812.airqueue.aws.AWSDynamoDbManager;
 import com.beto4812.airqueue.aws.AWSIdentityManager;
 import com.beto4812.airqueue.ui.main.home.HomeFragment;
 import com.beto4812.airqueue.ui.main.settings.SettingsFragment;
+import com.beto4812.airqueue.ui.main.visualizations.VisualizationsFragment;
+import com.beto4812.airqueue.utils.CircleTransform;
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String LOG_TAG = "AWSClientManager";
+    private static final String LOG_TAG = "MainActivity";
 
     private static AWSDynamoDbManager dynamoDbManager = null;
     
     private FragmentManager mFragmentManager;
+    private DrawerLayout drawer;
+    private ActionBarDrawerToggle toggle;
+    private NavigationView navigationView;
+    private View headerView;
+    private TextView textUserName;
+    private ImageView profilePicture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,20 +47,31 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         this.dynamoDbManager = AWSClientManager.defaultMobileClient().getDynamoDbManager();
         //new GetReadings().execute(); //This to retrieve AWS SensorReadings
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        headerView = navigationView.getHeaderView(0);
+        textUserName = (TextView) headerView.findViewById(R.id.textUserName);
+        profilePicture = (ImageView) headerView.findViewById(R.id.imageProfilePicture);
+
+        textUserName.setText(getString(R.string.text_full_name, userFirstName, userLastName));
+
+        if(!userProfilePictureUrl.matches("")) {
+            Log.v(LOG_TAG, "onCreate() rendering profile picture");
+            Picasso.with(MainActivity.this).load(userProfilePictureUrl).transform(new CircleTransform()).into(profilePicture);
+        }
+
         mFragmentManager = getSupportFragmentManager();
-        mFragmentManager.beginTransaction().replace(R.id.frame_content, HomeFragment.newInstance()).commit();
+        mFragmentManager.beginTransaction().replace(R.id.frame_content, VisualizationsFragment.newInstance()).commit();
     }
 
     @Override
@@ -58,15 +80,16 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         switch (id) {
             case R.id.nav_home:
-                Log.i("NSAN", "Home");
-                mFragmentManager.beginTransaction().replace(R.id.frame_content, HomeFragment.newInstance()).commit();
+                mFragmentManager.beginTransaction().replace(R.id.frame_content, VisualizationsFragment.newInstance()).commit();
                 break;
             case R.id.nav_settings:
-                Log.i("NSAN", "Settings");
                 mFragmentManager.beginTransaction().replace(R.id.frame_content, SettingsFragment.newInstance()).commit();
                 break;
+            case R.id.nav_visualizations:
+                mFragmentManager.beginTransaction().replace(R.id.frame_content, HomeFragment.newInstance()).commit();
+                break;
             case R.id.nav_log_out:
-                Log.i("NSAN", "Log out");
+                logout();
                 break;
         }
 
@@ -103,14 +126,4 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     }
                 });
     }
-
-    private class GetReadings extends AsyncTask<Void, Void, Void>{
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            dynamoDbManager.getReadingsList();
-            return null;
-        }
-    }
-
 }

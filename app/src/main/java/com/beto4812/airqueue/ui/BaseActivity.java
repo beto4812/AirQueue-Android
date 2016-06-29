@@ -10,17 +10,16 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 
-import com.beto4812.airqueue.R;
 import com.beto4812.airqueue.aws.AWSClientManager;
 import com.beto4812.airqueue.ui.login.LoginActivity;
 import com.beto4812.airqueue.utils.Constants;
-import com.firebase.client.Firebase;
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class BaseActivity extends AppCompatActivity {
@@ -30,21 +29,21 @@ public class BaseActivity extends AppCompatActivity {
     public static GoogleApiClient googleApiClient;
     public SharedPreferences sharedPreferences;
 
-    /*Firebase*/
-    protected Firebase mFirebaseRef;
-    protected Firebase.AuthStateListener mAuthStateListener;
     /*User information*/
-    protected String userUid;
-    protected String userEmail;
-    protected String userName;
+    protected String userId;
+    protected String userFirstName;
     protected String userLastName;
-    @Bind(R.id.toolbar)
+    protected String userProfilePictureUrl;
+
+    private AccessTokenTracker accessTokenTracker;
+
+    @Nullable
     Toolbar toolbar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.v(LOG_TAG, "---------2");
+        Log.v(LOG_TAG, "---------5");
 
         AWSClientManager.initializeMobileClientIfNecessary(getApplicationContext());
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -58,68 +57,47 @@ public class BaseActivity extends AppCompatActivity {
         }
 
         googleApiClient.registerConnectionCallbacks(
-                new GoogleApiClient.ConnectionCallbacks() {
-                    @Override
-                    public void onConnected(@Nullable Bundle bundle) {
-                        Log.v(LOG_TAG, "onConnected");
-                        try{
-                            Location location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-                            if (location != null) {
-                                sharedPreferences.edit().putString("lastLatitude", String.valueOf(location.getLatitude()));
-                                sharedPreferences.edit().putString("lastLongitude", String.valueOf(location.getLongitude()));
-                                Log.v(LOG_TAG, "lastLocation: " + String.valueOf(location.getLatitude()) + " , " + String.valueOf(location.getLongitude()));
-                            }else{
-                                Log.v(LOG_TAG, "null location");
-                            }
-                        }catch (SecurityException e){
-                            Log.v(LOG_TAG, Log.getStackTraceString(e));
+            new GoogleApiClient.ConnectionCallbacks() {
+                @Override
+                public void onConnected(@Nullable Bundle bundle) {
+                    Log.v(LOG_TAG, "onConnected");
+                    try{
+                        Location location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+                        if (location != null) {
+                            sharedPreferences.edit().putString("lastLatitude", String.valueOf(location.getLatitude()));
+                            sharedPreferences.edit().putString("lastLongitude", String.valueOf(location.getLongitude()));
+                            Log.v(LOG_TAG, "lastLocation: " + String.valueOf(location.getLatitude()) + " , " + String.valueOf(location.getLongitude()));
+                        }else{
+                            Log.v(LOG_TAG, "null location");
                         }
-                    }
-
-                    @Override
-                    public void onConnectionSuspended(int i) {
-
+                    }catch (SecurityException e){
+                        Log.v(LOG_TAG, Log.getStackTraceString(e));
                     }
                 }
 
+                @Override
+                public void onConnectionSuspended(int i) {
+
+                }
+            }
         );
 
-        userUid = sharedPreferences.getString(Constants.KEY_USER_UID, null);
-        userEmail = sharedPreferences.getString(Constants.KEY_USER_EMAIL, null);
-        userName = sharedPreferences.getString(Constants.KEY_USER_NAME, null);
-        userLastName = sharedPreferences.getString(Constants.KEY_USER_LAST_NAME, null);
+        userId = sharedPreferences.getString(Constants.KEY_USER_UID, "");
+        userFirstName = sharedPreferences.getString(Constants.KEY_USER_FIRST_NAME, "");
+        userLastName = sharedPreferences.getString(Constants.KEY_USER_LAST_NAME, "");
+        userProfilePictureUrl = sharedPreferences.getString(Constants.KEY_USER_PICTURE_URL, "");
 
-        /*if(!((this instanceof LoginActivity) || (this instanceof CreateAccountActivity))) {
-            mFirebaseRef = new Firebase(Constants.FIREBASE_URL);
-            mAuthStateListener = new Firebase.AuthStateListener() {
-                @Override
-                public void onAuthStateChanged(AuthData authData) {
-                    if(authData == null) {
-                        SharedPreferences.Editor sharedPrefsEditor = sharedPreferences.edit();
-                        sharedPrefsEditor.putString(Constants.KEY_USER_UID, null);
-                        sharedPrefsEditor.putString(Constants.KEY_USER_EMAIL, null);
-                        sharedPrefsEditor.putString(Constants.KEY_USER_NAME, null);
-                        sharedPrefsEditor.putString(Constants.KEY_USER_LAST_NAME, null);
-                        sharedPrefsEditor.apply();
-
-                        //onUnauth();
-                    }
+        accessTokenTracker = new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
+                if(currentAccessToken == null) {
+                    Intent intent = new Intent(BaseActivity.this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
                 }
-            };
-            mFirebaseRef.addAuthStateListener(mAuthStateListener);
-        }*/
-    }
-
-
-    protected void logout() {
-        mFirebaseRef.unauth();
-    }
-
-    private void onUnauth() {
-        Intent intent = new Intent(BaseActivity.this, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
+            }
+        };
     }
 
     protected void onStart() {
@@ -127,24 +105,25 @@ public class BaseActivity extends AppCompatActivity {
         super.onStart();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     protected void onStop() {
         googleApiClient.disconnect();
         super.onStop();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        accessTokenTracker.stopTracking();
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
         super.onSaveInstanceState(outState, outPersistentState);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        /*if (!((this instanceof LoginActivity) || (this instanceof CreateAccountActivity))) {
-            mFirebaseRef.removeAuthStateListener(mAuthStateListener);
-        }*/
     }
 
     @Override
@@ -162,13 +141,6 @@ public class BaseActivity extends AppCompatActivity {
         super.setContentView(layoutResId);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
     protected void setupToolbar() {
         if (toolbar != null) {
             setSupportActionBar(toolbar);
@@ -176,8 +148,23 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    @Nullable
     public Toolbar getToolbar() {
         return toolbar;
     }
 
+    protected void logout() {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor sharedPrefsEditor = sharedPrefs.edit();
+
+        sharedPrefsEditor.putString(Constants.KEY_USER_UID, null).apply();
+        sharedPrefsEditor.putString(Constants.KEY_USER_EMAIL, null).apply();
+        sharedPrefsEditor.putString(Constants.KEY_USER_FIRST_NAME, null).apply();
+        sharedPrefsEditor.putString(Constants.KEY_USER_LAST_NAME, null).apply();
+        sharedPrefsEditor.putString(Constants.KEY_USER_PICTURE_URL, null).apply();
+        sharedPrefsEditor.putString(Constants.KEY_USER_BIRTHDAY, null).apply();
+        sharedPrefsEditor.putString(Constants.KEY_USER_GENDER, null).apply();
+
+        LoginManager.getInstance().logOut();
+    }
 }

@@ -41,6 +41,12 @@ Visualization:
     https://github.com/lzyzsd/CircleProgress
     https://github.com/Shinelw/ColorArcProgressBar
 
+    Icons:
+    https://design.google.com/icons/
+
+    Material:
+    https://developer.android.com/training/material/lists-cards.html
+
 App Inspiration Examples:
 
 https://play.google.com/store/apps/details?id=org.cleanairinlondon.cities

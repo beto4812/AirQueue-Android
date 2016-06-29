@@ -1,94 +1,172 @@
 package com.beto4812.airqueue.ui.login;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.beto4812.airqueue.R;
-import com.beto4812.airqueue.model.User;
 import com.beto4812.airqueue.ui.BaseActivity;
 import com.beto4812.airqueue.ui.MainActivity;
 import com.beto4812.airqueue.ui.register.CreateAccountActivity;
 import com.beto4812.airqueue.utils.Constants;
-import com.firebase.client.AuthData;
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+
+import org.json.JSONObject;
+
+import java.util.Arrays;
 
 //TODO: Refactor class according new parent classes
 public class LoginActivity extends BaseActivity {
 
-    private ProgressDialog mAuthProgressDialog;
+    private static final String LOG_TAG = "LoginActivity";
+
     private EditText mEditTextEmail;
     private EditText mEditTextPassword;
 
-    private SharedPreferences mSharedPrefs;
     private SharedPreferences.Editor mSharedPrefsEditor;
 
-    private Firebase mFirebase;
-    private Firebase.AuthStateListener mAuthStateListener;
+    LoginButton mLoginButton;
+    private CallbackManager callbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        mFirebaseRef = new Firebase(Constants.FIREBASE_URL);
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        mSharedPrefsEditor = sharedPrefs.edit();
+        FacebookSdk.sdkInitialize(this.getApplicationContext());
 
         initializeScreen();
 
-        mEditTextPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        callbackManager = CallbackManager.Factory.create();
+
+        mLoginButton.setReadPermissions(Arrays.asList("public_profile", "email", "user_birthday"));
+        mLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(actionId == EditorInfo.IME_ACTION_DONE || event.getAction() == KeyEvent.ACTION_DOWN) {
-                    signInPassword();
-                }
-                return true;
+            public void onSuccess(LoginResult loginResult) {
+                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        if(response != null) {
+                            try {
+                                JSONObject data = response.getJSONObject();
+                                String id = "";
+                                String email = "";
+                                String firstName = "";
+                                String lastName = "";
+                                String profileImageUrl = "";
+                                String gender = "";
+                                String birthday = "";
+
+                                id = data.getString("id");
+                                email = data.getString("email");
+                                if(data.has("first_name")) {
+                                    firstName = data.getString("first_name");
+                                }
+                                if(data.has("last_name")) {
+                                    lastName = data.getString("last_name");
+                                }
+                                if(data.has("picture")) {
+                                    profileImageUrl = "https://graph.facebook.com/" + id + "/picture?width=400&height=400";
+                                }
+
+                                if(data.has("gender")) {
+                                    gender = data.getString("gender");
+                                }
+
+                                if(data.has("birthday")) {
+                                    birthday = data.getString("birthday");
+                                }
+
+                                Log.i("NSAN", "Name: " + firstName);
+                                Log.i("NSAN", "Last Name: " + lastName);
+                                Log.i("NSAN", "Picture: " + profileImageUrl);
+
+                                mSharedPrefsEditor.putString(Constants.KEY_USER_UID, id).apply();
+                                mSharedPrefsEditor.putString(Constants.KEY_USER_EMAIL, email).apply();
+                                mSharedPrefsEditor.putString(Constants.KEY_USER_FIRST_NAME, firstName).apply();
+                                mSharedPrefsEditor.putString(Constants.KEY_USER_LAST_NAME, lastName).apply();
+                                mSharedPrefsEditor.putString(Constants.KEY_USER_PICTURE_URL, profileImageUrl).apply();
+                                mSharedPrefsEditor.putString(Constants.KEY_USER_BIRTHDAY, birthday).apply();
+                                mSharedPrefsEditor.putString(Constants.KEY_USER_GENDER, gender).apply();
+
+                                login();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
+
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id, first_name, last_name, email, picture.type(large), gender, birthday");
+                request.setParameters(parameters);
+                request.executeAsync();
+            }
+
+            @Override
+            public void onCancel() {
+                Log.i("NSAN", "onCancel");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Log.i("NSAN", "onError");
             }
         });
+
+        AccessToken accesToken = AccessToken.getCurrentAccessToken();
+
+        if(accesToken != null) {
+            login();
+        }
+    }
+
+    private void login() {
+        printLoginDetails();
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    private void printLoginDetails(){
+        Log.v(LOG_TAG, "KEY_USER_UID: " + PreferenceManager.getDefaultSharedPreferences(this).getString(Constants.KEY_USER_UID, null));
+        Log.v(LOG_TAG, "KEY_USER_EMAIL: " + PreferenceManager.getDefaultSharedPreferences(this).getString(Constants.KEY_USER_EMAIL, null));
+        Log.v(LOG_TAG, "KEY_USER_GENDER: " + PreferenceManager.getDefaultSharedPreferences(this).getString(Constants.KEY_USER_GENDER, null));
+        Log.v(LOG_TAG, "KEY_USER_BIRTHDAY: " + PreferenceManager.getDefaultSharedPreferences(this).getString(Constants.KEY_USER_BIRTHDAY, null));
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        mAuthStateListener = new Firebase.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(AuthData authData) {
-                mAuthProgressDialog.dismiss();
-
-                if(authData != null) {
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();
-                }
-            }
-        };
-
-        mFirebaseRef.addAuthStateListener(mAuthStateListener);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mFirebaseRef.removeAuthStateListener(mAuthStateListener);
     }
 
     public void onSignInPressed(View view) {
-        signInPassword();
+        login();
     }
 
     public void onSignUpPressed(View view) {
@@ -99,98 +177,6 @@ public class LoginActivity extends BaseActivity {
     private void initializeScreen() {
         mEditTextEmail = (EditText) findViewById(R.id.edit_text_email);
         mEditTextPassword = (EditText) findViewById(R.id.edit_text_password);
-
-        mAuthProgressDialog = new ProgressDialog(this);
-        mAuthProgressDialog.setTitle(getString(R.string.progress_title_please_wait));
-        mAuthProgressDialog.setMessage(getString(R.string.progress_message_loading));
-        mAuthProgressDialog.setCancelable(false);
-    }
-
-    public void signInPassword() {
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
-
-        /*String email = mEditTextEmail.getText().toString();
-        String password = mEditTextPassword.getText().toString();
-
-        if(email.matches("")){
-            mEditTextEmail.setError(getString(R.string.error_field_required));
-            return;
-        }
-
-        if(password.matches("")) {
-            mEditTextPassword.setError(getString(R.string.error_field_required));
-            return;
-        }
-
-        mAuthProgressDialog.show();
-        mFirebaseRef.authWithPassword(email, password, new LoginAuthResultHandler());*/
-    }
-
-    private class LoginAuthResultHandler implements Firebase.AuthResultHandler {
-
-        @Override
-        public void onAuthenticated(AuthData authData) {
-            mAuthProgressDialog.dismiss();
-
-            if(authData != null) {
-                final String userUid = authData.getUid();
-                final boolean isTemporaryPassword = (Boolean) authData.getProviderData().get(Constants.VALUE_IS_TEMPORARY_PASSWORD);
-
-                Log.i("NSAN", "Is temporary password: " + isTemporaryPassword);
-                // TODO: 28/05/2016 if isTemporaryPassword -> Send to ResetPasswordActivity
-
-                Firebase userRef = new Firebase(Constants.FIREBASE_URL_USERS).child(userUid);
-
-                userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        User user = dataSnapshot.getValue(User.class);
-                        mSharedPrefsEditor = mSharedPrefs.edit();
-
-                        mSharedPrefsEditor.putString(Constants.KEY_USER_UID, userUid);
-                        mSharedPrefsEditor.putString(Constants.KEY_USER_EMAIL, user.getEmail());
-                        mSharedPrefsEditor.putString(Constants.KEY_USER_NAME, user.getName());
-                        mSharedPrefsEditor.putString(Constants.KEY_USER_LAST_NAME, user.getLastName());
-
-                        mSharedPrefsEditor.apply();
-
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        finish();
-                    }
-
-                    @Override
-                    public void onCancelled(FirebaseError firebaseError) {
-
-                    }
-                });
-            }
-        }
-
-        @Override
-        public void onAuthenticationError(FirebaseError firebaseError) {
-            mAuthProgressDialog.dismiss();
-
-            switch (firebaseError.getCode()) {
-                case FirebaseError.INVALID_EMAIL:
-                    mEditTextEmail.setError(getString(R.string.error_invalid_email));
-                    break;
-                case FirebaseError.USER_DOES_NOT_EXIST:
-                    mEditTextEmail.setError(getString(R.string.error_email_not_registered));
-                    break;
-                case FirebaseError.INVALID_PASSWORD:
-                    mEditTextPassword.setError(getString(R.string.error_incorrect_password));
-                    break;
-                case FirebaseError.NETWORK_ERROR:
-                    Toast.makeText(LoginActivity.this, getString(R.string.error_newtork_error), Toast.LENGTH_LONG).show();
-                    break;
-                default:
-                    Toast.makeText(LoginActivity.this, getString(R.string.error_default_error), Toast.LENGTH_LONG).show();
-            }
-        }
+        mLoginButton = (LoginButton) findViewById(R.id.loginButtonFacebook);
     }
 }

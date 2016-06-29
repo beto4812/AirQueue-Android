@@ -4,7 +4,15 @@
     <color name="colorPrimaryDark">#1976D2</color>
     <color name="colorAccent">#64B5F6</color>
 
+    <color name="soft_white">#727272</color>
+    <color name="white">#ffffff</color>
     <color name="black">#616161</color>
     <color name="dark_grey">#AEAEAE</color>
     <color name="light_grey">#BCBCBC</color>
+    <color name="bold_blue">#113F8C</color>
+    <color name="mint_blue">#00A1CB</color>
+    <color name="light_orange">#FF9C07</color>
+    <color name="bright_red">#E32F21</color>
+    <color name="life_green">#7AB317</color>
+    <color name="amarelo">#FDFF3A</color>
 </resources>

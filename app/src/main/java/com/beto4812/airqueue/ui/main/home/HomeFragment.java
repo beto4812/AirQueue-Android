@@ -16,6 +16,7 @@ import com.beto4812.airqueue.R;
 import com.beto4812.airqueue.ui.main.home.charts.CircularChartsFragment;
 import com.beto4812.airqueue.ui.main.home.charts.LinearChartsFragment;
 import com.beto4812.airqueue.ui.main.home.charts.PieChartsFragment;
+import com.beto4812.airqueue.ui.main.visualizations.VisualizationsFragment;
 
 public class HomeFragment extends Fragment {
 
@@ -63,8 +64,6 @@ public class HomeFragment extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
-
-            Log.i("NSAN", "Position: " + position);
             switch (position) {
                 case 0:
                     return CircularChartsFragment.newInstance();
@@ -72,6 +71,8 @@ public class HomeFragment extends Fragment {
                     return LinearChartsFragment.newInstance();
                 case 2:
                     return PieChartsFragment.newInstance();
+                case 3:
+                    return VisualizationsFragment.newInstance();
                 default:
                     return CircularChartsFragment.newInstance();
             }

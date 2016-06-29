@@ -21,4 +21,11 @@
 
     <!--Sizes-->
     <dimen name="login_logo_size">225dp</dimen>
+
+    <dimen name="textview_height">25dp</dimen>
+    <dimen name="textview_width">150dp</dimen>
+    <dimen name="ball_radius">30dp</dimen>
+    <dimen name="font_size_large">26sp</dimen>
+    <dimen name="spacing_large">16dp</dimen>
+    <dimen name="spacing_medium">8dp</dimen>
 </resources>
