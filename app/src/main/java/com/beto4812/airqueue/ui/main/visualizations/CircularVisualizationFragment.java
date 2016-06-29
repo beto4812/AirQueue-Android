@@ -82,6 +82,7 @@ public class CircularVisualizationFragment extends Fragment {
     }
 
     public static CircularVisualizationFragment newInstance() {
+        Log.v(LOG_TAG, "newInstance");
         return new CircularVisualizationFragment();
     }
 

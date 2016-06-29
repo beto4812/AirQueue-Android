@@ -20,6 +20,7 @@ import java.util.List;
 public class SensorReading {
     private static final String LOG_TAG = "SensorReading";
     //private String sourceIDLastUpdated;
+    private String image;
     private List<String> coordinates;
     private String dateInserted;
     private String lastUpdated;
@@ -152,6 +153,15 @@ public class SensorReading {
         return o3;
     }
 
+    @DynamoDBAttribute(attributeName = "site_map")
+    public String getImage(){
+        return image;
+    }
+
+    public void setImage(String image){
+        this.image = image;
+    }
+
     public Pollutant getPollutant(String key){
         Pollutant temp = pollutants.get(key);
         return temp;
@@ -256,6 +266,7 @@ public class SensorReading {
         while(it.hasNext()){
             out+=it.next()+ " ";
         }
+        out += " image: " + image;
         return out;
     }
 }

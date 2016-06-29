@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:background="@color/colorAccent"
-        android:id="@+id/view1"
+        android:id="@+id/view_background_1"
         android:layout_marginRight="0dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
@@ -23,7 +23,7 @@
         android:id="@+id/textView12"
         android:textColor="#ffffff"
         android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/view1"
+        android:layout_alignStart="@+id/view_background_1"
         android:layout_marginTop="30dp"
         android:layout_marginLeft="5dp" />
 
@@ -42,10 +42,10 @@
     <ImageView
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:id="@+id/imageView3"
+        android:id="@+id/image_view_sensor"
         android:background="@android:drawable/ic_menu_gallery"
         android:layout_alignParentTop="true"
-        android:layout_alignEnd="@+id/view1" />
+        android:layout_alignEnd="@+id/view_background_1" />
 
     <View
         android:layout_width="match_parent"
@@ -54,7 +54,7 @@
         android:id="@+id/view"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
-        android:layout_below="@+id/view1"
+        android:layout_below="@+id/view_background_1"
         android:layout_alignParentStart="true" />
 
     <TextView
@@ -65,7 +65,7 @@
         android:id="@+id/textView14"
         android:textColor="#ffffff"
         android:layout_marginLeft="5dp"
-        android:layout_below="@+id/view1"
+        android:layout_below="@+id/view_background_1"
         android:layout_alignParentStart="true"
         android:layout_marginTop="20dp" />
 
@@ -107,7 +107,7 @@
         app:rcReverse="false"
         app:rcProgressColor="#ffffff"
         app:rcBackgroundColor="#1E88E5"
-        android:id="@+id/overview_pollution_bar"
+        android:id="@+id/overview_air_quality_bar"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
@@ -118,31 +118,12 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="@android:color/darker_gray"
-        android:id="@+id/view3"
+        android:id="@+id/view_separator_2"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
-        android:layout_below="@+id/overview_pollution_bar"
+        android:layout_below="@+id/overview_air_quality_bar"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="10dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Advice"
-        android:id="@+id/textView15"
-        android:textColor="#ffffff"
-        android:layout_marginLeft="5dp"
-        android:layout_alignParentStart="false"
-        android:layout_below="@+id/view3" />
-
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/chart1"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/textView17" />
+        android:layout_marginTop="20dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -162,15 +143,43 @@
         android:layout_below="@+id/textView13"
         android:layout_alignStart="@+id/textView13" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@color/colorPrimary"
+        android:id="@+id/view_background_2"
+        android:layout_below="@+id/view_separator_2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Advice"
+        android:id="@+id/textView15"
+        android:textColor="#ffffff"
+        android:layout_marginLeft="5dp"
+        android:layout_alignParentStart="false"
+        android:layout_below="@+id/view_separator_2"
+        android:layout_marginTop="5dp" />
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/chart1"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/textView18" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Enjoy your usual outdoor activities."
-        android:id="@+id/textView17"
-        android:layout_below="@+id/textView15"
-        android:layout_alignStart="@+id/textView15"
-        android:layout_toStartOf="@+id/chart1" />
+        android:id="@+id/textView_advice_text"
+        android:layout_below="@+id/imageView_advice"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/chart1"
+        android:layout_marginLeft="5dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -178,9 +187,18 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Live pollutants"
         android:id="@+id/textView18"
-        android:layout_below="@+id/view3"
+        android:layout_below="@+id/view_separator_2"
         android:layout_toEndOf="@+id/textView14"
-        android:textColor="#ffffff" />
+        android:textColor="#ffffff"
+        android:layout_marginTop="5dp" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/imageView_advice"
+        android:background="@drawable/running_48"
+        android:layout_below="@+id/textView15"
+        android:layout_marginLeft="5dp" />
 
 
 </RelativeLayout>

@@ -68,6 +68,7 @@ public class LinearVisualizationFragment extends Fragment {
     }
 
     public static LinearVisualizationFragment newInstance() {
+        Log.v(LOG_TAG, "newInstance");
         return new LinearVisualizationFragment();
     }
 

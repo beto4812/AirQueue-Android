@@ -1,6 +1,8 @@
 package com.beto4812.airqueue.ui.main.visualizations;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -13,12 +15,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.beto4812.airqueue.R;
-import com.beto4812.airqueue.ui.main.home.charts.PieChartsFragment;
+import com.beto4812.airqueue.aws.AWSClientManager;
+import com.beto4812.airqueue.model.SensorCoordinates;
+import com.beto4812.airqueue.model.SensorReading;
 import com.beto4812.airqueue.ui.main.visualizations.viewHolder.OverviewFragment;
 
 public class VisualizationsFragment extends Fragment {
 
-    private static final String LOG_TAG = "AWSClientManager";
+    private static final String LOG_TAG = "VisualizationsFragment";
 
     public VisualizationsFragment() {
 
@@ -36,6 +40,7 @@ public class VisualizationsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        new GetData().execute();
     }
 
     @Nullable
@@ -82,6 +87,26 @@ public class VisualizationsFragment extends Fragment {
         @Override
         public CharSequence getPageTitle(int position) {
             return tabsArray[position];
+        }
+    }
+
+    private class GetData extends AsyncTask<Void, Void, SensorReading> {
+        //@Override
+        protected void onPostExecute(SensorReading s) {
+            Log.v(LOG_TAG, "onPostExecute: " + s.toString());
+            OverviewFragment.getInstance().setSensorReading(s);
+        }
+
+        @Override
+        protected SensorReading doInBackground(Void... p) {
+
+            double currentLat = Double.parseDouble(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("lastLatitude","55.9449353"));
+            double currentLong = Double.parseDouble(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("lastLongitude","-3.1839465"));
+
+            SensorCoordinates sensorCoordinates = AWSClientManager.defaultMobileClient().getDynamoDbManager().getClosestSensorCoordinates(currentLat, currentLong);
+            SensorReading sensorReading = AWSClientManager.defaultMobileClient().getDynamoDbManager().getLastSensorReadingBySourceID(sensorCoordinates.getSourceID());
+
+            return sensorReading;
         }
     }
 }
