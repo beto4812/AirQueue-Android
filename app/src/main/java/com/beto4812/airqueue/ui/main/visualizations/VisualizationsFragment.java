@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 
 import com.beto4812.airqueue.R;
 import com.beto4812.airqueue.aws.AWSClientManager;
+import com.beto4812.airqueue.model.PollutantThreshold;
 import com.beto4812.airqueue.model.SensorCoordinates;
 import com.beto4812.airqueue.model.SensorReading;
 import com.beto4812.airqueue.ui.main.visualizations.viewHolder.OverviewFragment;
@@ -23,6 +24,7 @@ import com.beto4812.airqueue.ui.main.visualizations.viewHolder.OverviewFragment;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class VisualizationsFragment extends Fragment {
@@ -113,6 +115,8 @@ public class VisualizationsFragment extends Fragment {
             double currentLong = Double.parseDouble(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("lastLongitude","-3.1839465"));
 
             SensorCoordinates sensorCoordinates = AWSClientManager.defaultMobileClient().getDynamoDbManager().getClosestSensorCoordinates(currentLat, currentLong);
+            HashMap<String, PollutantThreshold> pollutantThresholds = AWSClientManager.defaultMobileClient().getDynamoDbManager().getPollutantThresholds();
+            CircularVisualizationFragment.getInstance().setPollutantThresholds(pollutantThresholds);
 
             Calendar c = Calendar.getInstance();
             Date from = new Date(c.get(Calendar.YEAR)-1900, c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));

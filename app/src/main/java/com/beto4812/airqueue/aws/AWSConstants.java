@@ -8,6 +8,7 @@ public class AWSConstants {
     public static final Regions COGNITO_REGION = Regions.US_EAST_1;
     public static final Regions DYNAMO_REGION = Regions.EU_CENTRAL_1;
     public static final String SENSOR_READINGS_TABLE_NAME = "airquality";
+    public static final String POLLUTANT_THESHOLD_TABLE_NAME = "airquality_pollutant_threshold";
     public static final String SENSOR_COORDINATES_TABLE_NAME = "airquality_sourceID_coordinates";
 
 }

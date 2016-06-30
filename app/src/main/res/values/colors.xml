@@ -17,7 +17,7 @@
     <color name="amarelo">#fdff3a</color>
     <color name="blue_bar">#1E88E5</color>"
 
-    <color name="green_traffic_light">#42F45E</color>
+    <color name="green_traffic_light">#42f45e</color>
     <color name="yellow_traffic_light">#E9D445</color>
     <color name="red_traffic_light">#FD4046</color>
 </resources>

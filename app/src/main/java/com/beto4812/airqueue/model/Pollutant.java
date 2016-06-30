@@ -20,7 +20,7 @@ public class Pollutant implements Parcelable{
     private String value = null;
     private String measureUnit;
     private int category;
-    private int redThreshold, yellowThreshold, greenThreshold, blackThreshold;
+    private PollutantThreshold threshold;
 
     public static final String NITRIC_OXIDE = "NO";
     public static final String NITRIC_OXIDE_NAME = "Nitric Oxide";
@@ -106,6 +106,10 @@ public class Pollutant implements Parcelable{
         return list;
     }
 
+    /**
+     * Which pollutants appear on linear graphs
+     * @return
+     */
     public static HashMap<String, String> getPollutantsInLinearGraph(){
         HashMap<String, String> list = new HashMap<>();
         list.put(NITRIC_OXIDE, NITRIC_OXIDE_NAME);
@@ -161,23 +165,26 @@ public class Pollutant implements Parcelable{
         return code+"-> v:" + value + " U: " + measureUnit;
     }
 
+    public void setThreshold(PollutantThreshold pollutantThreshold){
+        Log.v(LOG_TAG, "setThreshold: "  + pollutantThreshold);
+        this.threshold = pollutantThreshold;
+    }
+
     /**
      *
      * @return 1 green, 2 yellow, 3 red, 4 black
      */
     public int getColorLevel(){
-        double valueD = Double.parseDouble(value);
-
-        if(valueD>blackThreshold){
+        if(this.getDoubleValue()> Double.parseDouble(threshold.getBlack())){
             return 4;
-        }else if(valueD>redThreshold){
+        }else if(this.getDoubleValue()> Double.parseDouble(threshold.getRed())){
             return 3;
-        }else if(valueD>yellowThreshold){
+        }else if(this.getDoubleValue()> Double.parseDouble(threshold.getYellow())){
             return 2;
-        }else if(valueD>greenThreshold){
+        }else if(this.getDoubleValue()> Double.parseDouble(threshold.getGreen())){
             return 1;
         }
-        return 0;
+        return -1;
     }
 
     public static class PollutantCategory{

@@ -11,6 +11,7 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
 import com.amazonaws.services.dynamodbv2.model.Condition;
+import com.beto4812.airqueue.model.PollutantThreshold;
 import com.beto4812.airqueue.model.SensorCoordinates;
 import com.beto4812.airqueue.model.SensorReading;
 
@@ -18,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TimeZone;
@@ -115,7 +117,7 @@ public class AWSDynamoDbManager {
 
             ArrayList<SensorCoordinates> resultList = new ArrayList<>();
             for (SensorCoordinates up : result) {
-                //Log.v(LOG_TAG, up.getSourceID());
+                Log.v(LOG_TAG, up.getSourceID());
                 resultList.add(up);
             }
             return resultList;
@@ -143,5 +145,28 @@ public class AWSDynamoDbManager {
             }
         }
         return closestSensor;
+    }
+
+    public HashMap<String, PollutantThreshold> getPollutantThresholds(){
+
+        Log.v(LOG_TAG, "getPollutantThresholds(): ");
+
+        DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
+        try {
+            PaginatedScanList<PollutantThreshold> result = dynamoDBMapper.scan(
+                    PollutantThreshold.class, scanExpression);
+
+            HashMap<String, PollutantThreshold> resultList = new HashMap<>();
+            for (PollutantThreshold up : result) {
+                Log.v(LOG_TAG, up.toString());
+                resultList.put(up.getCode(), up);
+            }
+            return resultList;
+
+        } catch (Exception ex) {
+            Log.v(LOG_TAG, "AmazonServiceException");
+            Log.e(LOG_TAG, Log.getStackTraceString(ex));
+        }
+        return  null;
     }
 }

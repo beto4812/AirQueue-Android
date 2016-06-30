@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.beto4812.airqueue.R;
@@ -21,6 +22,7 @@ public class PollutantCircularViewHolder extends RecyclerView.ViewHolder {
     private TextView pollutantNameTextView;
     private TextView pollutantValueTextView;
     private Pollutant pollutant;
+    private ImageButton pollutantCenterColor;
 
     public PollutantCircularViewHolder(View itemView) {
         super(itemView);
@@ -39,6 +41,24 @@ public class PollutantCircularViewHolder extends RecyclerView.ViewHolder {
 
         pollutantValueTextView = (TextView) rootView.findViewById(R.id.pollutant_value);
         pollutantValueTextView.setText(pollutant.getValue());
+
+        pollutantCenterColor = (ImageButton) rootView.findViewById(R.id.pollutant_center_color);
+
+        switch (pollutant.getColorLevel()){
+
+            case 4:
+                pollutantCenterColor.setImageDrawable(rootView.getResources().getDrawable(R.drawable.pollutant_view_black));
+                break;
+            case 3:
+                pollutantCenterColor.setImageDrawable(rootView.getResources().getDrawable(R.drawable.pollutant_view_red));
+                break;
+            case 2:
+                pollutantCenterColor.setImageDrawable(rootView.getResources().getDrawable(R.drawable.pollutant_view_yellow));
+                break;
+            case 1:
+                pollutantCenterColor.setImageDrawable(rootView.getResources().getDrawable(R.drawable.pollutant_view_green));
+                break;
+        }
     }
 
     private void setupDecoView(){

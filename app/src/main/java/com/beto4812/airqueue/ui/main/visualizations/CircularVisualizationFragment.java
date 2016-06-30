@@ -1,9 +1,6 @@
 package com.beto4812.airqueue.ui.main.visualizations;
 
-import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -12,18 +9,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
 import com.beto4812.airqueue.R;
-import com.beto4812.airqueue.aws.AWSClientManager;
 import com.beto4812.airqueue.model.Pollutant;
 import com.beto4812.airqueue.model.PollutantCategoryInfo;
-import com.beto4812.airqueue.model.SensorCoordinates;
+import com.beto4812.airqueue.model.PollutantThreshold;
 import com.beto4812.airqueue.model.SensorReading;
 import com.beto4812.airqueue.ui.main.visualizations.viewAdapter.CircularVisualizationAdapter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -32,19 +27,17 @@ import java.util.TreeMap;
 
 public class CircularVisualizationFragment extends Fragment {
 
-    private static final String LOG_TAG = "PollutantsCCF2";
+    private static final String LOG_TAG = "CircularVisualizationF";
 
 
     private RecyclerView recyclerView;
 
     private View rootView;
-    private LinearLayout linearLayout;
-    private FrameLayout.LayoutParams params;
-    public SharedPreferences sharedPreferences;
     public GridLayoutManager layoutManager;
     public CircularVisualizationAdapter circularVisualizationsAdapter;
     private static CircularVisualizationFragment instance;
     private SensorReading sensorReading;
+    private HashMap<String, PollutantThreshold> pollutantThresholds;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -99,6 +92,10 @@ public class CircularVisualizationFragment extends Fragment {
         }
     }
 
+    public void setPollutantThresholds(HashMap<String, PollutantThreshold> pollutantThresholds){
+        this.pollutantThresholds = pollutantThresholds;
+    }
+
 
     public void updateUI(){
         Log.v(LOG_TAG, "onPostExecute() closestSensorID: " + sensorReading.getSourceID() + " lastUpdated: " + sensorReading.getLastUpdated());
@@ -108,6 +105,9 @@ public class CircularVisualizationFragment extends Fragment {
         Pollutant p;
         while(it.hasNext()){
             p = (Pollutant)it.next();
+            if(pollutantThresholds!=null){
+                p.setThreshold(pollutantThresholds.get(p.getCode()));
+            }
             //list.add(p);
             if(!pollutantsByCategory.containsKey(p.getCategory())){
                 pollutantsByCategory.put(p.getCategory(), new ArrayList<Pollutant>());
@@ -120,7 +120,6 @@ public class CircularVisualizationFragment extends Fragment {
         Iterator itTemp = null;
 
         for(int k: keys){
-            Log.v(LOG_TAG, "k: " + k);
             renderList.add(new PollutantCategoryInfo(k));
             temp = pollutantsByCategory.get(k);
             itTemp = temp.iterator();

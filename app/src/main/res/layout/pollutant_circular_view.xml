@@ -25,9 +25,9 @@
             android:layout_centerHorizontal="true" />
 
         <ImageButton
-            android:id="@+id/pollutant_button_center"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:id="@+id/pollutant_center_color"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
             android:background="@drawable/pollutant_view_green"
             android:layout_marginLeft="120dp"
             android:layout_marginRight="120dp"
@@ -52,7 +52,7 @@
             android:layout_marginLeft="100dp"
             android:gravity="right|center_vertical"
             android:text="Pollutant"
-            android:layout_above="@+id/pollutant_button_center"
+            android:layout_above="@+id/pollutant_center_color"
             android:layout_centerHorizontal="true" />
 
         <TextView
@@ -63,7 +63,7 @@
             android:gravity="right|center_vertical"
             android:text="Value"
 
-            android:layout_below="@+id/pollutant_button_center"
+            android:layout_below="@+id/pollutant_center_color"
             android:layout_centerHorizontal="true" />
     </RelativeLayout>
 </RelativeLayout>
