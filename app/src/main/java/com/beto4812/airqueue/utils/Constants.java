@@ -1,5 +1,6 @@
 package com.beto4812.airqueue.utils;
 
+import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;

@@ -1,9 +1,11 @@
 package com.beto4812.airqueue.ui.main.visualizations.viewHolder;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +47,7 @@ public class OverviewFragment extends Fragment {
     private RoundCornerProgressBar progressBarSensibility;
     private RoundCornerProgressBar progressBarQualityIndex;
     private PieChart pieChart;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -112,14 +115,14 @@ public class OverviewFragment extends Fragment {
         dataSet.setDrawValues(false);
         PieData data = new PieData(xVals, dataSet);
 
-        //Typeface tf = Typeface.createFromAsset(rootView.getContext().getAssets(), "hos.ttf");
-        data.setValueTextColor(Color.WHITE);
-        data.setValueTextSize(12f);
-        //data.setValueTypeface(tf);
+        Typeface tf = Typeface.createFromAsset(rootView.getContext().getAssets(), "OpenSans-Light.ttf");
+        data.setValueTextColor(Color.BLACK);
+        data.setValueTextSize(14f);
+        data.setValueTypeface(tf);
 
 
         pieChart.getLegend().setEnabled(false);
-        //pieChart.setCenterTextTypeface(Typeface.createFromAsset(rootView.getContext().getAssets(), "hos.ttf"));
+        pieChart.setHoleColor(ContextCompat.getColor(rootView.getContext(), R.color.colorAccent));
         pieChart.setData(data);
         pieChart.setDescription("");
         pieChart.invalidate();
@@ -131,11 +134,25 @@ public class OverviewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.v(LOG_TAG, "onCreateView");
         rootView =  inflater.inflate(R.layout.fragment_overview, container, false);
+        Typeface openSansBold = Typeface.createFromAsset(rootView.getContext().getAssets(), "OpenSans-Bold.ttf");
+        Typeface openSansRegular = Typeface.createFromAsset(rootView.getContext().getAssets(), "OpenSans-Regular.ttf");
+        Typeface robotoRegular = Typeface.createFromAsset(rootView.getContext().getAssets(), "Roboto-Regular.ttf");
         imageViewSensor = (ImageView)rootView.findViewById(R.id.image_view_sensor);
         textViewClosestSensor = (TextView)rootView.findViewById(R.id.text_view_closest_sensor);
+        textViewClosestSensor.setTypeface(robotoRegular);
         textViewLastUpdated = (TextView)rootView.findViewById(R.id.text_view_last_updated);
+        textViewLastUpdated.setTypeface(robotoRegular);
         progressBarSensibility = (RoundCornerProgressBar) rootView.findViewById(R.id.overview_sensibility_bar);
         progressBarQualityIndex = (RoundCornerProgressBar) rootView.findViewById(R.id.overview_air_quality_bar);
+        ((TextView) rootView.findViewById(R.id.textView15)).setTypeface(openSansRegular);
+        ((TextView) rootView.findViewById(R.id.textView18)).setTypeface(openSansRegular);
+        ((TextView) rootView.findViewById(R.id.textView_advice_text)).setTypeface(robotoRegular);
+        ((TextView) rootView.findViewById(R.id.textView14)).setTypeface(openSansRegular);
+        ((TextView) rootView.findViewById(R.id.textView3)).setTypeface(openSansRegular);
+
+        ((TextView) rootView.findViewById(R.id.textView12)).setTypeface(openSansRegular);
+        ((TextView) rootView.findViewById(R.id.textView13)).setTypeface(openSansRegular);
+
         pieChart = (PieChart) rootView.findViewById(R.id.pollutants_chart);
         if(sensorReading!=null){
             updateUI();
