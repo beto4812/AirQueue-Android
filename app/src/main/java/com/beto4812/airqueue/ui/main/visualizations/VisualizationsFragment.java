@@ -20,6 +20,11 @@ import com.beto4812.airqueue.model.SensorCoordinates;
 import com.beto4812.airqueue.model.SensorReading;
 import com.beto4812.airqueue.ui.main.visualizations.viewHolder.OverviewFragment;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 public class VisualizationsFragment extends Fragment {
 
     private static final String LOG_TAG = "VisualizationsFragment";
@@ -69,13 +74,13 @@ public class VisualizationsFragment extends Fragment {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return OverviewFragment.newInstance();
+                    return OverviewFragment.getInstance();
                 case 1:
-                    return CircularVisualizationFragment.newInstance();
+                    return CircularVisualizationFragment.getInstance();
                 case 2:
-                    return LinearVisualizationFragment.newInstance();
+                    return LinearVisualizationFragment.getInstance();
                 default:
-                    return CircularVisualizationFragment.newInstance();
+                    return CircularVisualizationFragment.getInstance();
             }
         }
 
@@ -90,23 +95,39 @@ public class VisualizationsFragment extends Fragment {
         }
     }
 
-    private class GetData extends AsyncTask<Void, Void, SensorReading> {
+    private class GetData extends AsyncTask<Void, Void, List<SensorReading>> {
         //@Override
-        protected void onPostExecute(SensorReading s) {
+        protected void onPostExecute(List<SensorReading> s) {
             Log.v(LOG_TAG, "onPostExecute: " + s.toString());
-            OverviewFragment.getInstance().setSensorReading(s);
+            if(s.size()>1){
+                OverviewFragment.getInstance().setSensorReading(s.get(s.size()-1));
+                CircularVisualizationFragment.getInstance().setSensorReading(s.get(s.size()-1));
+            }
+            LinearVisualizationFragment.getInstance().setreadings(s);
         }
 
         @Override
-        protected SensorReading doInBackground(Void... p) {
+        protected List<SensorReading> doInBackground(Void... p) {
 
             double currentLat = Double.parseDouble(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("lastLatitude","55.9449353"));
             double currentLong = Double.parseDouble(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("lastLongitude","-3.1839465"));
 
             SensorCoordinates sensorCoordinates = AWSClientManager.defaultMobileClient().getDynamoDbManager().getClosestSensorCoordinates(currentLat, currentLong);
-            SensorReading sensorReading = AWSClientManager.defaultMobileClient().getDynamoDbManager().getLastSensorReadingBySourceID(sensorCoordinates.getSourceID());
 
-            return sensorReading;
+            Calendar c = Calendar.getInstance();
+            Date from = new Date(c.get(Calendar.YEAR)-1900, c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+            Date to = new Date(c.get(Calendar.YEAR)-1900, c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)+1);
+
+            SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+            String toS = dateFormatter.format(to);
+            String fromS = dateFormatter.format(from);
+
+
+            List<SensorReading> sensorReadings = AWSClientManager.defaultMobileClient().getDynamoDbManager().
+                    getReadingsBySourceID(sensorCoordinates.getSourceID(), fromS, toS);
+
+
+            return sensorReadings;
         }
     }
 }

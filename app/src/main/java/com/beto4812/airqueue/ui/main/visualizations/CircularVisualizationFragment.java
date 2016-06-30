@@ -43,6 +43,8 @@ public class CircularVisualizationFragment extends Fragment {
     public SharedPreferences sharedPreferences;
     public GridLayoutManager layoutManager;
     public CircularVisualizationAdapter circularVisualizationsAdapter;
+    private static CircularVisualizationFragment instance;
+    private SensorReading sensorReading;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,7 +56,9 @@ public class CircularVisualizationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView =  inflater.inflate(R.layout.fragment_pollutants_circular_view, container, false);
         initRecyclerView();
-        new GetAndAddSensorReadings().execute();
+        if(sensorReading!=null){
+            updateUI();
+        }
         return rootView;
     }
 
@@ -81,57 +85,51 @@ public class CircularVisualizationFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
     }
 
-    public static CircularVisualizationFragment newInstance() {
-        Log.v(LOG_TAG, "newInstance");
-        return new CircularVisualizationFragment();
+    public static CircularVisualizationFragment getInstance(){
+        if(instance==null){
+            instance =  new CircularVisualizationFragment();
+        }
+        return instance;
     }
 
-    private class GetAndAddSensorReadings extends AsyncTask<Void, Void, SensorReading> {
-        //@Override
-        protected void onPostExecute(SensorReading s) {
-            Log.v(LOG_TAG, "onPostExecute() closestSensorID: " + s.getSourceID() + " lastUpdated: " + s.getLastUpdated());
-            Iterator it = s.getAvailablePollutants().iterator();
-            List<Object> renderList = new ArrayList<>();
-            Map<Integer, List<Pollutant>> pollutantsByCategory= new TreeMap<>();
-            Pollutant p;
-            while(it.hasNext()){
-                p = (Pollutant)it.next();
-                //list.add(p);
-                if(!pollutantsByCategory.containsKey(p.getCategory())){
-                    pollutantsByCategory.put(p.getCategory(), new ArrayList<Pollutant>());
-                }
-                pollutantsByCategory.get(p.getCategory()).add(p);
-            }
-
-            Set<Integer> keys = pollutantsByCategory.keySet();
-            List<Pollutant> temp;
-            Iterator itTemp = null;
-
-            for(int k: keys){
-                Log.v(LOG_TAG, "k: " + k);
-                renderList.add(new PollutantCategoryInfo(k));
-                temp = pollutantsByCategory.get(k);
-                itTemp = temp.iterator();
-                while (itTemp.hasNext()){
-                    renderList.add(itTemp.next());
-                }
-            }
-
-            circularVisualizationsAdapter = new CircularVisualizationAdapter(renderList);
-            recyclerView.setAdapter(circularVisualizationsAdapter);
-        }
-
-        @Override
-        protected SensorReading doInBackground(Void... p) {
-
-            double currentLat = Double.parseDouble(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("lastLatitude","55.9449353"));
-            double currentLong = Double.parseDouble(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("lastLongitude","-3.1839465"));
-
-            SensorCoordinates sensorCoordinates = AWSClientManager.defaultMobileClient().getDynamoDbManager().getClosestSensorCoordinates(currentLat, currentLong);
-            SensorReading sensorReading = AWSClientManager.defaultMobileClient().getDynamoDbManager().getLastSensorReadingBySourceID(sensorCoordinates.getSourceID());
-
-            return sensorReading;
+    public void setSensorReading(SensorReading s){
+        this.sensorReading = s;
+        if(rootView!=null){
+            updateUI();
         }
     }
 
+
+    public void updateUI(){
+        Log.v(LOG_TAG, "onPostExecute() closestSensorID: " + sensorReading.getSourceID() + " lastUpdated: " + sensorReading.getLastUpdated());
+        Iterator it = sensorReading.getAvailablePollutants().iterator();
+        List<Object> renderList = new ArrayList<>();
+        Map<Integer, List<Pollutant>> pollutantsByCategory= new TreeMap<>();
+        Pollutant p;
+        while(it.hasNext()){
+            p = (Pollutant)it.next();
+            //list.add(p);
+            if(!pollutantsByCategory.containsKey(p.getCategory())){
+                pollutantsByCategory.put(p.getCategory(), new ArrayList<Pollutant>());
+            }
+            pollutantsByCategory.get(p.getCategory()).add(p);
+        }
+
+        Set<Integer> keys = pollutantsByCategory.keySet();
+        List<Pollutant> temp;
+        Iterator itTemp = null;
+
+        for(int k: keys){
+            Log.v(LOG_TAG, "k: " + k);
+            renderList.add(new PollutantCategoryInfo(k));
+            temp = pollutantsByCategory.get(k);
+            itTemp = temp.iterator();
+            while (itTemp.hasNext()){
+                renderList.add(itTemp.next());
+            }
+        }
+
+        circularVisualizationsAdapter = new CircularVisualizationAdapter(renderList);
+        recyclerView.setAdapter(circularVisualizationsAdapter);
+    }
 }

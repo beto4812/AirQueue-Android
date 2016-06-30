@@ -78,7 +78,7 @@
         app:rcBackgroundPadding="10dp"
         app:rcReverse="false"
         app:rcProgressColor="#ffffff"
-        app:rcBackgroundColor="#1E88E5"
+        app:rcBackgroundColor="@color/blue_bar"
         android:id="@+id/overview_sensibility_bar"
         android:layout_below="@+id/textView14"
         android:layout_marginRight="10dp"
@@ -106,7 +106,7 @@
         app:rcBackgroundPadding="10dp"
         app:rcReverse="false"
         app:rcProgressColor="#ffffff"
-        app:rcBackgroundColor="#1E88E5"
+        app:rcBackgroundColor="@color/blue_bar"
         android:id="@+id/overview_air_quality_bar"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
@@ -130,7 +130,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
-        android:id="@+id/textView11"
+        android:id="@+id/text_view_closest_sensor"
         android:layout_below="@+id/textView12"
         android:layout_alignStart="@+id/textView12" />
 
@@ -139,7 +139,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
-        android:id="@+id/textView16"
+        android:id="@+id/text_view_last_updated"
         android:layout_below="@+id/textView13"
         android:layout_alignStart="@+id/textView13" />
 
