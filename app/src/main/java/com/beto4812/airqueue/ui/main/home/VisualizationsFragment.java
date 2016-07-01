@@ -1,4 +1,4 @@
-package com.beto4812.airqueue.ui.main.visualizations;
+package com.beto4812.airqueue.ui.main.home;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,7 +19,9 @@ import com.beto4812.airqueue.aws.AWSClientManager;
 import com.beto4812.airqueue.model.PollutantThreshold;
 import com.beto4812.airqueue.model.SensorCoordinates;
 import com.beto4812.airqueue.model.SensorReading;
-import com.beto4812.airqueue.ui.main.visualizations.viewHolder.OverviewFragment;
+import com.beto4812.airqueue.ui.main.pollutantsCircular.CircularVisualizationFragment;
+import com.beto4812.airqueue.ui.main.pollutantsLinear.LinearVisualizationFragment;
+import com.beto4812.airqueue.ui.main.overview.viewHolder.OverviewFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

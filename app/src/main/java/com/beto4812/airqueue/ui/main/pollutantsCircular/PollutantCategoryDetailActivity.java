@@ -1,4 +1,4 @@
-package com.beto4812.airqueue.ui.main.visualizations;
+package com.beto4812.airqueue.ui.main.pollutantsCircular;
 
 import android.content.Context;
 import android.content.Intent;

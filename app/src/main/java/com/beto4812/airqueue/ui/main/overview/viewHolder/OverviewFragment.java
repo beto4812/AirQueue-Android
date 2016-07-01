@@ -1,4 +1,4 @@
-package com.beto4812.airqueue.ui.main.visualizations.viewHolder;
+package com.beto4812.airqueue.ui.main.overview.viewHolder;
 
 import android.graphics.Color;
 import android.graphics.Typeface;

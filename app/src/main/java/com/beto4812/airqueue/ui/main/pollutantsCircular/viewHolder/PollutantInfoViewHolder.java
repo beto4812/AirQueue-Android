@@ -1,5 +1,6 @@
-package com.beto4812.airqueue.ui.main.visualizations.viewHolder;
+package com.beto4812.airqueue.ui.main.pollutantsCircular.viewHolder;
 
+import android.graphics.Typeface;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +11,7 @@ import android.widget.TextView;
 
 import com.beto4812.airqueue.R;
 import com.beto4812.airqueue.model.PollutantCategoryInfo;
-import com.beto4812.airqueue.ui.main.visualizations.PollutantCategoryDetailActivity;
+import com.beto4812.airqueue.ui.main.pollutantsCircular.PollutantCategoryDetailActivity;
 import com.squareup.picasso.Picasso;
 
 public class PollutantInfoViewHolder extends RecyclerView.ViewHolder {
@@ -36,10 +37,13 @@ public class PollutantInfoViewHolder extends RecyclerView.ViewHolder {
 
 
     private void setup(){
-        this.imageView = (ImageView) itemView.findViewById(R.id.image_view_pollutant);
+        imageView = (ImageView) itemView.findViewById(R.id.image_view_pollutant);
+        Typeface openSansRegular = Typeface.createFromAsset(rootView.getContext().getAssets(), "OpenSans-Regular.ttf");
+
         Picasso.with(rootView.getContext()).load(pollutantCategoryInfo.getImage()).fit().into(imageView);
-        this.text = (TextView) itemView.findViewById(R.id.textViewPollutantCategory);
-        this.fab = (FloatingActionButton) itemView.findViewById(R.id.pollutant_info_view_fab);
+        text = (TextView) itemView.findViewById(R.id.textViewPollutantCategory);
+        text.setTypeface(openSansRegular);
+        fab = (FloatingActionButton) itemView.findViewById(R.id.pollutant_info_view_fab);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
@@ -48,6 +52,6 @@ public class PollutantInfoViewHolder extends RecyclerView.ViewHolder {
             }
         });
 
-        this.text.setText(pollutantCategoryInfo.getPollutantCategoryString());
+        text.setText(pollutantCategoryInfo.getPollutantCategoryString());
     }
 }

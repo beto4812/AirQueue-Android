@@ -19,7 +19,7 @@ import com.beto4812.airqueue.aws.AWSDynamoDbManager;
 import com.beto4812.airqueue.aws.AWSIdentityManager;
 import com.beto4812.airqueue.ui.main.home.HomeFragment;
 import com.beto4812.airqueue.ui.main.settings.SettingsFragment;
-import com.beto4812.airqueue.ui.main.visualizations.VisualizationsFragment;
+import com.beto4812.airqueue.ui.main.home.VisualizationsFragment;
 import com.beto4812.airqueue.utils.CircleTransform;
 import com.squareup.picasso.Picasso;
 

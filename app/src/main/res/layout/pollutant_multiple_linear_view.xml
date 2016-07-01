@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="380dp"
+    android:background="@drawable/gradient1">
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/pollutant_linear_view_line_chart"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"/>
+    <com.beto4812.airqueue.ui.customView.CheckPollutantView
+        android:id="@+id/check_pollutant_view"
+        android:layout_width="200dp"
+        android:layout_height="500dp"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentStart="false"
+        android:layout_below="@+id/pollutant_linear_view_line_chart" />
+</RelativeLayout>

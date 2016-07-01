@@ -1,4 +1,4 @@
-package com.beto4812.airqueue.ui.main.visualizations;
+package com.beto4812.airqueue.ui.main.pollutantsCircular;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,7 +15,7 @@ import com.beto4812.airqueue.model.Pollutant;
 import com.beto4812.airqueue.model.PollutantCategoryInfo;
 import com.beto4812.airqueue.model.PollutantThreshold;
 import com.beto4812.airqueue.model.SensorReading;
-import com.beto4812.airqueue.ui.main.visualizations.viewAdapter.CircularVisualizationAdapter;
+import com.beto4812.airqueue.ui.main.pollutantsCircular.viewAdapter.CircularVisualizationAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;

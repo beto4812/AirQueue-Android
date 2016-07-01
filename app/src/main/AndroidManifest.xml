@@ -36,7 +36,7 @@
             android:label="@string/activity_label_register">
         </activity>
         <activity
-            android:name=".ui.main.visualizations.PollutantCategoryDetailActivity"
+            android:name=".ui.main.pollutantsCircular.PollutantCategoryDetailActivity"
             android:label="this">
         </activity>
     </application>

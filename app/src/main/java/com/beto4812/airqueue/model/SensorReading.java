@@ -71,6 +71,10 @@ public class SensorReading {
         return lastUpdated;
     }
 
+    public int getLastUpdatedHour(){
+        return Integer.parseInt(lastUpdated.split(" ")[1].split(":")[0]);
+    }
+
     public void setLastUpdated(String lastUpdated){
         this.lastUpdated = lastUpdated;
     }

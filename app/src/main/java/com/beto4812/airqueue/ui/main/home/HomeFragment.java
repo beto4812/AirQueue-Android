@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,6 @@ import com.beto4812.airqueue.R;
 import com.beto4812.airqueue.ui.main.home.charts.CircularChartsFragment;
 import com.beto4812.airqueue.ui.main.home.charts.LinearChartsFragment;
 import com.beto4812.airqueue.ui.main.home.charts.PieChartsFragment;
-import com.beto4812.airqueue.ui.main.visualizations.VisualizationsFragment;
 
 public class HomeFragment extends Fragment {
 

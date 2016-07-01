@@ -1,4 +1,4 @@
-package com.beto4812.airqueue.ui.main.visualizations.viewAdapter;
+package com.beto4812.airqueue.ui.main.pollutantsCircular.viewAdapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import com.beto4812.airqueue.R;
 import com.beto4812.airqueue.model.Pollutant;
 import com.beto4812.airqueue.model.PollutantCategoryInfo;
-import com.beto4812.airqueue.ui.main.visualizations.viewHolder.PollutantInfoViewHolder;
-import com.beto4812.airqueue.ui.main.visualizations.viewHolder.PollutantCircularViewHolder;
+import com.beto4812.airqueue.ui.main.pollutantsCircular.viewHolder.PollutantInfoViewHolder;
+import com.beto4812.airqueue.ui.main.pollutantsCircular.viewHolder.PollutantCircularViewHolder;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.beto4812.airqueue.ui.main.visualizations.viewHolder;
+package com.beto4812.airqueue.ui.main.pollutantsCircular.viewHolder;
 
 
 import android.graphics.Color;
@@ -13,6 +13,7 @@ import com.beto4812.airqueue.model.Pollutant;
 import com.hookedonplay.decoviewlib.DecoView;
 import com.hookedonplay.decoviewlib.charts.SeriesItem;
 import com.hookedonplay.decoviewlib.events.DecoEvent;
+import com.squareup.picasso.Picasso;
 
 import java.util.Random;
 
@@ -47,16 +48,16 @@ public class PollutantCircularViewHolder extends RecyclerView.ViewHolder {
         switch (pollutant.getColorLevel()){
 
             case 4:
-                pollutantCenterColor.setImageDrawable(rootView.getResources().getDrawable(R.drawable.pollutant_view_black));
+                Picasso.with(rootView.getContext()).load(R.drawable.pollutant_view_black).fit().into(pollutantCenterColor);
                 break;
             case 3:
-                pollutantCenterColor.setImageDrawable(rootView.getResources().getDrawable(R.drawable.pollutant_view_red));
+                Picasso.with(rootView.getContext()).load(R.drawable.pollutant_view_red).fit().into(pollutantCenterColor);
                 break;
             case 2:
-                pollutantCenterColor.setImageDrawable(rootView.getResources().getDrawable(R.drawable.pollutant_view_yellow));
+                Picasso.with(rootView.getContext()).load(R.drawable.pollutant_view_yellow).fit().into(pollutantCenterColor);
                 break;
             case 1:
-                pollutantCenterColor.setImageDrawable(rootView.getResources().getDrawable(R.drawable.pollutant_view_green));
+                Picasso.with(rootView.getContext()).load(R.drawable.pollutant_view_green).fit().into(pollutantCenterColor);
                 break;
         }
     }

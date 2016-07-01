@@ -1,4 +1,4 @@
-package com.beto4812.airqueue.ui.main.visualizations.viewHolder;
+package com.beto4812.airqueue.ui.main.pollutantsLinear.viewHolder;
 
 import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;

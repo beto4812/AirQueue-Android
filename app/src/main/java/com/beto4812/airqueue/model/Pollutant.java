@@ -136,6 +136,10 @@ public class Pollutant implements Parcelable{
         return Double.parseDouble(value);
     }
 
+    public Float getFloatValue(){
+        return Float.parseFloat(value);
+    }
+
     public void setValue(String value) {
         this.value = value;
     }

@@ -31,7 +31,8 @@
             android:layout_marginLeft="120dp"
             android:layout_marginRight="120dp"
             android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/pollutant_view_green" />
 
         <ImageButton
             android:id="@+id/pollutant_button_center_2"

@@ -1,4 +1,4 @@
-package com.beto4812.airqueue.ui.main.visualizations;
+package com.beto4812.airqueue.ui.main.pollutantsLinear;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,7 +16,7 @@ import com.beto4812.airqueue.R;
 import com.beto4812.airqueue.model.Pollutant;
 import com.beto4812.airqueue.model.SensorPollutantReadings;
 import com.beto4812.airqueue.model.SensorReading;
-import com.beto4812.airqueue.ui.main.visualizations.viewAdapter.LinearVisualizationAdapter;
+import com.beto4812.airqueue.ui.main.pollutantsLinear.viewAdapter.LinearVisualizationAdapter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -86,14 +86,19 @@ public class LinearVisualizationFragment extends Fragment {
         Collection pollutantCodes = Pollutant.allPollutants().keySet();
         String values[] = new String[pollutantCodes.size()];
         List<Object> renderList = new ArrayList<>();
+        List<SensorPollutantReadings> multiplePollutants = new ArrayList<>();
+        SensorPollutantReadings sensorPollutantReadings;
 
         Iterator it = pollutantCodes.iterator();
 
         for(int i = 0; it.hasNext(); i++){
             values[i] = (String)it.next();
             Log.v(LOG_TAG, "setupUI "+i + " " + values[i]);
-            renderList.add(new SensorPollutantReadings(readings, values[i]));
+            sensorPollutantReadings = new SensorPollutantReadings(readings, values[i]);
+            //renderList.add(sensorPollutantReadings);
+            multiplePollutants.add(sensorPollutantReadings);
         }
+        renderList.add(multiplePollutants);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(rootView.getContext(), android.R.layout.simple_spinner_item, values);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

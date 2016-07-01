@@ -3,6 +3,9 @@ package com.beto4812.airqueue.model;
 
 import android.util.Log;
 
+import com.github.mikephil.charting.data.Entry;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -18,15 +21,20 @@ public class SensorPollutantReadings {
     private String sourceID;
     private String pollutantCode;
     private HashMap<String, Pollutant> pollutants;
+    private List<Entry> lineEntries;
 
     public SensorPollutantReadings(List<SensorReading> readings, String pollutantCode){
         Log.v(LOG_TAG, " pollutantCode: " + pollutantCode);
         pollutants = new HashMap<>();
+        lineEntries = new ArrayList<>();
         this.pollutantCode = pollutantCode;
-        for(SensorReading sens: readings){
-            if(sens.getPollutant(pollutantCode)!=null){
-                Log.v(LOG_TAG, " readings: : " + sens);
-                pollutants.put(sens.getLastUpdated(), sens.getPollutant(pollutantCode));
+
+        for(int i = 0; i <readings.size(); i++){
+            if(readings.get(i).getPollutant(pollutantCode)!=null){
+                Log.v(LOG_TAG, " readings: : " + readings.get(i));
+                pollutants.put(readings.get(i).getLastUpdated(), readings.get(i).getPollutant(pollutantCode));
+                lineEntries.add(new Entry(readings.get(i).getPollutant(pollutantCode).getFloatValue(), readings.get(i).getLastUpdatedHour()));
+                Log.v(LOG_TAG, " entry: : " + new Entry(readings.get(i).getPollutant(pollutantCode).getFloatValue(), readings.get(i).getLastUpdatedHour()));
             }
         }
     }
@@ -52,4 +60,9 @@ public class SensorPollutantReadings {
     public String getPollutantCode(){
         return pollutantCode;
     }
+
+    public List<Entry> getLineEntries(){
+        return lineEntries;
+    }
+
 }
