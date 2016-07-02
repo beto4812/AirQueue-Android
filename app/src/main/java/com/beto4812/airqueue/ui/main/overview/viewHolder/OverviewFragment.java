@@ -83,7 +83,7 @@ public class OverviewFragment extends Fragment {
         ArrayList<Entry> yVals = new ArrayList<Entry>();
         ArrayList<String> xVals = new ArrayList<String>();
         ArrayList<Integer> colors = new ArrayList<Integer>();
-        for (int c : ColorTemplate.JOYFUL_COLORS)
+        for (int c : ColorTemplate.COLORFUL_COLORS)
             colors.add(c);
         long seed = System.nanoTime();
         Collections.shuffle(colors, new Random(seed));
@@ -116,7 +116,7 @@ public class OverviewFragment extends Fragment {
         PieData data = new PieData(xVals, dataSet);
 
         Typeface tf = Typeface.createFromAsset(rootView.getContext().getAssets(), "OpenSans-Light.ttf");
-        data.setValueTextColor(Color.BLACK);
+        data.setValueTextColor(Color.WHITE);
         data.setValueTextSize(14f);
         data.setValueTypeface(tf);
 
@@ -134,24 +134,27 @@ public class OverviewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.v(LOG_TAG, "onCreateView");
         rootView =  inflater.inflate(R.layout.fragment_overview, container, false);
-        Typeface openSansBold = Typeface.createFromAsset(rootView.getContext().getAssets(), "OpenSans-Bold.ttf");
+        Typeface handOfSean = Typeface.createFromAsset(rootView.getContext().getAssets(), "hos.ttf");
         Typeface openSansRegular = Typeface.createFromAsset(rootView.getContext().getAssets(), "OpenSans-Regular.ttf");
+        Typeface openSansLight = Typeface.createFromAsset(rootView.getContext().getAssets(), "OpenSans-Light.ttf");
+        Typeface openSansBold = Typeface.createFromAsset(rootView.getContext().getAssets(), "OpenSans-Bold.ttf");
         Typeface robotoRegular = Typeface.createFromAsset(rootView.getContext().getAssets(), "Roboto-Regular.ttf");
+        Typeface robotoThin = Typeface.createFromAsset(rootView.getContext().getAssets(), "Roboto-Thin.ttf");
         imageViewSensor = (ImageView)rootView.findViewById(R.id.image_view_sensor);
         textViewClosestSensor = (TextView)rootView.findViewById(R.id.text_view_closest_sensor);
-        textViewClosestSensor.setTypeface(robotoRegular);
+        textViewClosestSensor.setTypeface(robotoThin);
         textViewLastUpdated = (TextView)rootView.findViewById(R.id.text_view_last_updated);
-        textViewLastUpdated.setTypeface(robotoRegular);
+        textViewLastUpdated.setTypeface(robotoThin);
         progressBarSensibility = (RoundCornerProgressBar) rootView.findViewById(R.id.overview_sensibility_bar);
         progressBarQualityIndex = (RoundCornerProgressBar) rootView.findViewById(R.id.overview_air_quality_bar);
-        ((TextView) rootView.findViewById(R.id.textView15)).setTypeface(openSansRegular);
-        ((TextView) rootView.findViewById(R.id.textView18)).setTypeface(openSansRegular);
-        ((TextView) rootView.findViewById(R.id.textView_advice_text)).setTypeface(robotoRegular);
-        ((TextView) rootView.findViewById(R.id.textView14)).setTypeface(openSansRegular);
-        ((TextView) rootView.findViewById(R.id.textView3)).setTypeface(openSansRegular);
-
-        ((TextView) rootView.findViewById(R.id.textView12)).setTypeface(openSansRegular);
-        ((TextView) rootView.findViewById(R.id.textView13)).setTypeface(openSansRegular);
+        ((TextView) rootView.findViewById(R.id.textViewAdvice)).setTypeface(openSansLight);
+        ((TextView) rootView.findViewById(R.id.textViewLivePollutants)).setTypeface(openSansLight);
+        ((TextView) rootView.findViewById(R.id.textView_advice_text)).setTypeface(robotoThin);
+        ((TextView) rootView.findViewById(R.id.textViewPersonalized)).setTypeface(openSansLight);
+        ((TextView) rootView.findViewById(R.id.textViewAirQualityIndex)).setTypeface(openSansLight);
+        ((TextView) rootView.findViewById(R.id.textViewHeader)).setTypeface(openSansBold);
+        ((TextView) rootView.findViewById(R.id.textViewClosestSensor)).setTypeface(openSansLight);
+        ((TextView) rootView.findViewById(R.id.textViewLastUpdated)).setTypeface(openSansLight);
 
         pieChart = (PieChart) rootView.findViewById(R.id.pollutants_chart);
         if(sensorReading!=null){

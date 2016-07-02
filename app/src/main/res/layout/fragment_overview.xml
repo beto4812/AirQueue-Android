@@ -8,7 +8,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="180dp"
-        android:background="@color/colorAccent"
+        android:background="@color/gray_blue"
         android:id="@+id/view_background_1"
         android:layout_marginRight="0dp"
         android:layout_alignParentTop="true"
@@ -18,26 +18,63 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="How is air quality around me?"
+        android:id="@+id/textViewHeader"
+        android:layout_marginLeft="15dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="false"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/bold_blue"
+        android:layout_toStartOf="@+id/image_view_sensor"
+        android:textSize="16sp"
+        android:layout_marginRight="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Closest Sensor"
-        android:id="@+id/textView12"
-        android:textColor="#ffffff"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/view_background_1"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="10dp" />
+        android:id="@+id/textViewClosestSensor"
+        android:textColor="@color/bold_blue"
+        android:layout_alignParentTop="false"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="3dp"
+        android:layout_below="@+id/textViewHeader"
+        android:textSize="15sp"
+        android:layout_toRightOf="@+id/imageViewIconClosestSensor" />
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/imageViewIconClosestSensor"
+        android:layout_alignTop="@+id/textViewClosestSensor"
+        android:background="@drawable/ic_my_location_white_48dp"
+        android:layout_marginLeft="5dp"
+        android:backgroundTint="@color/bold_blue" />
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/imageViewIconLastUpdated"
+        android:background="@drawable/ic_alarm_white_48dp"
+        android:layout_alignStart="@+id/imageViewIconClosestSensor"
+        android:backgroundTint="@color/bold_blue"
+        android:layout_below="@+id/imageViewIconClosestSensor"
+        android:layout_marginTop="20dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Last Updated"
-        android:id="@+id/textView13"
-        android:textColor="#ffffff"
-        android:layout_marginLeft="10dp"
-        android:layout_below="@+id/textView12"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="40dp" />
+        android:id="@+id/textViewLastUpdated"
+        android:textColor="@color/bold_blue"
+        android:layout_marginLeft="0dp"
+        android:layout_alignParentStart="false"
+        android:textSize="15sp"
+        android:layout_alignLeft="@+id/textViewClosestSensor"
+        android:layout_alignTop="@+id/imageViewIconLastUpdated" />
 
     <ImageView
         android:layout_width="200dp"
@@ -46,36 +83,45 @@
         android:background="@android:drawable/ic_menu_gallery"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignBottom="@+id/view" />
+        android:layout_alignBottom="@+id/view_background_1" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="@android:color/darker_gray"
         android:id="@+id/view"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
         android:layout_below="@+id/view_background_1"
         android:layout_alignParentStart="true" />
 
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/imageViewIconPersonalized"
+        android:background="@drawable/ic_build_white_48dp"
+        android:layout_alignTop="@+id/textViewPersonalized"
+        android:layout_marginLeft="5dp" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Personalized Sensitivity Level"
-        android:id="@+id/textView14"
-        android:textColor="#ffffff"
-        android:layout_marginLeft="15dp"
+        android:id="@+id/textViewPersonalized"
+        android:textColor="@color/white"
+        android:layout_marginLeft="3dp"
         android:layout_below="@+id/view_background_1"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="20dp" />
+        android:layout_alignParentStart="false"
+        android:layout_marginTop="20dp"
+        android:textSize="15sp"
+        android:layout_toRightOf="@+id/imageViewIconPersonalized" />
 
     <ImageView
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:id="@+id/image_view_info_personalized"
-        android:layout_toRightOf="@+id/textView14"
-        android:layout_alignTop="@+id/textView14"
+        android:id="@+id/imageViewIconInfoPers"
+        android:layout_toRightOf="@+id/textViewPersonalized"
+        android:layout_alignTop="@+id/textViewPersonalized"
         android:background="@drawable/ic_info_outline_white_24dp"
         android:layout_marginLeft="10dp" />
 
@@ -88,31 +134,41 @@
         app:rcBackgroundPadding="5dp"
         app:rcReverse="false"
         app:rcProgressColor="#ffffff"
-        app:rcBackgroundColor="@color/blue_bar"
+        app:rcBackgroundColor="@color/colorPrimary"
         android:id="@+id/overview_sensibility_bar"
-        android:layout_below="@+id/textView14"
+        android:layout_below="@+id/textViewPersonalized"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
         android:layout_alignParentEnd="true" />
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/imageViewIconPollutionIndex"
+        android:background="@drawable/ic_cloud_white_24dp"
+        android:layout_alignTop="@+id/textViewAirQualityIndex"
+        android:layout_marginLeft="5dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Air Quality Index"
-        android:id="@+id/textView3"
-        android:textColor="#ffffff"
+        android:id="@+id/textViewAirQualityIndex"
+        android:textColor="@color/white"
         android:layout_below="@+id/overview_sensibility_bar"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:textSize="15sp"
+        android:layout_toRightOf="@+id/imageViewIconPollutionIndex"
+        android:layout_marginLeft="3dp" />
 
     <ImageView
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:id="@+id/imageView3"
-        android:layout_toRightOf="@+id/textView3"
-        android:layout_alignTop="@+id/textView3"
+        android:id="@+id/imageViewIconInfo"
+        android:layout_toRightOf="@+id/textViewAirQualityIndex"
+        android:layout_alignTop="@+id/textViewAirQualityIndex"
         android:background="@drawable/ic_info_outline_white_24dp"
         android:layout_marginLeft="10dp" />
 
@@ -125,24 +181,23 @@
         app:rcBackgroundPadding="5dp"
         app:rcReverse="false"
         app:rcProgressColor="#ffffff"
-        app:rcBackgroundColor="@color/blue_bar"
+        app:rcBackgroundColor="@color/colorPrimary"
         android:id="@+id/overview_air_quality_bar"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
-        android:layout_below="@+id/textView3"
+        android:layout_below="@+id/textViewAirQualityIndex"
         android:layout_alignParentEnd="true" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="@android:color/darker_gray"
         android:id="@+id/view_separator_2"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
         android:layout_below="@+id/overview_air_quality_bar"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="10dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -150,8 +205,8 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
         android:id="@+id/text_view_closest_sensor"
-        android:layout_below="@+id/textView12"
-        android:layout_alignStart="@+id/textView12"
+        android:layout_below="@+id/textViewClosestSensor"
+        android:layout_alignStart="@+id/textViewClosestSensor"
         android:layout_marginLeft="5dp" />
 
     <TextView
@@ -160,28 +215,36 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
         android:id="@+id/text_view_last_updated"
-        android:layout_below="@+id/textView13"
-        android:layout_alignStart="@+id/textView13"
+        android:layout_below="@+id/textViewLastUpdated"
+        android:layout_alignStart="@+id/textViewLastUpdated"
         android:layout_marginLeft="5dp" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:background="@color/colorPrimary"
         android:id="@+id/view_background_2"
-        android:layout_below="@+id/view_separator_2"
-        android:layout_alignBottom="@+id/pollutants_chart" />
+        android:layout_alignBottom="@+id/pollutants_chart"
+        android:layout_below="@+id/overview_air_quality_bar" />
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/imageView4"
+        android:background="@drawable/ic_favorite_white_48dp"
+        android:layout_alignTop="@+id/textViewAdvice"
+        android:layout_marginLeft="5dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Advice"
-        android:id="@+id/textView15"
-        android:textColor="#ffffff"
-        android:layout_marginLeft="0dp"
-        android:layout_alignTop="@+id/view_separator_2"
-        android:layout_alignStart="@+id/imageView_advice" />
+        android:id="@+id/textViewAdvice"
+        android:textColor="@color/white"
+        android:layout_marginLeft="3dp"
+        android:layout_below="@+id/view_separator_2"
+        android:textSize="15sp"
+        android:layout_toRightOf="@+id/imageView4" />
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/pollutants_chart"
@@ -190,8 +253,18 @@
         android:layout_marginRight="0dp"
         android:layout_alignParentBottom="true"
         android:layout_alignEnd="@+id/image_view_sensor"
-        android:layout_below="@+id/textView18"
-        android:layout_toEndOf="@+id/imageView3" />
+        android:layout_below="@+id/textViewLivePollutants"
+        android:layout_toEndOf="@+id/imageViewIconInfo" />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/imageView_advice"
+        android:background="@drawable/running"
+        android:layout_marginLeft="40dp"
+        android:layout_below="@+id/textViewAdvice"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentStart="false" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -200,34 +273,35 @@
         android:text="Enjoy your usual outdoor activities."
         android:id="@+id/textView_advice_text"
         android:layout_marginLeft="5dp"
-        android:layout_below="@+id/imageView_advice"
-        android:layout_alignStart="@+id/overview_air_quality_bar"
+        android:layout_alignStart="@+id/textViewAirQualityIndex"
+        android:layout_alignParentBottom="true"
         android:layout_toStartOf="@+id/pollutants_chart"
-        android:layout_alignParentBottom="true" />
+        android:layout_marginBottom="20dp"
+        android:textColor="@color/bold_blue"
+        android:textSize="15sp" />
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/imageView3"
+        android:background="@drawable/ic_toys_white_48dp"
+        android:layout_alignTop="@+id/textViewLivePollutants"
+        android:layout_toRightOf="@+id/textViewAdvice"
+        android:layout_alignStart="@+id/pollutants_chart" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Live pollutants"
-        android:id="@+id/textView18"
-        android:textColor="#ffffff"
+        android:id="@+id/textViewLivePollutants"
+        android:textColor="@color/white"
         android:layout_marginLeft="5dp"
         android:layout_below="@+id/view_separator_2"
-        android:layout_alignStart="@+id/image_view_sensor"
         android:layout_alignParentEnd="false"
-        android:layout_alignParentTop="false" />
-
-    <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:id="@+id/imageView_advice"
-        android:background="@drawable/running"
-        android:layout_marginLeft="40dp"
-        android:layout_below="@+id/textView15"
-        android:layout_alignEnd="@+id/textView13"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp" />
+        android:layout_alignParentTop="false"
+        android:layout_toRightOf="@+id/imageView3"
+        android:textSize="15sp" />
 
 
 </RelativeLayout>

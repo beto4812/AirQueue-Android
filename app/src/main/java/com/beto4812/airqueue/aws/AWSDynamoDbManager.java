@@ -123,7 +123,7 @@ public class AWSDynamoDbManager {
 
         } catch (Exception ex) {
             Log.v(LOG_TAG, "AmazonServiceException");
-            Log.e(LOG_TAG, Log.getStackTraceString(ex));
+            Log.e(LOG_TAG, ex.toString());
             //clientManager.wipeCredentialsOnAuthError(ex);
         }
 

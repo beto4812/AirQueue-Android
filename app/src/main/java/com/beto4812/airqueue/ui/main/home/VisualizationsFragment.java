@@ -102,12 +102,14 @@ public class VisualizationsFragment extends Fragment {
     private class GetData extends AsyncTask<Void, Void, List<SensorReading>> {
         //@Override
         protected void onPostExecute(List<SensorReading> s) {
-            Log.v(LOG_TAG, "onPostExecute: " + s.toString());
-            if(s.size()>1){
+            if(s!= null){
+                if(s.size()>1){
+                Log.v(LOG_TAG, "onPostExecute: " + s.toString());
                 OverviewFragment.getInstance().setSensorReading(s.get(s.size()-1));
                 CircularVisualizationFragment.getInstance().setSensorReading(s.get(s.size()-1));
+                }
+                LinearVisualizationFragment.getInstance().setreadings(s);
             }
-            LinearVisualizationFragment.getInstance().setreadings(s);
         }
 
         @Override
@@ -116,24 +118,23 @@ public class VisualizationsFragment extends Fragment {
             double currentLat = Double.parseDouble(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("lastLatitude","55.9449353"));
             double currentLong = Double.parseDouble(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("lastLongitude","-3.1839465"));
 
-            SensorCoordinates sensorCoordinates = AWSClientManager.defaultMobileClient().getDynamoDbManager().getClosestSensorCoordinates(currentLat, currentLong);
-            HashMap<String, PollutantThreshold> pollutantThresholds = AWSClientManager.defaultMobileClient().getDynamoDbManager().getPollutantThresholds();
-            CircularVisualizationFragment.getInstance().setPollutantThresholds(pollutantThresholds);
+                SensorCoordinates sensorCoordinates = AWSClientManager.defaultMobileClient().getDynamoDbManager().getClosestSensorCoordinates(currentLat, currentLong);
+                HashMap<String, PollutantThreshold> pollutantThresholds  = AWSClientManager.defaultMobileClient().getDynamoDbManager().getPollutantThresholds();
+                CircularVisualizationFragment.getInstance().setPollutantThresholds(pollutantThresholds);
 
-            Calendar c = Calendar.getInstance();
-            Date from = new Date(c.get(Calendar.YEAR)-1900, c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
-            Date to = new Date(c.get(Calendar.YEAR)-1900, c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)+1);
+                Calendar c = Calendar.getInstance();
+                Date from = new Date(c.get(Calendar.YEAR)-1900, c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+                Date to = new Date(c.get(Calendar.YEAR)-1900, c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)+1);
 
-            SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-            String toS = dateFormatter.format(to);
-            String fromS = dateFormatter.format(from);
-
-
-            List<SensorReading> sensorReadings = AWSClientManager.defaultMobileClient().getDynamoDbManager().
-                    getReadingsBySourceID(sensorCoordinates.getSourceID(), fromS, toS);
+                SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+                String toS = dateFormatter.format(to);
+                String fromS = dateFormatter.format(from);
 
 
-            return sensorReadings;
+                List<SensorReading> sensorReadings = AWSClientManager.defaultMobileClient().getDynamoDbManager().
+                        getReadingsBySourceID(sensorCoordinates.getSourceID(), fromS, toS);
+
+                return sensorReadings;
         }
     }
 }
