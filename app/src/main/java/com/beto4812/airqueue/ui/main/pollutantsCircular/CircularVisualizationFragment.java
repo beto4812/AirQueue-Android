@@ -15,6 +15,7 @@ import com.beto4812.airqueue.model.Pollutant;
 import com.beto4812.airqueue.model.PollutantCategoryInfo;
 import com.beto4812.airqueue.model.PollutantThreshold;
 import com.beto4812.airqueue.model.SensorReading;
+import com.beto4812.airqueue.ui.main.home.VisualizationsFragment;
 import com.beto4812.airqueue.ui.main.pollutantsCircular.viewAdapter.CircularVisualizationAdapter;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-public class CircularVisualizationFragment extends Fragment {
+public class CircularVisualizationFragment extends Fragment implements VisualizationsFragment.FragmentVisibleInterface {
 
     private static final String LOG_TAG = "CircularVisualizationF";
 
@@ -130,5 +131,10 @@ public class CircularVisualizationFragment extends Fragment {
 
         circularVisualizationsAdapter = new CircularVisualizationAdapter(renderList);
         recyclerView.setAdapter(circularVisualizationsAdapter);
+    }
+
+    @Override
+    public void fragmentBecameVisible() {
+
     }
 }

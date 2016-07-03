@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -17,6 +18,7 @@ import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.beto4812.airqueue.R;
 import com.beto4812.airqueue.model.Pollutant;
 import com.beto4812.airqueue.model.SensorReading;
+import com.beto4812.airqueue.ui.main.home.VisualizationsFragment;
 import com.beto4812.airqueue.utils.Constants;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -35,7 +37,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
 
-public class OverviewFragment extends Fragment {
+public class OverviewFragment extends Fragment implements VisualizationsFragment.FragmentVisibleInterface {
 
     private View rootView;
     private static final String LOG_TAG = "OverviewFragment";
@@ -140,12 +142,37 @@ public class OverviewFragment extends Fragment {
         Typeface openSansBold = Typeface.createFromAsset(rootView.getContext().getAssets(), "OpenSans-Bold.ttf");
         Typeface robotoRegular = Typeface.createFromAsset(rootView.getContext().getAssets(), "Roboto-Regular.ttf");
         Typeface robotoThin = Typeface.createFromAsset(rootView.getContext().getAssets(), "Roboto-Thin.ttf");
+        final TextView textViewSensitivity = (TextView)rootView.findViewById(R.id.textViewSensitivity);
+        final TextView textViewAirQuality = (TextView)rootView.findViewById(R.id.textViewAirQuality);
         imageViewSensor = (ImageView)rootView.findViewById(R.id.image_view_sensor);
         textViewClosestSensor = (TextView)rootView.findViewById(R.id.text_view_closest_sensor);
         textViewClosestSensor.setTypeface(robotoThin);
         textViewLastUpdated = (TextView)rootView.findViewById(R.id.text_view_last_updated);
         textViewLastUpdated.setTypeface(robotoThin);
         progressBarSensibility = (RoundCornerProgressBar) rootView.findViewById(R.id.overview_sensibility_bar);
+        progressBarSensibility.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Log.v(LOG_TAG, "event.getX(): " + event.getX() + " event.getY(): " + event.getY() + event.getRawX() + " width: " + progressBarSensibility.getWidth());
+                if(event.getX()>(progressBarSensibility.getWidth()/3)*2){
+                    Constants.setLevel(3, progressBarSensibility);
+                    textViewSensitivity.setText("High sensitivity");
+                    textViewSensitivity.setTextColor(ContextCompat.getColor(rootView.getContext(), R.color.red_traffic_light));
+                }else if(event.getX()>(progressBarSensibility.getWidth()/3)*1){
+                    Constants.setLevel(2, progressBarSensibility);
+                    textViewSensitivity.setText("Normal sensitivity");
+                    textViewSensitivity.setTextColor(ContextCompat.getColor(rootView.getContext(), R.color.yellow_traffic_light));
+                }else {
+                    Constants.setLevel(1, progressBarSensibility);
+                    textViewSensitivity.setText("Low sensitivity");
+                    textViewSensitivity.setTextColor(ContextCompat.getColor(rootView.getContext(), R.color.green_traffic_light));
+                }
+                return true;
+            }
+        });
+        textViewSensitivity.setTextColor(ContextCompat.getColor(rootView.getContext(), R.color.green_traffic_light));
+        textViewAirQuality.setTextColor(ContextCompat.getColor(rootView.getContext(), R.color.red_traffic_light));
+
         progressBarQualityIndex = (RoundCornerProgressBar) rootView.findViewById(R.id.overview_air_quality_bar);
         ((TextView) rootView.findViewById(R.id.textViewAdvice)).setTypeface(openSansLight);
         ((TextView) rootView.findViewById(R.id.textViewLivePollutants)).setTypeface(openSansLight);
@@ -155,6 +182,8 @@ public class OverviewFragment extends Fragment {
         ((TextView) rootView.findViewById(R.id.textViewHeader)).setTypeface(openSansBold);
         ((TextView) rootView.findViewById(R.id.textViewClosestSensor)).setTypeface(openSansLight);
         ((TextView) rootView.findViewById(R.id.textViewLastUpdated)).setTypeface(openSansLight);
+        ((TextView) rootView.findViewById(R.id.textViewSensitivity)).setTypeface(openSansBold);
+        ((TextView) rootView.findViewById(R.id.textViewAirQuality)).setTypeface(openSansBold);
 
         pieChart = (PieChart) rootView.findViewById(R.id.pollutants_chart);
         if(sensorReading!=null){
@@ -163,4 +192,9 @@ public class OverviewFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void fragmentBecameVisible() {
+        if(progressBarSensibility!=null) progressBarSensibility.animate();
+        if(pieChart!=null) pieChart.animateY(1400, Easing.EasingOption.EaseInCubic);
+    }
 }

@@ -56,10 +56,28 @@ public class VisualizationsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-        ViewPager pager = (ViewPager) rootView.findViewById(R.id.viewpager);
-        TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.home_tabs);
+        final ViewPager pager = (ViewPager) rootView.findViewById(R.id.viewpager);
+        final ViewPagerAdapter mPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
 
-        pager.setAdapter(new ViewPagerAdapter(getChildFragmentManager()));
+        TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.home_tabs);
+        pager.setAdapter(mPagerAdapter);
+        pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(final int position, final float v, final int i2) {
+            }
+
+            @Override
+            public void onPageSelected(final int position) {
+                FragmentVisibleInterface fragment = (FragmentVisibleInterface) mPagerAdapter.instantiateItem(pager, position);
+                if (fragment != null) {
+                    fragment.fragmentBecameVisible();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(final int position) {
+            }
+        });
         tabLayout.setupWithViewPager(pager);
 
         return rootView;
@@ -136,5 +154,9 @@ public class VisualizationsFragment extends Fragment {
 
                 return sensorReadings;
         }
+    }
+
+    public interface FragmentVisibleInterface {
+        void fragmentBecameVisible();
     }
 }

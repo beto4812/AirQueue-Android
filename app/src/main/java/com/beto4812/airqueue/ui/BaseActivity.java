@@ -10,7 +10,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 
+import com.beto4812.airqueue.R;
 import com.beto4812.airqueue.aws.AWSClientManager;
 import com.beto4812.airqueue.ui.login.LoginActivity;
 import com.beto4812.airqueue.utils.Constants;
@@ -98,6 +100,13 @@ public class BaseActivity extends AppCompatActivity {
                 }
             }
         };
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
     protected void onStart() {

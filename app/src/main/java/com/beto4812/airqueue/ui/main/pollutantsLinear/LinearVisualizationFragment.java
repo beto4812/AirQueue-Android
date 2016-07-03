@@ -16,6 +16,7 @@ import com.beto4812.airqueue.R;
 import com.beto4812.airqueue.model.Pollutant;
 import com.beto4812.airqueue.model.SensorPollutantReadings;
 import com.beto4812.airqueue.model.SensorReading;
+import com.beto4812.airqueue.ui.main.home.VisualizationsFragment;
 import com.beto4812.airqueue.ui.main.pollutantsLinear.viewAdapter.LinearVisualizationAdapter;
 
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-public class LinearVisualizationFragment extends Fragment {
+public class LinearVisualizationFragment extends Fragment implements VisualizationsFragment.FragmentVisibleInterface {
 
     private static final String LOG_TAG = "LinearVisualizationFrag";
 
@@ -107,5 +108,10 @@ public class LinearVisualizationFragment extends Fragment {
 
         linearVisualizationAdapter = new LinearVisualizationAdapter(renderList);
         recyclerView.setAdapter(linearVisualizationAdapter);
+    }
+
+    @Override
+    public void fragmentBecameVisible() {
+
     }
 }

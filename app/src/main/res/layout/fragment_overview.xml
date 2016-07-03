@@ -153,6 +153,16 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="High sensitivity"
+        android:id="@+id/textViewSensitivity"
+        android:layout_marginLeft="10dp"
+        android:textSize="12sp"
+        android:layout_alignBottom="@+id/textViewPersonalized"
+        android:layout_alignEnd="@+id/overview_sensibility_bar" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Air Quality Index"
         android:id="@+id/textViewAirQualityIndex"
@@ -302,6 +312,16 @@
         android:layout_alignParentTop="false"
         android:layout_toRightOf="@+id/imageView3"
         android:textSize="15sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="The air quality is bad"
+        android:id="@+id/textViewAirQuality"
+        android:layout_marginLeft="10dp"
+        android:textSize="12sp"
+        android:layout_above="@+id/overview_air_quality_bar"
+        android:layout_alignEnd="@+id/overview_air_quality_bar" />
 
 
 </RelativeLayout>
