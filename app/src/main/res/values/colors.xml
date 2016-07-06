@@ -23,6 +23,7 @@
     <color name="life_green">#7AB317</color>
     <color name="amarelo">#fdff3a</color>
     <color name="blue_bar">#1E88E5</color>"
+    <color name="myBlack">#3D3331</color>
 
     <color name="green_traffic_light">#42f45e</color>
     <color name="yellow_traffic_light">#E9D445</color>

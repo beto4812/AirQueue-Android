@@ -5,33 +5,43 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:id="@+id/view_separator_2"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        android:layout_below="@+id/textViewDescription"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="0dp" />
-
     <android.support.v7.widget.RecyclerView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/pollutants_circular_recycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:background="@drawable/gradient1_2" />
 
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="How are specific pollutants near me?"
-        android:id="@+id/textViewDescription"
+        android:layout_height="55dp"
+        android:id="@+id/circular_view_header_relative_layout"
         android:background="@color/gray_blue"
-        android:textColor="@color/bold_blue"
-        android:paddingLeft="5dp"
-        android:textSize="16sp"
-        android:paddingTop="15dp" />
+        android:layout_alignParentStart="false"
+        android:alpha="50">
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:id="@+id/imageView5"
+            android:background="@drawable/ic_toys_white_48dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:backgroundTint="@color/bold_blue" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="How good or bad are pollutants near me?"
+            android:id="@+id/textViewDescription"
+            android:textColor="@color/bold_blue"
+            android:textSize="16sp"
+            android:layout_toRightOf="@+id/imageView5"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="3dp" />
+
+    </RelativeLayout>
+
 
     <!--android:layoutAnimation="@anim/fragment_pollutants_animation"-->
 </RelativeLayout>

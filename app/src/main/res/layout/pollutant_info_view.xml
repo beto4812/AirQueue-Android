@@ -20,7 +20,8 @@
         android:layout_alignParentStart="true"
         android:layout_marginBottom="98dp"
         android:background="@color/colorPrimary"
-        android:paddingLeft="10dp" />
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp" />
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/pollutant_info_view_fab"
         android:layout_gravity="bottom|end"

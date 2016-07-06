@@ -6,8 +6,13 @@ import android.os.Parcelable;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * Encapsulates a pollutant
@@ -46,6 +51,37 @@ public class Pollutant implements Parcelable{
     public static final String CARBON_MONOXIDE_NAME = "Carbon monoxide";
     public static final String OZONE = "O3";
     public static final String OZONE_NAME = "Ozone";
+
+    //Rendered pollutants
+    private static final Set<String> RENDERED_POLLUTANTS = new HashSet<>(Arrays.asList(
+            new String[] {NITRIC_OXIDE, OXIDES_OF_NITROGEN,NITROGEN_DIOXIDE,PARTICULATE_MATTER_10_MICROMETRE, PARTICULATE_MATTER_2_5_MICROMETRE, PARTICULATE_MATTER_1_MICROMETRE, SULFUR_DIOXIDE, CARBON_MONOXIDE, OZONE}
+    ));
+
+    public static final HashMap<String, String> allPollutants(){
+        LinkedHashMap<String, String> list = new LinkedHashMap<>();
+        list.put(NITRIC_OXIDE, NITRIC_OXIDE_NAME);
+        list.put(NITROGEN_DIOXIDE, NITROGEN_DIOXIDE_NAME);
+        list.put(OXIDES_OF_NITROGEN, OXIDES_OF_NITROGEN_NAME);
+        list.put(PARTICULATE_MATTER_10_MICROMETRE, PARTICULATE_MATTER_10_MICROMETRE_NAME);
+        list.put(PARTICULATE_MATTER_2_5_MICROMETRE, PARTICULATE_MATTER_2_5_MICROMETRE_NAME);
+        list.put(PARTICULATE_MATTER_1_MICROMETRE, PARTICULATE_MATTER_1_MICROMETRE_NAME);
+        list.put(SULFUR_DIOXIDE, SULFUR_DIOXIDE_NAME);
+        list.put(CARBON_MONOXIDE, CARBON_MONOXIDE_NAME);
+        list.put(OZONE, OZONE_NAME);
+        return list;
+    }
+
+    private static final ArrayList<String> NUMERIC_ID_POLLUTANTS = new ArrayList<String>(Arrays.asList(
+            new String[] {NITRIC_OXIDE,
+                    OXIDES_OF_NITROGEN,
+                    NITROGEN_DIOXIDE,
+                    PARTICULATE_MATTER_10_MICROMETRE,
+                    PARTICULATE_MATTER_2_5_MICROMETRE,
+                    PARTICULATE_MATTER_1_MICROMETRE,
+                    SULFUR_DIOXIDE,
+                    CARBON_MONOXIDE,
+                    OZONE}
+    ));
 
     public Pollutant(String name, String value, String measureUnit) {
         this.code = name;
@@ -92,18 +128,13 @@ public class Pollutant implements Parcelable{
         return code;
     }
 
-    public static HashMap<String, String> allPollutants(){
-        HashMap<String, String> list = new HashMap<>();
-        list.put(NITRIC_OXIDE, NITRIC_OXIDE_NAME);
-        list.put(NITROGEN_DIOXIDE, NITROGEN_DIOXIDE_NAME);
-        list.put(OXIDES_OF_NITROGEN, OXIDES_OF_NITROGEN_NAME);
-        list.put(PARTICULATE_MATTER_10_MICROMETRE, PARTICULATE_MATTER_10_MICROMETRE_NAME);
-        list.put(PARTICULATE_MATTER_2_5_MICROMETRE, PARTICULATE_MATTER_2_5_MICROMETRE_NAME);
-        list.put(PARTICULATE_MATTER_1_MICROMETRE, PARTICULATE_MATTER_1_MICROMETRE_NAME);
-        list.put(SULFUR_DIOXIDE, SULFUR_DIOXIDE_NAME);
-        list.put(CARBON_MONOXIDE, CARBON_MONOXIDE_NAME);
-        list.put(OZONE, OZONE_NAME);
-        return list;
+
+    /**
+     *
+     * @return numeric ID of the pollutant based on NUMERIC_ID_POLLUTANTS list
+     */
+    public int pollutantNumericID(){
+        return NUMERIC_ID_POLLUTANTS.indexOf(code);
     }
 
     /**
@@ -185,10 +216,22 @@ public class Pollutant implements Parcelable{
             return 3;
         }else if(this.getDoubleValue()> Double.parseDouble(threshold.getYellow())){
             return 2;
-        }else if(this.getDoubleValue()> Double.parseDouble(threshold.getGreen())){
+        }else{
             return 1;
         }
-        return -1;
+    }
+
+    /**
+     * Defines if the pollutant is going to be rendered in the pollutants screen
+     * @return
+     */
+    public boolean isRendereable(){
+        Log.v(LOG_TAG, "isRendereable: " + RENDERED_POLLUTANTS.contains(code));
+        return RENDERED_POLLUTANTS.contains(code);
+    }
+
+    public int getThresholdMax(){
+        return Integer.parseInt(this.threshold.getBlack());
     }
 
     public static class PollutantCategory{

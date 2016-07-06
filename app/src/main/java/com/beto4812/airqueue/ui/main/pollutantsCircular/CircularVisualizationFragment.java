@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.beto4812.airqueue.R;
@@ -45,6 +46,7 @@ public class CircularVisualizationFragment extends Fragment implements Visualiza
     private SensorReading sensorReading;
     private HashMap<String, PollutantThreshold> pollutantThresholds;
     private TextView textViewDescription;
+    private RelativeLayout headerLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,7 @@ public class CircularVisualizationFragment extends Fragment implements Visualiza
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView =  inflater.inflate(R.layout.fragment_pollutants_circular_view, container, false);
+        headerLayout = (RelativeLayout)rootView.findViewById(R.id.circular_view_header_relative_layout);
 
         Typeface handOfSean = Typeface.createFromAsset(rootView.getContext().getAssets(), "hos.ttf");
         Typeface openSansRegular = Typeface.createFromAsset(rootView.getContext().getAssets(), "OpenSans-Regular.ttf");
@@ -106,14 +109,12 @@ public class CircularVisualizationFragment extends Fragment implements Visualiza
                     //onHide();
                     controlsVisible = false;
                     scrolledDistance = 0;
-                    Log.v(LOG_TAG, "hide");
-                    textViewDescription.animate().translationY(-textViewDescription.getHeight()).setInterpolator(new AccelerateInterpolator(2));
+                    headerLayout.animate().translationY(-headerLayout.getHeight()).setInterpolator(new AccelerateInterpolator(2));
                 } else if (scrolledDistance < -HIDE_THRESHOLD && !controlsVisible) {
-                    textViewDescription.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2));
+                    headerLayout.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2));
                     //onShow();
                     controlsVisible = true;
                     scrolledDistance = 0;
-                    Log.v(LOG_TAG, "show");
                 }
 
                 if((controlsVisible && dy>0) || (!controlsVisible && dy<0)) {
@@ -164,14 +165,19 @@ public class CircularVisualizationFragment extends Fragment implements Visualiza
 
         Set<Integer> keys = pollutantsByCategory.keySet();
         List<Pollutant> temp;
-        Iterator itTemp = null;
+        Iterator individualPollutantsIterator = null;
+        Pollutant individualPollutant = null;
 
         for(int k: keys){
             renderList.add(new PollutantCategoryInfo(k));
             temp = pollutantsByCategory.get(k);
-            itTemp = temp.iterator();
-            while (itTemp.hasNext()){
-                renderList.add(itTemp.next());
+            individualPollutantsIterator = temp.iterator();
+            while (individualPollutantsIterator.hasNext()){
+                individualPollutant = (Pollutant)individualPollutantsIterator.next();
+                Log.v(LOG_TAG, "individual pollutant: " + individualPollutant);
+                if(individualPollutant.isRendereable()){
+                    renderList.add(individualPollutant);
+                }
             }
         }
 

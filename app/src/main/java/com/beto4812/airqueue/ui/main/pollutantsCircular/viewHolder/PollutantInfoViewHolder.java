@@ -37,12 +37,19 @@ public class PollutantInfoViewHolder extends RecyclerView.ViewHolder {
 
 
     private void setup(){
-        imageView = (ImageView) itemView.findViewById(R.id.image_view_pollutant);
+
+        Typeface handOfSean = Typeface.createFromAsset(rootView.getContext().getAssets(), "hos.ttf");
         Typeface openSansRegular = Typeface.createFromAsset(rootView.getContext().getAssets(), "OpenSans-Regular.ttf");
+        Typeface openSansLight = Typeface.createFromAsset(rootView.getContext().getAssets(), "OpenSans-Light.ttf");
+        Typeface openSansBold = Typeface.createFromAsset(rootView.getContext().getAssets(), "OpenSans-Bold.ttf");
+        Typeface robotoRegular = Typeface.createFromAsset(rootView.getContext().getAssets(), "Roboto-Regular.ttf");
+        Typeface robotoThin = Typeface.createFromAsset(rootView.getContext().getAssets(), "Roboto-Thin.ttf");
+
+        imageView = (ImageView) itemView.findViewById(R.id.image_view_pollutant);
 
         Picasso.with(rootView.getContext()).load(pollutantCategoryInfo.getImage()).fit().into(imageView);
         text = (TextView) itemView.findViewById(R.id.textViewPollutantCategory);
-        text.setTypeface(openSansRegular);
+        text.setTypeface(openSansLight);
         fab = (FloatingActionButton) itemView.findViewById(R.id.pollutant_info_view_fab);
 
         fab.setOnClickListener(new View.OnClickListener() {
