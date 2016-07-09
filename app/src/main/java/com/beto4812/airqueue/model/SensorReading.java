@@ -26,6 +26,7 @@ public class SensorReading {
     private String lastUpdated;
     private String source;
     private String sourceID;
+    private String airQualityIndex;
     private List<String> no;
     private List<String> no_2;
     private List<String> no_x;
@@ -164,6 +165,15 @@ public class SensorReading {
 
     public void setImage(String image){
         this.image = image;
+    }
+
+    @DynamoDBAttribute(attributeName = "air_quality_index")
+    public String getAirQualityIndex(){
+        return airQualityIndex;
+    }
+
+    public void setAirQualityIndex(String airQualityIndex){
+        this.airQualityIndex = airQualityIndex;
     }
 
     public Pollutant getPollutant(String key){
