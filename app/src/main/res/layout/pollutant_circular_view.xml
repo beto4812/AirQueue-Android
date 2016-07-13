@@ -12,36 +12,45 @@
         android:backgroundTint="@color/accent_material_dark"
         android:backgroundTintMode="screen"
         android:clickable="true">
+
+        <com.hookedonplay.decoviewlib.DecoView
+            xmlns:custom="https://schemas.android.com/apk/res-auto"
+            custom:dv_lineWidth="26dp"
+            android:id="@+id/single_circular_chart2"
+            android:layout_width="149dp"
+            android:layout_height="149dp"
+            android:layout_rowWeight="1"
+            android:layout_alignParentTop="false"
+            android:layout_centerInParent="true"
+            android:alpha="80" />
+
         <com.hookedonplay.decoviewlib.DecoView
             xmlns:custom="https://schemas.android.com/apk/res-auto"
             custom:dv_lineWidth="26dp"
             android:id="@+id/single_circular_chart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:layout_rowWeight="1"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerInParent="true" />
 
-        <ImageButton
-            android:id="@+id/pollutant_center_color"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:layout_marginLeft="120dp"
-            android:layout_marginRight="120dp"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/pollutant_view_green" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView3"
+            android:layout_above="@+id/pollutant_name"
+            android:layout_centerHorizontal="true" />
 
         <TextView
             android:id="@+id/pollutant_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="100dp"
             android:gravity="right|center_vertical"
             android:text="Pollutant"
-            android:layout_above="@+id/pollutant_center_color"
             android:layout_centerHorizontal="true"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:layout_centerVertical="true"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/pollutant_value"
@@ -51,9 +60,9 @@
             android:gravity="right|center_vertical"
             android:text="Value"
 
-            android:layout_below="@+id/pollutant_center_color"
-            android:layout_centerHorizontal="true"
             android:textColor="@color/white"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:layout_below="@+id/pollutant_name"
+            android:layout_centerHorizontal="true" />
     </RelativeLayout>
 </RelativeLayout>

@@ -24,16 +24,32 @@ public class PollutantThreshold {
         return green;
     }
 
+    public Double getGreenDouble(){
+        return Double.parseDouble(green);
+    }
+
     public String getBlack(){
         return black;
+    }
+
+    public Double getBlackDouble(){
+        return Double.parseDouble(black);
     }
 
     public String getRed(){
         return red;
     }
 
+    public Double getRedDouble(){
+        return Double.parseDouble(red);
+    }
+
     public String getYellow(){
         return yellow;
+    }
+
+    public Double getYellowDouble(){
+        return Double.parseDouble(yellow);
     }
 
     public void setCode(String code){

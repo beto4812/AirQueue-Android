@@ -54,7 +54,7 @@ public class Pollutant implements Parcelable{
 
     //Rendered pollutants
     private static final Set<String> RENDERED_POLLUTANTS = new HashSet<>(Arrays.asList(
-            new String[] {NITRIC_OXIDE, OXIDES_OF_NITROGEN,NITROGEN_DIOXIDE,PARTICULATE_MATTER_10_MICROMETRE, PARTICULATE_MATTER_2_5_MICROMETRE, PARTICULATE_MATTER_1_MICROMETRE, SULFUR_DIOXIDE, CARBON_MONOXIDE, OZONE}
+            new String[] {NITROGEN_DIOXIDE,PARTICULATE_MATTER_10_MICROMETRE, PARTICULATE_MATTER_2_5_MICROMETRE, SULFUR_DIOXIDE, CARBON_MONOXIDE, OZONE}
     ));
 
     public static final HashMap<String, String> allPollutants(){
@@ -209,7 +209,7 @@ public class Pollutant implements Parcelable{
      *
      * @return 1 green, 2 yellow, 3 red, 4 black
      */
-    public int getColorLevel(){
+    public int getCurrentColorLevel(){
         if(this.getDoubleValue()> Double.parseDouble(threshold.getBlack())){
             return 4;
         }else if(this.getDoubleValue()> Double.parseDouble(threshold.getRed())){
@@ -219,6 +219,10 @@ public class Pollutant implements Parcelable{
         }else{
             return 1;
         }
+    }
+
+    public PollutantThreshold getThresholds(){
+        return this.threshold;
     }
 
     /**
