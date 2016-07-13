@@ -12,7 +12,6 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeMap;
 
 /**
  * Encapsulates a pollutant
@@ -34,9 +33,9 @@ public class Pollutant implements Parcelable{
     public static final String OXIDES_OF_NITROGEN = "NOX";
     public static final String OXIDES_OF_NITROGEN_NAME = "Oxides of Nitrogen";
     public static final String PARTICULATE_MATTER_10_MICROMETRE = "PM10";
-    public static final String PARTICULATE_MATTER_10_MICROMETRE_NAME = "Particulate Matter 10 micrometre";
+    public static final String PARTICULATE_MATTER_10_MICROMETRE_NAME = "PM 10 micrometre";
     public static final String PARTICULATE_MATTER_2_5_MICROMETRE = "PM2P5";
-    public static final String PARTICULATE_MATTER_2_5_MICROMETRE_NAME = "Particulate Matter 2.5 micrometre";
+    public static final String PARTICULATE_MATTER_2_5_MICROMETRE_NAME = "PM 2.5 micrometre";
     public static final String PARTICULATE_MATTER_1_MICROMETRE = "PM1";
     public static final String PARTICULATE_MATTER_1_MICROMETRE_NAME = "Particulate Matter 1 micrometre";
     public static final String VOLATILE_PARTICULATE_MATTER_10_MICROMETRE = "VPM10";
@@ -45,8 +44,8 @@ public class Pollutant implements Parcelable{
     public static final String NON_VOLATILE_PARTICULATE_MATTER_2_5_MICROMETRE_NAME = "Non volatile particulate matter 2.5 micrometre";
     public static final String VOLATILE_PARTICULATE_MATTER_2_5_MICROMETRE = "VPM2P5";
     public static final String VOLATILE_PARTICULATE_MATTER_2_5_MICROMETRE_NAME = "Volatile particulate matter 2.5 micrometre";
-    public static final String SULFUR_DIOXIDE = "SO2";
-    public static final String SULFUR_DIOXIDE_NAME = "Sulfur Dioxide";
+    public static final String SULPHUR_DIOXIDE = "SO2";
+    public static final String SULPHUR_DIOXIDE_NAME = "Sulphur Dioxide";
     public static final String CARBON_MONOXIDE = "CO";
     public static final String CARBON_MONOXIDE_NAME = "Carbon monoxide";
     public static final String OZONE = "O3";
@@ -54,7 +53,7 @@ public class Pollutant implements Parcelable{
 
     //Rendered pollutants
     private static final Set<String> RENDERED_POLLUTANTS = new HashSet<>(Arrays.asList(
-            new String[] {NITROGEN_DIOXIDE,PARTICULATE_MATTER_10_MICROMETRE, PARTICULATE_MATTER_2_5_MICROMETRE, SULFUR_DIOXIDE, CARBON_MONOXIDE, OZONE}
+            new String[] {NITROGEN_DIOXIDE,PARTICULATE_MATTER_10_MICROMETRE, PARTICULATE_MATTER_2_5_MICROMETRE, CARBON_MONOXIDE, OZONE, SULPHUR_DIOXIDE}
     ));
 
     public static final HashMap<String, String> allPollutants(){
@@ -65,7 +64,7 @@ public class Pollutant implements Parcelable{
         list.put(PARTICULATE_MATTER_10_MICROMETRE, PARTICULATE_MATTER_10_MICROMETRE_NAME);
         list.put(PARTICULATE_MATTER_2_5_MICROMETRE, PARTICULATE_MATTER_2_5_MICROMETRE_NAME);
         list.put(PARTICULATE_MATTER_1_MICROMETRE, PARTICULATE_MATTER_1_MICROMETRE_NAME);
-        list.put(SULFUR_DIOXIDE, SULFUR_DIOXIDE_NAME);
+        list.put(SULPHUR_DIOXIDE, SULPHUR_DIOXIDE_NAME);
         list.put(CARBON_MONOXIDE, CARBON_MONOXIDE_NAME);
         list.put(OZONE, OZONE_NAME);
         return list;
@@ -78,7 +77,7 @@ public class Pollutant implements Parcelable{
                     PARTICULATE_MATTER_10_MICROMETRE,
                     PARTICULATE_MATTER_2_5_MICROMETRE,
                     PARTICULATE_MATTER_1_MICROMETRE,
-                    SULFUR_DIOXIDE,
+                    SULPHUR_DIOXIDE,
                     CARBON_MONOXIDE,
                     OZONE}
     ));
@@ -103,6 +102,10 @@ public class Pollutant implements Parcelable{
             this.category = PollutantCategory.NITROGEN_OXIDES;
         }else if(code.startsWith("CO")){
             this.category = PollutantCategory.CARBON_MONOXIDE;
+        }else if(code.startsWith("O3")){
+            this.category = PollutantCategory.OZONE;
+        }else if(code.startsWith("SO")){
+            this.category = PollutantCategory.SULPHUR_DIOXIDE;
         }else{
             this.category = PollutantCategory.OTHER;
         }
@@ -149,7 +152,7 @@ public class Pollutant implements Parcelable{
         list.put(PARTICULATE_MATTER_10_MICROMETRE, PARTICULATE_MATTER_10_MICROMETRE_NAME);
         //list.put(PARTICULATE_MATTER_2_5_MICROMETRE, PARTICULATE_MATTER_2_5_MICROMETRE_NAME);
         //list.put(PARTICULATE_MATTER_1_MICROMETRE, PARTICULATE_MATTER_1_MICROMETRE_NAME);
-        //list.put(SULFUR_DIOXIDE, SULFUR_DIOXIDE_NAME);
+        //list.put(SULPHUR_DIOXIDE, SULPHUR_DIOXIDE_NAME);
         //list.put(CARBON_MONOXIDE, CARBON_MONOXIDE_NAME);
         //list.put(OZONE, OZONE_NAME);
         return list;
@@ -162,6 +165,8 @@ public class Pollutant implements Parcelable{
     public String getValue() {
         return value;
     }
+
+    public String getName() { return allPollutants().get(getCode());};
 
     public double getDoubleValue(){
         return Double.parseDouble(value);
@@ -242,6 +247,8 @@ public class Pollutant implements Parcelable{
         public static final int PARTICULATE_MATTER = 20;
         public static final int NITROGEN_OXIDES = 10;
         public static final int CARBON_MONOXIDE = 30;
+        public static final int OZONE = 40;
+        public static final int SULPHUR_DIOXIDE = 50;
         public static final int OTHER = 100;
 
         public static String getPollutantCategoryString(int category){
@@ -254,6 +261,10 @@ public class Pollutant implements Parcelable{
                     return "Nitrogen Oxides";
                 case CARBON_MONOXIDE:
                     return "Carbon Monoxide";
+                case OZONE:
+                    return "Ozone";
+                case SULPHUR_DIOXIDE:
+                    return "Sulphur Dioxide";
                 default:
                     return "Undefined";
             }
@@ -265,6 +276,8 @@ public class Pollutant implements Parcelable{
             categories.add(PollutantCategory.PARTICULATE_MATTER);
             categories.add(PollutantCategory.NITROGEN_OXIDES);
             categories.add(PollutantCategory.CARBON_MONOXIDE);
+            categories.add(PollutantCategory.OZONE);
+            categories.add(PollutantCategory.SULPHUR_DIOXIDE);
             categories.add(PollutantCategory.OTHER);
             return categories;
         }

@@ -12,6 +12,8 @@ import android.transition.Slide;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,6 +27,7 @@ public class PollutantCategoryDetailActivity extends AppCompatActivity {
 
     public PollutantCategoryInfo pollutantCategoryInfo;
     private CollapsingToolbarLayout collapsingToolbarLayout;
+    private WebView webView;
 
     private View rootView;
 
@@ -34,6 +37,7 @@ public class PollutantCategoryDetailActivity extends AppCompatActivity {
         intent.putExtra("IMAGE", pollutantCategoryInfo.getImage());
         Log.v(LOG_TAG, "TITLE: " + pollutantCategoryInfo.getPollutantCategoryString());
         intent.putExtra("TITLE", pollutantCategoryInfo.getPollutantCategoryString());
+        intent.putExtra("URL", pollutantCategoryInfo.getUrl());
         context.startActivity(intent);
     }
 
@@ -60,6 +64,16 @@ public class PollutantCategoryDetailActivity extends AppCompatActivity {
         Log.v(LOG_TAG, "TITLE: " + getIntent().getStringExtra("TITLE"));
         TextView title = (TextView) findViewById(R.id.title);
         title.setText(getIntent().getStringExtra("TITLE"));
+
+        webView = (WebView)  findViewById(R.id.webView);
+        webView.setWebViewClient(new WebViewClient() {
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return true;
+            }});
+
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.loadUrl(getIntent().getStringExtra("URL"));
     }
 
     @Override public boolean dispatchTouchEvent(MotionEvent motionEvent) {

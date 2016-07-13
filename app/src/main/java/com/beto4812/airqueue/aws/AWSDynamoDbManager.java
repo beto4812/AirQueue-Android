@@ -11,6 +11,7 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
 import com.amazonaws.services.dynamodbv2.model.Condition;
+import com.beto4812.airqueue.model.PollutantCategoryInfo;
 import com.beto4812.airqueue.model.PollutantThreshold;
 import com.beto4812.airqueue.model.SensorCoordinates;
 import com.beto4812.airqueue.model.SensorReading;
@@ -22,7 +23,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.TimeZone;
 
 //This class will handle DB operations
 public class AWSDynamoDbManager {
@@ -157,6 +157,28 @@ public class AWSDynamoDbManager {
 
             HashMap<String, PollutantThreshold> resultList = new HashMap<>();
             for (PollutantThreshold up : result) {
+                Log.v(LOG_TAG, up.toString());
+                resultList.put(up.getCode(), up);
+            }
+            return resultList;
+
+        } catch (Exception ex) {
+            Log.v(LOG_TAG, "AmazonServiceException");
+            Log.e(LOG_TAG, Log.getStackTraceString(ex));
+        }
+        return  null;
+    }
+
+    public HashMap<String, PollutantCategoryInfo> getPollutantCategoryInfo(){
+        Log.v(LOG_TAG, "getPollutantThresholds(): ");
+
+        DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
+        try {
+            PaginatedScanList<PollutantCategoryInfo> result = dynamoDBMapper.scan(
+                    PollutantCategoryInfo.class, scanExpression);
+
+            HashMap<String, PollutantCategoryInfo> resultList = new HashMap<>();
+            for (PollutantCategoryInfo up : result) {
                 Log.v(LOG_TAG, up.toString());
                 resultList.put(up.getCode(), up);
             }

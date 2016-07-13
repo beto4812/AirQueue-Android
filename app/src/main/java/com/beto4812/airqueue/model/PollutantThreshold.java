@@ -1,7 +1,5 @@
 package com.beto4812.airqueue.model;
 
-import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBAttribute;
-import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBHashKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
 import com.beto4812.airqueue.aws.AWSConstants;
 

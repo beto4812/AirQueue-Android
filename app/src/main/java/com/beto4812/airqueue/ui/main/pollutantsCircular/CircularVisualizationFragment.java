@@ -22,7 +22,6 @@ import com.beto4812.airqueue.model.PollutantThreshold;
 import com.beto4812.airqueue.model.SensorReading;
 import com.beto4812.airqueue.ui.main.home.VisualizationsFragment;
 import com.beto4812.airqueue.ui.main.pollutantsCircular.viewAdapter.CircularVisualizationAdapter;
-import com.google.android.gms.vision.text.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,6 +44,7 @@ public class CircularVisualizationFragment extends Fragment implements Visualiza
     private static CircularVisualizationFragment instance;
     private SensorReading sensorReading;
     private HashMap<String, PollutantThreshold> pollutantThresholds;
+    private HashMap<String, PollutantCategoryInfo> pollutantCategoryInfo;
     private TextView textViewDescription;
     private RelativeLayout headerLayout;
 
@@ -144,6 +144,9 @@ public class CircularVisualizationFragment extends Fragment implements Visualiza
         this.pollutantThresholds = pollutantThresholds;
     }
 
+    public void setPollutantCategoryInfo(HashMap<String, PollutantCategoryInfo> pollutantCategoryInfo){
+        this.pollutantCategoryInfo = pollutantCategoryInfo;
+    }
 
     public void updateUI(){
         Log.v(LOG_TAG, "onPostExecute() closestSensorID: " + sensorReading.getSourceID() + " lastUpdated: " + sensorReading.getLastUpdated());
@@ -169,7 +172,9 @@ public class CircularVisualizationFragment extends Fragment implements Visualiza
         Pollutant individualPollutant = null;
 
         for(int k: keys){
-            renderList.add(new PollutantCategoryInfo(k));
+            Log.v(LOG_TAG, "pollutantCategoryInt: " + k);
+            (pollutantCategoryInfo.get(Pollutant.PollutantCategory.getPollutantCategoryString(k))).setPollutantCategory(k);
+            renderList.add(pollutantCategoryInfo.get(Pollutant.PollutantCategory.getPollutantCategoryString(k)));
             temp = pollutantsByCategory.get(k);
             individualPollutantsIterator = temp.iterator();
             while (individualPollutantsIterator.hasNext()){

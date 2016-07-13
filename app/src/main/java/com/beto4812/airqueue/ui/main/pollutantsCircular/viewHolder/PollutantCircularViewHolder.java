@@ -25,8 +25,9 @@ public class PollutantCircularViewHolder extends RecyclerView.ViewHolder {
 
     public View rootView;
     private DecoView decoView;
-    private TextView pollutantNameTextView;
+    private TextView pollutantCodeTextView;
     private TextView pollutantValueTextView;
+    private TextView pollutantNameTextView;
     private Pollutant pollutant;
     Typeface openSansLight;
     Typeface openSansBold;
@@ -57,14 +58,15 @@ public class PollutantCircularViewHolder extends RecyclerView.ViewHolder {
         Typeface robotoRegular = Typeface.createFromAsset(rootView.getContext().getAssets(), "Roboto-Regular.ttf");
         Typeface robotoThin = Typeface.createFromAsset(rootView.getContext().getAssets(), "Roboto-Thin.ttf");
 
-        pollutantNameTextView = (TextView) rootView.findViewById(R.id.pollutant_name);
-        pollutantNameTextView.setTypeface(openSansLight);
-        pollutantNameTextView.setText(pollutant.getCode());
+        pollutantCodeTextView = (TextView) rootView.findViewById(R.id.pollutant_name);
+        pollutantCodeTextView.setTypeface(openSansLight);
+        pollutantCodeTextView.setText(pollutant.getCode());
         pollutantValueTextView = (TextView) rootView.findViewById(R.id.pollutant_value);
-        pollutantNameTextView.setTypeface(openSansLight);
+        pollutantCodeTextView.setTypeface(openSansBold);
+        pollutantNameTextView = (TextView) rootView.findViewById(R.id.textViewNamePollutant);
+        pollutantNameTextView.setText(pollutant.getName());
+        pollutantNameTextView.setTypeface(openSansRegular);
 
-        ((TextView) rootView.findViewById(R.id.pollutant_name)).setTypeface(openSansLight);
-        ((TextView) rootView.findViewById(R.id.pollutant_value)).setTypeface(openSansBold);
         pollutantValueTextView.setText(pollutant.getValue()+" "+ pollutant.getMeasureUnit());
 
         /*pollutantCenterColor = (ImageButton) rootView.findViewById(R.id.pollutant_center_color);

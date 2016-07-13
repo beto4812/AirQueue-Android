@@ -233,8 +233,8 @@ public class SensorReading {
 
 
     public void setSo2(List<String> p){
-        this.pollutants.put(Pollutant.SULFUR_DIOXIDE,
-                new Pollutant(Pollutant.SULFUR_DIOXIDE, p.get(0), p.get(1)));
+        this.pollutants.put(Pollutant.SULPHUR_DIOXIDE,
+                new Pollutant(Pollutant.SULPHUR_DIOXIDE, p.get(0), p.get(1)));
     }
 
 
