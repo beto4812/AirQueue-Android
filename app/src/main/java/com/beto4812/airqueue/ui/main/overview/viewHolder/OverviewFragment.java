@@ -187,7 +187,6 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
         progressBarSensitivity.setOnDragListener(new View.OnDragListener(){
             @Override
             public boolean onDrag(View v, DragEvent event) {
-                Log.v(LOG_TAG, "onDrag");
                 final int action = event.getAction();
                 switch(action) {
                     case DragEvent.ACTION_DRAG_STARTED:

@@ -9,8 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 
 import com.beto4812.airqueue.R;
 import com.beto4812.airqueue.model.Pollutant;
@@ -33,7 +31,6 @@ public class LinearVisualizationFragment extends Fragment implements Visualizati
     private GridLayoutManager layoutManager;
     private LinearVisualizationAdapter linearVisualizationAdapter;
     private View rootView;
-    private Spinner spinner;
     private static Calendar c = Calendar.getInstance();
     private static LinearVisualizationFragment instance;
     private List<SensorReading> readings;
@@ -47,7 +44,6 @@ public class LinearVisualizationFragment extends Fragment implements Visualizati
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView =  inflater.inflate(R.layout.fragment_pollutants_linear_view, container, false);
-        spinner = (Spinner) rootView.findViewById(R.id.fragment_pollutants_linear_view_spinner);
         initRecyclerView();
         if(readings!=null){
             updateUI();
@@ -85,7 +81,6 @@ public class LinearVisualizationFragment extends Fragment implements Visualizati
 
     public void updateUI(){
         Collection pollutantCodes = Pollutant.allPollutants().keySet();
-        String values[] = new String[pollutantCodes.size()];
         List<Object> renderList = new ArrayList<>();
         List<SensorPollutantReadings> multiplePollutants = new ArrayList<>();
         SensorPollutantReadings sensorPollutantReadings;
@@ -93,18 +88,13 @@ public class LinearVisualizationFragment extends Fragment implements Visualizati
         Iterator it = pollutantCodes.iterator();
 
         for(int i = 0; it.hasNext(); i++){
-            values[i] = (String)it.next();
-            Log.v(LOG_TAG, "setupUI "+i + " " + values[i]);
-            sensorPollutantReadings = new SensorPollutantReadings(readings, values[i]);
+            String pollutantCode = (String)it.next();
+            Log.v(LOG_TAG, "setupUI "+i + " " + pollutantCode);
+            sensorPollutantReadings = new SensorPollutantReadings(readings, pollutantCode);
             //renderList.add(sensorPollutantReadings);
             multiplePollutants.add(sensorPollutantReadings);
         }
         renderList.add(multiplePollutants);
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(rootView.getContext(), android.R.layout.simple_spinner_item, values);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-
 
         linearVisualizationAdapter = new LinearVisualizationAdapter(renderList);
         recyclerView.setAdapter(linearVisualizationAdapter);

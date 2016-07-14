@@ -59,6 +59,10 @@ public class CircularVisualizationAdapter extends RecyclerView.Adapter<RecyclerV
         return -1;
     }
 
+    public Pollutant getPollutant(int position){
+        return (Pollutant) items.get(position);
+    }
+
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         switch (holder.getItemViewType()){

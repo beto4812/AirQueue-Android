@@ -88,7 +88,11 @@ public class CircularVisualizationFragment extends Fragment implements Visualiza
                     case CircularVisualizationAdapter.POLLUTANT_INFO:
                         return 2;
                     case CircularVisualizationAdapter.POLLUTANT_VIEW:
-                        return 1;
+                        if(circularVisualizationsAdapter.getPollutant(position).getCategory()==Pollutant.PollutantCategory.PARTICULATE_MATTER){
+                            return 1;
+                        }else{
+                            return 2;
+                        }
                     default:
                         return -1;
                 }

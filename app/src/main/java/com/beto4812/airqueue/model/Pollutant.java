@@ -1,6 +1,7 @@
 package com.beto4812.airqueue.model;
 
 
+import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
@@ -52,7 +53,7 @@ public class Pollutant implements Parcelable{
     public static final String OZONE_NAME = "Ozone";
 
     //Rendered pollutants
-    private static final Set<String> RENDERED_POLLUTANTS = new HashSet<>(Arrays.asList(
+    public static final Set<String> RENDERED_POLLUTANTS = new HashSet<>(Arrays.asList(
             new String[] {NITROGEN_DIOXIDE,PARTICULATE_MATTER_10_MICROMETRE, PARTICULATE_MATTER_2_5_MICROMETRE, CARBON_MONOXIDE, OZONE, SULPHUR_DIOXIDE}
     ));
 
@@ -67,6 +68,17 @@ public class Pollutant implements Parcelable{
         list.put(SULPHUR_DIOXIDE, SULPHUR_DIOXIDE_NAME);
         list.put(CARBON_MONOXIDE, CARBON_MONOXIDE_NAME);
         list.put(OZONE, OZONE_NAME);
+        return list;
+    }
+
+    public static final HashMap<String, Integer> allPollutantColors(){
+        LinkedHashMap<String, Integer> list = new LinkedHashMap<>();
+        list.put(NITROGEN_DIOXIDE, Color.rgb(207, 49, 4));//Orange
+        list.put(PARTICULATE_MATTER_10_MICROMETRE, Color.rgb(61, 187, 237));//Blue
+        list.put(PARTICULATE_MATTER_2_5_MICROMETRE, Color.rgb(202, 224, 1));//Green
+        list.put(CARBON_MONOXIDE, Color.rgb(240, 216, 0));//Yellow
+        list.put(OZONE, Color.rgb(196, 41, 21));//Red
+        list.put(SULPHUR_DIOXIDE, Color.rgb(54,122,212));//Clear blue
         return list;
     }
 
