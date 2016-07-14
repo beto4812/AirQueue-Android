@@ -73,6 +73,7 @@ public class PollutantCategoryDetailActivity extends AppCompatActivity {
             }});
 
         webView.getSettings().setJavaScriptEnabled(true);
+        Log.v(LOG_TAG, "navigating: " + getIntent().getStringExtra("URL"));
         webView.loadUrl(getIntent().getStringExtra("URL"));
     }
 

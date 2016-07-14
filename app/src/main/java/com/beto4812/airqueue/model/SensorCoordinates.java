@@ -39,4 +39,11 @@ public class SensorCoordinates {
         double longitude = Double.parseDouble(coordinates.get(1));
         return Math.sqrt(Math.pow(latitude - currentLat, 2) + Math.pow(longitude - currentLong, 2));
     }
+
+    public String toString() {
+        return "SensorCoordinates{" +
+                "sourceID='" + sourceID + '\'' +
+                ", coordinates=" + coordinates +
+                '}';
+    }
 }

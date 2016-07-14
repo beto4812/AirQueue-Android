@@ -117,6 +117,7 @@ public class AWSDynamoDbManager {
 
             ArrayList<SensorCoordinates> resultList = new ArrayList<>();
             for (SensorCoordinates up : result) {
+                Log.v(LOG_TAG, up.toString());
                 resultList.add(up);
             }
             return resultList;

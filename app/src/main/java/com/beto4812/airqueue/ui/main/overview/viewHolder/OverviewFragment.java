@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MotionEventCompat;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -46,7 +48,7 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
     private ImageView imageViewSensor;
     private TextView textViewClosestSensor;
     private TextView textViewLastUpdated;
-    private RoundCornerProgressBar progressBarSensibility;
+    private RoundCornerProgressBar progressBarSensitivity;
     private RoundCornerProgressBar progressBarQualityIndex;
     private PieChart pieChart;
 
@@ -75,7 +77,7 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
         Picasso.with(getContext()).load(sensorReading.getImage()).into(imageViewSensor);
         textViewLastUpdated.setText(sensorReading.getLastUpdated());
         textViewClosestSensor.setText(sensorReading.getSourceID());
-        Constants.setLevel(1, progressBarSensibility);
+        Constants.setLevel(1, progressBarSensitivity);
         Constants.setLevel(3, progressBarQualityIndex);
         Picasso.with(getContext()).load(sensorReading.getImage()).fit().into(imageViewSensor);
         setupPieChart();
@@ -149,25 +151,62 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
         textViewClosestSensor.setTypeface(robotoThin);
         textViewLastUpdated = (TextView)rootView.findViewById(R.id.text_view_last_updated);
         textViewLastUpdated.setTypeface(robotoThin);
-        progressBarSensibility = (RoundCornerProgressBar) rootView.findViewById(R.id.overview_sensibility_bar);
-        progressBarSensibility.setOnTouchListener(new View.OnTouchListener() {
+        progressBarSensitivity = (RoundCornerProgressBar) rootView.findViewById(R.id.overview_sensibility_bar);
+        progressBarSensitivity.setOnTouchListener(new View.OnTouchListener() {
+
+            private int mActivePointerId = -1;
+
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Log.v(LOG_TAG, "event.getX(): " + event.getX() + " event.getY(): " + event.getY() + event.getRawX() + " width: " + progressBarSensibility.getWidth());
-                if(event.getX()>(progressBarSensibility.getWidth()/3)*2){
-                    Constants.setLevel(3, progressBarSensibility);
-                    textViewSensitivity.setText("High sensitivity");
-                    textViewSensitivity.setTextColor(ContextCompat.getColor(rootView.getContext(), R.color.red_traffic_light));
-                }else if(event.getX()>(progressBarSensibility.getWidth()/3)*1){
-                    Constants.setLevel(2, progressBarSensibility);
-                    textViewSensitivity.setText("Normal sensitivity");
-                    textViewSensitivity.setTextColor(ContextCompat.getColor(rootView.getContext(), R.color.yellow_traffic_light));
-                }else {
-                    Constants.setLevel(1, progressBarSensibility);
-                    textViewSensitivity.setText("Low sensitivity");
-                    textViewSensitivity.setTextColor(ContextCompat.getColor(rootView.getContext(), R.color.green_traffic_light));
+                final int action = MotionEventCompat.getActionMasked(event);
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN: {
+                        Log.v(LOG_TAG, "down");
+                        final int pointerIndex = MotionEventCompat.getActionIndex(event);
+                        final float x = MotionEventCompat.getX(event, pointerIndex);
+                        final float y = MotionEventCompat.getY(event, pointerIndex);
+                        mActivePointerId = MotionEventCompat.getPointerId(event, 0);
+                        setToolbar(x, textViewSensitivity, progressBarSensitivity);
+
+                        View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder();
+                        v.startDrag(null, shadowBuilder, v, 0);
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP:
+                        Log.v(LOG_TAG, "up");
+                        mActivePointerId = -1;
+                        break;
                 }
+                Log.v(LOG_TAG, "event.getX(): " + event.getX() + " event.getY(): " + event.getY() + event.getRawX() + " width: " + progressBarSensitivity.getWidth());
                 return true;
+            }
+
+
+        });
+
+        progressBarSensitivity.setOnDragListener(new View.OnDragListener(){
+            @Override
+            public boolean onDrag(View v, DragEvent event) {
+                Log.v(LOG_TAG, "onDrag");
+                final int action = event.getAction();
+                switch(action) {
+                    case DragEvent.ACTION_DRAG_STARTED:
+                        //Log.v(LOG_TAG, "ACTION_DRAG_STARTED: " + event.getX() + " ," + event.getY());
+                    case DragEvent.ACTION_DRAG_ENTERED:
+                        //Log.v(LOG_TAG, "ACTION_DRAG_ENTERED: " + event.getX() + " ," + event.getY());
+                        return true;
+                    case DragEvent.ACTION_DRAG_LOCATION:
+                        //Log.v(LOG_TAG, "ACTION_DRAG_LOCATION: " + event.getX() + " ," + event.getY());
+                        setToolbar(event.getX(), textViewSensitivity, progressBarSensitivity);
+                        return true;
+                    case DragEvent.ACTION_DRAG_EXITED:
+                        return true;
+                    case DragEvent.ACTION_DROP:
+                        return true;
+                    case DragEvent.ACTION_DRAG_ENDED:
+                        return true;
+                }
+                return false;
             }
         });
         textViewSensitivity.setTextColor(ContextCompat.getColor(rootView.getContext(), R.color.green_traffic_light));
@@ -194,7 +233,28 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
 
     @Override
     public void fragmentBecameVisible() {
-        if(progressBarSensibility!=null) progressBarSensibility.animate();
+        if(progressBarSensitivity !=null) progressBarSensitivity.animate();
         if(pieChart!=null) pieChart.animateY(1400, Easing.EasingOption.EaseInCubic);
+    }
+
+    private void setToolbar(float x, TextView textViewSensitivity, RoundCornerProgressBar progressBarSensibility){
+        //Log.v(LOG_TAG, "set: " + x*10/ progressBarSensitivity.getWidth());
+        if(x>(progressBarSensibility.getWidth()/10)*1){
+            progressBarSensitivity.setProgress(x*10/ progressBarSensitivity.getWidth());
+        }
+
+        if(x>(progressBarSensibility.getWidth()/3)*2){
+            textViewSensitivity.setText("High sensitivity");
+            textViewSensitivity.setTextColor(ContextCompat.getColor(rootView.getContext(), R.color.red_traffic_light));
+            progressBarSensibility.setProgressColor(ContextCompat.getColor(progressBarSensibility.getContext(), R.color.red_traffic_light));
+        }else if(x>(progressBarSensibility.getWidth()/3)*1){
+            textViewSensitivity.setText("Normal sensitivity");
+            textViewSensitivity.setTextColor(ContextCompat.getColor(rootView.getContext(), R.color.yellow_traffic_light));
+            progressBarSensibility.setProgressColor(ContextCompat.getColor(progressBarSensibility.getContext(), R.color.yellow_traffic_light));
+        }else {
+            textViewSensitivity.setText("Low sensitivity");
+            textViewSensitivity.setTextColor(ContextCompat.getColor(rootView.getContext(), R.color.green_traffic_light));
+            progressBarSensibility.setProgressColor(ContextCompat.getColor(progressBarSensibility.getContext(), R.color.green_traffic_light));
+        }
     }
 }
