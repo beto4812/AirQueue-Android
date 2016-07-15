@@ -22,6 +22,7 @@ public class SensorPollutantReadings {
     private String pollutantCode;
     private HashMap<String, Pollutant> pollutants;
     private List<Entry> lineEntries;
+    private Boolean empty = true;
 
     public SensorPollutantReadings(List<SensorReading> readings, String pollutantCode){
         Log.v(LOG_TAG, " pollutantCode: " + pollutantCode);
@@ -31,12 +32,17 @@ public class SensorPollutantReadings {
 
         for(int i = 0; i <readings.size(); i++){
             if(readings.get(i).getPollutant(pollutantCode)!=null){
+                empty = false;
                 //Log.v(LOG_TAG, " readings: : " + readings.get(i));
                 pollutants.put(readings.get(i).getLastUpdated(), readings.get(i).getPollutant(pollutantCode));
                 lineEntries.add(new Entry(readings.get(i).getPollutant(pollutantCode).getFloatValue(), readings.get(i).getLastUpdatedHour()));
                 //Log.v(LOG_TAG, " entry: : " + new Entry(readings.get(i).getPollutant(pollutantCode).getFloatValue(), readings.get(i).getLastUpdatedHour()));
             }
         }
+    }
+
+    public Boolean hasData(){
+        return !empty;
     }
 
 

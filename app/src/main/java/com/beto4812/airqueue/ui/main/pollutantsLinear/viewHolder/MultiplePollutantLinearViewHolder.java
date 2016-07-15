@@ -7,7 +7,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Space;
 import android.widget.TextView;
 
 import com.beto4812.airqueue.R;
@@ -24,6 +26,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 public class MultiplePollutantLinearViewHolder extends RecyclerView.ViewHolder {
 
@@ -38,18 +41,51 @@ public class MultiplePollutantLinearViewHolder extends RecyclerView.ViewHolder {
     private Typeface tf;
     private CheckPollutantView checkPollutantView;
     private ViewGroup linearLayout;
+    private Set<String> graphicablePollutants;
+    OnPollutantSelectedListener listener;
 
     public MultiplePollutantLinearViewHolder(View itemView) {
         super(itemView);
         Log.v(LOG_TAG, "MultiplePollutantLinearViewHolder");
+        init();
+    }
+
+
+    public void init(){
         this.rootView = itemView;
         this.lineChart = (LineChart) rootView.findViewById(R.id.pollutant_linear_view_line_chart);
         this.linearLayout = (ViewGroup) rootView.findViewById(R.id.pollutant_multiple_linear_view_linear_layout);
+        graphicablePollutants = Pollutant.RENDERED_POLLUTANTS;
         tf = Typeface.createFromAsset(rootView.getContext().getAssets(), "Roboto-Regular.ttf");
+
+        listener  = new OnPollutantSelectedListener() {
+            @Override
+            public void onPollutantSelected(String code) {
+                Log.v(LOG_TAG, "touch from parent: " + code);
+                graphicablePollutants.add(code);
+                setupChart();
+            }
+
+            @Override
+            public void onPollutantDeSelected(String code) {
+                Log.v(LOG_TAG, "touch from parent: " + code);
+                graphicablePollutants.remove(code);
+                setupChart();
+            }
+
+            public void printGraphicablePollutants(){
+                Iterator it = graphicablePollutants.iterator();
+                while (it.hasNext()){
+                    Log.v(LOG_TAG, "it: " + it.next());
+                }
+            }
+        };
+
     }
 
     public void setReadings(List<SensorPollutantReadings> sensorPollutantReadings) {
         this.sensorPollutantReadings = sensorPollutantReadings;
+        setupPollutantsPanel();
         setupChart();
     }
 
@@ -71,25 +107,62 @@ public class MultiplePollutantLinearViewHolder extends RecyclerView.ViewHolder {
         lineChart.invalidate();//Refresh
     }
 
+    private void setupPollutantsPanel(){
+        Iterator sensorPollutantReadingsIterator = sensorPollutantReadings.iterator();
+        SensorPollutantReadings sensorReadings;
+        Space space;
+        LinearLayout.LayoutParams params2 =  new LinearLayout.LayoutParams(0,1);
+
+        params2.weight = 1;
+        space = new Space(rootView.getContext());
+        space.setLayoutParams(params2);
+        linearLayout.addView(space);
+        while (sensorPollutantReadingsIterator.hasNext()) {
+            sensorReadings = (SensorPollutantReadings) sensorPollutantReadingsIterator.next();
+            if (graphicablePollutants.contains(sensorReadings.getPollutantCode())) {
+
+                View pollutantCheckView = LayoutInflater.from(rootView.getContext()).inflate(R.layout.pollutant_check_view, linearLayout, false);
+                CheckPollutantView checkPollutantView = (CheckPollutantView) pollutantCheckView.findViewById(R.id.checkPollutantView);
+                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                        RelativeLayout.LayoutParams.WRAP_CONTENT,
+                        RelativeLayout.LayoutParams.WRAP_CONTENT
+                );
+                //params.setMargins(40, 0, 40, 0);
+                checkPollutantView.setLayoutParams(params);
+                checkPollutantView.setTextView((TextView)pollutantCheckView.findViewById(R.id.textViewNoData));
+                //pollutantName.setText(sensorReadings.getPollutantCode());//sensorReadings.getPollutantCode()
+                Log.v(LOG_TAG, "pollutantCode: " + sensorReadings.getPollutantCode());
+                checkPollutantView.setColor(Pollutant.allPollutantColors().get(sensorReadings.getPollutantCode()));
+                checkPollutantView.setPollutantCode(sensorReadings.getPollutantCode());
+                if(!sensorReadings.hasData()){
+                    checkPollutantView.setDisabled();
+                }else{
+                    checkPollutantView.setSelected();
+                }
+                checkPollutantView.setListener(listener);
+                space = new Space(rootView.getContext());
+                space.setLayoutParams(params2);
+                linearLayout.addView(pollutantCheckView, params);
+                linearLayout.addView(space);
+            }
+        }
+        linearLayout.invalidate();
+    }
+
     private void setupData() {
         Iterator sensorPollutantReadingsIterator = sensorPollutantReadings.iterator();
         ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
         SensorPollutantReadings sensorReadings;
         LineDataSet dataSet;
 
-
         xVals = new ArrayList<>();
-
         for (int i = 0; i < 24; i++) {
             xVals.add((i) + "");
         }
 
-        int i = 0;
         while (sensorPollutantReadingsIterator.hasNext()) {
             sensorReadings = (SensorPollutantReadings) sensorPollutantReadingsIterator.next();
-
-            if (Pollutant.RENDERED_POLLUTANTS.contains(sensorReadings.getPollutantCode())) {
-                i++;
+            if (graphicablePollutants.contains(sensorReadings.getPollutantCode())) {
                 Log.v(LOG_TAG, "adding to line graph: " + sensorReadings.getPollutantCode());
                 dataSet = new LineDataSet(sensorReadings.getLineEntries(), sensorReadings.getPollutantCode());
                 //dataSet.setDrawCubic(true); //Line curved
@@ -98,21 +171,7 @@ public class MultiplePollutantLinearViewHolder extends RecyclerView.ViewHolder {
                 dataSet.setCircleColor(Pollutant.allPollutantColors().get(sensorReadings.getPollutantCode()));
                 dataSet.setColor(Color.BLACK);
                 dataSets.add(dataSet);
-                View pollutantCheckView = LayoutInflater.from(rootView.getContext()).inflate(R.layout.pollutant_check_view, linearLayout, false);
-                CheckPollutantView checkPollutantView = (CheckPollutantView) pollutantCheckView.findViewById(R.id.checkPollutantView);
-                TextView pollutantName = (TextView) pollutantCheckView.findViewById(R.id.textView);
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                        RelativeLayout.LayoutParams.WRAP_CONTENT,
-                        RelativeLayout.LayoutParams.WRAP_CONTENT
-                );
-                params.setMargins(10, 10, 10, 10);
-                checkPollutantView.setLayoutParams(params);
-                pollutantName.setText("");//sensorReadings.getPollutantCode()
-                Log.v(LOG_TAG, "pollutantCode: " + sensorReadings.getPollutantCode());
-                checkPollutantView.setColor(Pollutant.allPollutantColors().get(sensorReadings.getPollutantCode()));
-                linearLayout.addView(pollutantCheckView, params);
             }
-            linearLayout.invalidate();
         }
 
         lineData = new LineData(xVals, dataSets);
@@ -121,5 +180,10 @@ public class MultiplePollutantLinearViewHolder extends RecyclerView.ViewHolder {
         lineData.setDrawValues(true);//Draw line values
 
         lineChart.setData(lineData);
+    }
+
+    public interface OnPollutantSelectedListener {
+        void onPollutantSelected(String code);
+        void onPollutantDeSelected(String code);
     }
 }
