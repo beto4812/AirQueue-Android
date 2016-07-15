@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -11,4 +11,34 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </android.support.v7.widget.RecyclerView>
-</LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:id="@+id/header_relative_layout"
+        android:background="@color/gray_blue"
+        android:layout_alignParentStart="false"
+        android:alpha="50">
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:id="@+id/imageView5"
+            android:background="@drawable/ic_toys_white_48dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:backgroundTint="@color/bold_blue" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Pollutants over time"
+            android:id="@+id/textViewDescription"
+            android:textColor="@color/bold_blue"
+            android:textSize="16sp"
+            android:layout_toRightOf="@+id/imageView5"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="3dp" />
+
+    </RelativeLayout>
+</RelativeLayout>

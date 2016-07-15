@@ -1,6 +1,8 @@
 package com.beto4812.airqueue.ui.main.pollutantsLinear;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -9,6 +11,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.beto4812.airqueue.R;
 import com.beto4812.airqueue.model.Pollutant;
@@ -33,6 +38,7 @@ public class LinearVisualizationFragment extends Fragment implements Visualizati
     private View rootView;
     private static Calendar c = Calendar.getInstance();
     private static LinearVisualizationFragment instance;
+    private RelativeLayout headerLayout;
     private List<SensorReading> readings;
 
     @Override
@@ -48,6 +54,12 @@ public class LinearVisualizationFragment extends Fragment implements Visualizati
         if(readings!=null){
             updateUI();
         }
+
+
+        Typeface openSansBold = Typeface.createFromAsset(rootView.getContext().getAssets(), "OpenSans-Bold.ttf");
+        ((TextView) rootView.findViewById(R.id.textViewDescription)).setTypeface(openSansBold);
+
+        headerLayout = (RelativeLayout)rootView.findViewById(R.id.header_relative_layout);
         return rootView;
     }
 
@@ -103,5 +115,25 @@ public class LinearVisualizationFragment extends Fragment implements Visualizati
     @Override
     public void fragmentBecameVisible() {
 
+        //headerLayout.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2));
+
+        headerLayout.setTranslationY(0);
+
+        new CountDownTimer(3000, 1000) {
+
+            private static final int HIDE_THRESHOLD = 20;
+            private int scrolledDistance = 0;
+            private boolean controlsVisible = true;
+
+
+            public void onTick(long millisUntilFinished) {
+                //mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {
+                Log.v(LOG_TAG, "finish");
+                headerLayout.animate().translationY(-headerLayout.getHeight()).setInterpolator(new AccelerateInterpolator(2));
+            }
+        }.start();
     }
 }

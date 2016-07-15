@@ -29,9 +29,7 @@ public class CheckPollutantView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         Log.v(LOG_TAG, "onDraw");
-
         super.onDraw(canvas);
-        //canvas.drawColor(Color.WHITE);
         this.canvas = canvas;
         Paint paint = new Paint();
         paint.setColor(color);
@@ -39,7 +37,6 @@ public class CheckPollutantView extends View {
     }
 
     public void setColor(int color) {
-        Log.v(LOG_TAG, "setColor: " + color);
         this.color = color;
         invalidate();
     }
@@ -50,8 +47,6 @@ public class CheckPollutantView extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        Log.v(LOG_TAG, "onMeasure: width: " + MeasureSpec.getSize(widthMeasureSpec) + " , height: "
-                + MeasureSpec.getSize(heightMeasureSpec)+ " widthMode: "+MeasureSpec.getMode(widthMeasureSpec) + " heightMode: "+MeasureSpec.getMode(heightMeasureSpec));
         setMeasuredDimension(getMeasurement(widthMeasureSpec, radius*2), getMeasurement(heightMeasureSpec, radius*2));
     }
 
@@ -73,7 +68,6 @@ public class CheckPollutantView extends View {
                 measurement = preferred;
                 break;
         }
-        Log.v(LOG_TAG , " reurn measurement: " + measurement);
         return measurement;
     }
 

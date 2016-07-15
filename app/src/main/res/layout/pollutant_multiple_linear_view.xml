@@ -3,15 +3,57 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentStart="false"
+        android:id="@+id/header_relative_layout"
+        android:background="@drawable/gradient1_2">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/textView11"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/white" />
+
+    </RelativeLayout>
+
+
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/pollutant_linear_view_line_chart"
         android:layout_width="match_parent"
-        android:layout_height="400dp"/>
-    <LinearLayout
-        android:orientation="horizontal"
+        android:layout_height="400dp"
+        android:layout_below="@+id/header_relative_layout" />
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="false"
         android:layout_below="@+id/pollutant_linear_view_line_chart"
-        android:id="@+id/pollutant_multiple_linear_view_linear_layout">
-    </LinearLayout>
+        android:id="@+id/relativeLayout1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Pollutants"
+            android:id="@+id/textView3"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/pollutant_multiple_linear_view_linear_layout"
+            android:orientation="horizontal"
+            android:layout_below="@+id/textView3"
+            >
+
+        </LinearLayout>
+    </RelativeLayout>
+
 </RelativeLayout>

@@ -1,5 +1,6 @@
 package com.beto4812.airqueue.ui.main.pollutantsLinear.viewHolder;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -44,10 +45,6 @@ public class MultiplePollutantLinearViewHolder extends RecyclerView.ViewHolder {
         this.rootView = itemView;
         this.lineChart = (LineChart) rootView.findViewById(R.id.pollutant_linear_view_line_chart);
         this.linearLayout = (ViewGroup) rootView.findViewById(R.id.pollutant_multiple_linear_view_linear_layout);
-        //checkPollutantView = (CheckPollutantView) rootView.findViewById(R.id.check_pollutant_view1);
-
-        //checkPollutantView.setColor(Color.RED);
-        //checkPollutantView.invalidate();
         tf = Typeface.createFromAsset(rootView.getContext().getAssets(), "Roboto-Regular.ttf");
     }
 
@@ -61,16 +58,16 @@ public class MultiplePollutantLinearViewHolder extends RecyclerView.ViewHolder {
         //lineChart.setViewPortOffsets(0, 0, 0, 0);
         lineChart.setDragEnabled(false);
         lineChart.setScaleEnabled(false);
-        lineChart.animateX(1000, Easing.EasingOption.EaseInBounce);
-        lineChart.getLegend().setEnabled(true);
+        lineChart.animateX(500, Easing.EasingOption.EaseInCubic);
+        lineChart.getLegend().setEnabled(false);
         //lineChart.setDescription(Pollutant.allPollutants().get(sensorPollutantReadings.getPollutantCode())); //Chart legend text
-        lineChart.getAxisLeft().setEnabled(false); //Left Y axis legends
-        lineChart.getAxisRight().setEnabled(false); //Right y axis legends
-        lineChart.getXAxis().setEnabled(true); //Top x axis legends
+        lineChart.getAxisLeft().setEnabled(true); //Left Y axis legends
+        lineChart.getAxisRight().setEnabled(true); //Right y axis legends
+        lineChart.getXAxis().setEnabled(false); //Top x axis legends
         lineChart.getXAxis().setDrawAxisLine(false); //Draw x line in background
-        //lineChart.setDrawGridBackground(false);//Fill color of grids
+        lineChart.setDrawGridBackground(false);//Fill color of grids
         //lineChart.setGridBackgroundColor(ContextCompat.getColor(rootView.getContext(), R.color.light_orange));
-
+        lineChart.setDescription("Esto");
         lineChart.invalidate();//Refresh
     }
 
@@ -87,15 +84,19 @@ public class MultiplePollutantLinearViewHolder extends RecyclerView.ViewHolder {
             xVals.add((i) + "");
         }
 
+        int i = 0;
         while (sensorPollutantReadingsIterator.hasNext()) {
             sensorReadings = (SensorPollutantReadings) sensorPollutantReadingsIterator.next();
 
             if (Pollutant.RENDERED_POLLUTANTS.contains(sensorReadings.getPollutantCode())) {
+                i++;
                 Log.v(LOG_TAG, "adding to line graph: " + sensorReadings.getPollutantCode());
                 dataSet = new LineDataSet(sensorReadings.getLineEntries(), sensorReadings.getPollutantCode());
                 //dataSet.setDrawCubic(true); //Line curved
                 dataSet.setDrawCircles(true);
                 dataSet.setCircleRadius(4f);//Circle radius
+                dataSet.setCircleColor(Pollutant.allPollutantColors().get(sensorReadings.getPollutantCode()));
+                dataSet.setColor(Color.BLACK);
                 dataSets.add(dataSet);
                 View pollutantCheckView = LayoutInflater.from(rootView.getContext()).inflate(R.layout.pollutant_check_view, linearLayout, false);
                 CheckPollutantView checkPollutantView = (CheckPollutantView) pollutantCheckView.findViewById(R.id.checkPollutantView);
@@ -104,13 +105,14 @@ public class MultiplePollutantLinearViewHolder extends RecyclerView.ViewHolder {
                         RelativeLayout.LayoutParams.WRAP_CONTENT,
                         RelativeLayout.LayoutParams.WRAP_CONTENT
                 );
-                params.setMargins(0, 0, 5, 0);
+                params.setMargins(10, 10, 10, 10);
                 checkPollutantView.setLayoutParams(params);
-                pollutantName.setText("Name");
+                pollutantName.setText("");//sensorReadings.getPollutantCode()
                 Log.v(LOG_TAG, "pollutantCode: " + sensorReadings.getPollutantCode());
                 checkPollutantView.setColor(Pollutant.allPollutantColors().get(sensorReadings.getPollutantCode()));
-                linearLayout.addView(pollutantCheckView);
+                linearLayout.addView(pollutantCheckView, params);
             }
+            linearLayout.invalidate();
         }
 
         lineData = new LineData(xVals, dataSets);
