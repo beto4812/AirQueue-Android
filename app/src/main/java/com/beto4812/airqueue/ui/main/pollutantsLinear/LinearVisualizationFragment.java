@@ -60,6 +60,14 @@ public class LinearVisualizationFragment extends Fragment implements Visualizati
         ((TextView) rootView.findViewById(R.id.textViewDescription)).setTypeface(openSansBold);
 
         headerLayout = (RelativeLayout)rootView.findViewById(R.id.header_relative_layout);
+
+        headerLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                headerLayout.animate().translationY(-headerLayout.getHeight()).setInterpolator(new AccelerateInterpolator(2));
+            }
+        });
+
         return rootView;
     }
 
@@ -92,21 +100,22 @@ public class LinearVisualizationFragment extends Fragment implements Visualizati
 
 
     public void updateUI(){
-        Collection pollutantCodes = Pollutant.allPollutants().keySet();
         List<Object> renderList = new ArrayList<>();
+        /*Collection pollutantCodes = Pollutant.allPollutants().keySet();
         List<SensorPollutantReadings> multiplePollutants = new ArrayList<>();
         SensorPollutantReadings sensorPollutantReadings;
 
         Iterator it = pollutantCodes.iterator();
 
+        //The pollutants over time objects are constructed here. There should be a better way to save them since they are queried from amazon
         for(int i = 0; it.hasNext(); i++){
             String pollutantCode = (String)it.next();
             Log.v(LOG_TAG, "setupUI "+i + " " + pollutantCode);
             sensorPollutantReadings = new SensorPollutantReadings(readings, pollutantCode);
             //renderList.add(sensorPollutantReadings);
             multiplePollutants.add(sensorPollutantReadings);
-        }
-        renderList.add(multiplePollutants);
+        }*/
+        renderList.add(readings);
 
         linearVisualizationAdapter = new LinearVisualizationAdapter(renderList);
         recyclerView.setAdapter(linearVisualizationAdapter);

@@ -18,6 +18,7 @@ import com.beto4812.airqueue.ui.main.pollutantsLinear.viewHolder.MultiplePolluta
 public class CheckPollutantView extends View {
 
     private static final String LOG_TAG = "CheckPollutantView";
+    private int originalColor;
     private int color = Color.BLACK;
     private int radius = 60;
     private int glowRadius = 15;
@@ -82,6 +83,7 @@ public class CheckPollutantView extends View {
     }
 
     public void setColor(int color) {
+        this.originalColor = color;
         this.color = color;
         invalidate();
     }
@@ -103,7 +105,14 @@ public class CheckPollutantView extends View {
         textView.setText("No data");
         this.color = Color.rgb(128, 128, 128);
         this.disabled = true;
-        //invalidate();
+        invalidate();
+    }
+
+    public void setEnabled(){
+        color = originalColor;
+        textView.setText("");
+        this.disabled = false;
+        invalidate();
     }
 
     public void setSelected(){

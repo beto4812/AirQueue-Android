@@ -76,6 +76,10 @@ public class SensorReading {
         return Integer.parseInt(lastUpdated.split(" ")[1].split(":")[0]);
     }
 
+    public int getLastUpdatedDay(){
+        return Integer.parseInt(lastUpdated.split(" ")[0].split("-")[2]);
+    }
+
     public void setLastUpdated(String lastUpdated){
         this.lastUpdated = lastUpdated;
     }
@@ -182,70 +186,131 @@ public class SensorReading {
     }
 
     public void setNo(List<String> p){
-        this.pollutants.put(Pollutant.NITRIC_OXIDE,
-                new Pollutant(Pollutant.NITRIC_OXIDE, p.get(0), p.get(1)));
+        try{
+            float value = Integer.parseInt(p.get(0));
+            this.pollutants.put(Pollutant.NITRIC_OXIDE,
+                    new Pollutant(Pollutant.NITRIC_OXIDE, value, p.get(1)));
+        }catch (NumberFormatException e){
+
+        }
+
     }
 
 
     public void setNo2(List<String> p){
-        this.pollutants.put(Pollutant.NITROGEN_DIOXIDE,
-                new Pollutant(Pollutant.NITROGEN_DIOXIDE, p.get(0), p.get(1)));
+        try{
+            float value = Integer.parseInt(p.get(0));
+            this.pollutants.put(Pollutant.NITROGEN_DIOXIDE,
+                    new Pollutant(Pollutant.NITROGEN_DIOXIDE, value, p.get(1)));
+        }catch (NumberFormatException e){
+
+        }
     }
 
     public void setNox(List<String> p){
-        this.pollutants.put(Pollutant.OXIDES_OF_NITROGEN,
-                new Pollutant(Pollutant.OXIDES_OF_NITROGEN, p.get(0), p.get(1)));
+        try{
+            float value = Integer.parseInt(p.get(0));
+            this.pollutants.put(Pollutant.OXIDES_OF_NITROGEN,
+                    new Pollutant(Pollutant.OXIDES_OF_NITROGEN, value, p.get(1)));
+        }catch (NumberFormatException e){
+
+        }
     }
 
     public void setPm10(List<String> p){
-        this.pollutants.put(Pollutant.PARTICULATE_MATTER_10_MICROMETRE,
-                new Pollutant(Pollutant.PARTICULATE_MATTER_10_MICROMETRE, p.get(0), p.get(1)));
+        try{
+            float value = Integer.parseInt(p.get(0));
+            this.pollutants.put(Pollutant.PARTICULATE_MATTER_10_MICROMETRE,
+                    new Pollutant(Pollutant.PARTICULATE_MATTER_10_MICROMETRE, value, p.get(1)));
+        }catch (NumberFormatException e){
+
+        }
     }
 
     public void setVpm10(List<String> p){
-        this.pollutants.put(Pollutant.VOLATILE_PARTICULATE_MATTER_10_MICROMETRE,
-                new Pollutant(Pollutant.VOLATILE_PARTICULATE_MATTER_10_MICROMETRE, p.get(0), p.get(1)));
+        try{
+            float value = Integer.parseInt(p.get(0));
+            this.pollutants.put(Pollutant.VOLATILE_PARTICULATE_MATTER_10_MICROMETRE,
+                    new Pollutant(Pollutant.VOLATILE_PARTICULATE_MATTER_10_MICROMETRE, value, p.get(1)));
+        }catch (NumberFormatException e){
+
+        }
     }
 
 
     public void setPm2p5(List<String> p){
-        this.pollutants.put(Pollutant.PARTICULATE_MATTER_2_5_MICROMETRE,
-                new Pollutant(Pollutant.PARTICULATE_MATTER_2_5_MICROMETRE, p.get(0), p.get(1)));
+        try{
+            float value = Integer.parseInt(p.get(0));
+            this.pollutants.put(Pollutant.PARTICULATE_MATTER_2_5_MICROMETRE,
+                    new Pollutant(Pollutant.PARTICULATE_MATTER_2_5_MICROMETRE, value, p.get(1)));
+        }catch (NumberFormatException e){
+
+        }
     }
 
 
     public void setPm1(List<String> p){
-        this.pollutants.put(Pollutant.PARTICULATE_MATTER_1_MICROMETRE,
-                new Pollutant(Pollutant.PARTICULATE_MATTER_1_MICROMETRE, p.get(0), p.get(1)));
+        try{
+            float value = Integer.parseInt(p.get(0));
+            this.pollutants.put(Pollutant.PARTICULATE_MATTER_1_MICROMETRE,
+                    new Pollutant(Pollutant.PARTICULATE_MATTER_1_MICROMETRE, value, p.get(1)));
+        }catch (NumberFormatException e){
+
+        }
     }
 
 
     public void setNvpm2p5(List<String> p){
-        this.pollutants.put(Pollutant.NON_VOLATILE_PARTICULATE_MATTER_2_5_MICROMETRE,
-                new Pollutant(Pollutant.NON_VOLATILE_PARTICULATE_MATTER_2_5_MICROMETRE, p.get(0), p.get(1)));
+        try{
+            float value = Integer.parseInt(p.get(0));
+            this.pollutants.put(Pollutant.NON_VOLATILE_PARTICULATE_MATTER_2_5_MICROMETRE,
+                    new Pollutant(Pollutant.NON_VOLATILE_PARTICULATE_MATTER_2_5_MICROMETRE, value, p.get(1)));
+        }catch (NumberFormatException e){
+
+        }
     }
 
 
     public void setVpm2p5(List<String> p){
-        this.pollutants.put(Pollutant.VOLATILE_PARTICULATE_MATTER_2_5_MICROMETRE,
-                new Pollutant(Pollutant.VOLATILE_PARTICULATE_MATTER_2_5_MICROMETRE, p.get(0), p.get(1)));
+        try{
+            float value = Integer.parseInt(p.get(0));
+            this.pollutants.put(Pollutant.VOLATILE_PARTICULATE_MATTER_2_5_MICROMETRE,
+                    new Pollutant(Pollutant.VOLATILE_PARTICULATE_MATTER_2_5_MICROMETRE, value, p.get(1)));
+        }catch (NumberFormatException e){
+
+        }
     }
 
 
     public void setSo2(List<String> p){
-        this.pollutants.put(Pollutant.SULPHUR_DIOXIDE,
-                new Pollutant(Pollutant.SULPHUR_DIOXIDE, p.get(0), p.get(1)));
+        try{
+            float value = Integer.parseInt(p.get(0));
+            this.pollutants.put(Pollutant.SULPHUR_DIOXIDE,
+                    new Pollutant(Pollutant.SULPHUR_DIOXIDE, value, p.get(1)));
+        }catch (NumberFormatException e){
+
+        }
     }
 
 
     public void setCo(List<String> p){
-        this.pollutants.put(Pollutant.CARBON_MONOXIDE,
-                new Pollutant(Pollutant.CARBON_MONOXIDE, p.get(0), p.get(1)));
+        try{
+            float value = Integer.parseInt(p.get(0));
+            this.pollutants.put(Pollutant.CARBON_MONOXIDE,
+                    new Pollutant(Pollutant.CARBON_MONOXIDE, value, p.get(1)));
+        }catch (NumberFormatException e){
+
+        }
     }
 
     public void setO3(List<String> p){
-        this.pollutants.put(Pollutant.OZONE,
-                new Pollutant(Pollutant.OZONE, p.get(0), p.get(1)));
+        try{
+            float value = Integer.parseInt(p.get(0));
+            this.pollutants.put(Pollutant.OZONE,
+                    new Pollutant(Pollutant.OZONE, value, p.get(1)));
+        }catch (NumberFormatException e){
+
+        }
     }
 
     public String getTextCoordinates() {

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import com.beto4812.airqueue.R;
 import com.beto4812.airqueue.model.SensorPollutantReadings;
+import com.beto4812.airqueue.model.SensorReading;
 import com.beto4812.airqueue.ui.main.pollutantsLinear.viewHolder.MultiplePollutantLinearViewHolder;
 import com.beto4812.airqueue.ui.main.pollutantsLinear.viewHolder.PollutantLinearViewHolder;
 
@@ -67,7 +68,7 @@ public class LinearVisualizationAdapter extends RecyclerView.Adapter<RecyclerVie
 
     private void configureMultiplePollutantView(MultiplePollutantLinearViewHolder viewHolder, int position){
         Log.v(LOG_TAG, "configureMultiplePollutantView");
-        List<SensorPollutantReadings> readings = (List) items.get(position);
+        List<SensorReading> readings = (List) items.get(position);
         viewHolder.setReadings(readings);
     }
 

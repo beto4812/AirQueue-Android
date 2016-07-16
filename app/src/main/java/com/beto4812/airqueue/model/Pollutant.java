@@ -25,6 +25,7 @@ public class Pollutant implements Parcelable{
     private String value = null;
     private String measureUnit;
     private int category;
+    private float floatValue;
     private PollutantThreshold threshold;
 
     public static final String NITRIC_OXIDE = "NO";
@@ -94,9 +95,9 @@ public class Pollutant implements Parcelable{
                     OZONE}
     ));
 
-    public Pollutant(String name, String value, String measureUnit) {
+    public Pollutant(String name, float value, String measureUnit) {
         this.code = name;
-        this.value = value;
+        this.floatValue = value;
         this.measureUnit = measureUnit;
         setCategory();
     }
@@ -181,11 +182,11 @@ public class Pollutant implements Parcelable{
     public String getName() { return allPollutants().get(getCode());};
 
     public double getDoubleValue(){
-        return Double.parseDouble(value);
+        return new Double(floatValue);
     }
 
     public Float getFloatValue(){
-        return Float.parseFloat(value);
+        return floatValue;
     }
 
     public void setValue(String value) {
