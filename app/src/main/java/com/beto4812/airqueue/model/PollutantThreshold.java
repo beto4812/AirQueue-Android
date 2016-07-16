@@ -13,6 +13,7 @@ public class PollutantThreshold {
     private String black;
     private String red;
     private String yellow;
+    private String aboveBlack;
 
     public String getCode(){
         return code;
@@ -50,6 +51,10 @@ public class PollutantThreshold {
         return Double.parseDouble(yellow);
     }
 
+    public String getAboveBlack(){return aboveBlack;}
+
+    public Double getAboveBlackDouble(){return Double.parseDouble(aboveBlack);}
+
     public void setCode(String code){
         this.code = code;
     }
@@ -70,8 +75,23 @@ public class PollutantThreshold {
         this.yellow = value;
     }
 
+    public void setAboveBlack(String value){this.aboveBlack = value;}
+
     public String toString(){
         return " code: " + code + " green: " + green + " yellow: " + yellow + " red: " + red + " black: " + black;
     }
 
+    public double getPercentage(String color){
+        switch (color){
+            case "green":
+                return getYellowDouble()*100/getAboveBlackDouble();
+            case "yellow":
+                return getRedDouble()*100/getAboveBlackDouble();
+            case "red":
+                return getBlackDouble()*100/getAboveBlackDouble();
+            case "black":
+                return getAboveBlackDouble()*100/getAboveBlackDouble();
+        }
+        return -1;
+    }
 }

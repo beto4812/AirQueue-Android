@@ -24,7 +24,7 @@ public class CheckPollutantView extends View {
     private int glowRadius = 15;
     private Canvas canvas;
     private Pollutant pollutant;
-    private String pollutantCode;
+    private String pollutantCode = "code";
     private Paint radialPaint;
     private boolean disabled = false;
     private boolean selected = false;
@@ -92,6 +92,10 @@ public class CheckPollutantView extends View {
         this.pollutantCode = code;
     }
 
+    public String getPollutantCode(){
+        return pollutantCode;
+    }
+
     public void setTextView(TextView textView){
         this.textView = textView;
     }
@@ -115,8 +119,12 @@ public class CheckPollutantView extends View {
         invalidate();
     }
 
-    public void setSelected(){
-        this.selected = true;
+    public void setSelected(boolean selected){
+        this.selected = selected;
+    }
+
+    public boolean isSelected(){
+        return  selected;
     }
 
     public void setListener(MultiplePollutantLinearViewHolder.OnPollutantSelectedListener listener){

@@ -7,11 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.beto4812.airqueue.R;
+import com.beto4812.airqueue.model.PollutantThreshold;
 import com.beto4812.airqueue.model.SensorPollutantReadings;
 import com.beto4812.airqueue.model.SensorReading;
+import com.beto4812.airqueue.ui.main.pollutantsLinear.LinearVisualizationFragment;
 import com.beto4812.airqueue.ui.main.pollutantsLinear.viewHolder.MultiplePollutantLinearViewHolder;
 import com.beto4812.airqueue.ui.main.pollutantsLinear.viewHolder.PollutantLinearViewHolder;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class LinearVisualizationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener {
@@ -33,6 +36,8 @@ public class LinearVisualizationAdapter extends RecyclerView.Adapter<RecyclerVie
             case POLLUTANT_SINGLE:
                 return new PollutantLinearViewHolder(layoutInflater.inflate(R.layout.pollutant_linear_view, parent, false));
             case POLLUTANT_MULTIPLE:
+
+
                 return new MultiplePollutantLinearViewHolder(layoutInflater.inflate(R.layout.pollutant_multiple_linear_view, parent, false));
         }
         return null;
@@ -42,7 +47,7 @@ public class LinearVisualizationAdapter extends RecyclerView.Adapter<RecyclerVie
     public int getItemViewType(int position) {
         if (items.get(position) instanceof SensorPollutantReadings) {
             return POLLUTANT_SINGLE;
-        } else if (items.get(position) instanceof List) {
+        } else if (items.get(position) instanceof LinearVisualizationFragment.RenderedObject) {
             return POLLUTANT_MULTIPLE;
         }
         return -1;
@@ -68,7 +73,11 @@ public class LinearVisualizationAdapter extends RecyclerView.Adapter<RecyclerVie
 
     private void configureMultiplePollutantView(MultiplePollutantLinearViewHolder viewHolder, int position){
         Log.v(LOG_TAG, "configureMultiplePollutantView");
-        List<SensorReading> readings = (List) items.get(position);
+        LinearVisualizationFragment.RenderedObject obj = (LinearVisualizationFragment.RenderedObject) items.get(position);
+
+        List<SensorReading> readings =  obj.getReadings();
+        HashMap<String, PollutantThreshold> thresholds = obj.getPollutantThresholds();
+        viewHolder.setPollutantThresholds(thresholds);
         viewHolder.setReadings(readings);
     }
 

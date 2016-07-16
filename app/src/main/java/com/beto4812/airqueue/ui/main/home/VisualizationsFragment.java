@@ -28,6 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 public class VisualizationsFragment extends Fragment {
@@ -145,6 +146,7 @@ public class VisualizationsFragment extends Fragment {
             PreferenceManager.getDefaultSharedPreferences(getContext()).edit().putString("closestSourceID", sensorCoordinates.getSourceID()).commit();
             HashMap<String, PollutantThreshold> pollutantThresholds = AWSClientManager.defaultMobileClient().getDynamoDbManager().getPollutantThresholds();
             HashMap<String, PollutantCategoryInfo> pollutantCategoriesInfo = AWSClientManager.defaultMobileClient().getDynamoDbManager().getPollutantCategoryInfo();
+            LinearVisualizationFragment.getInstance().setPollutantThresholds(pollutantThresholds);
             CircularVisualizationFragment.getInstance().setPollutantThresholds(pollutantThresholds);
             CircularVisualizationFragment.getInstance().setPollutantCategoryInfo(pollutantCategoriesInfo);
 

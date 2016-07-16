@@ -5,19 +5,17 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:weightSum="3">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/linear_layout_multiple_linear_view"
         android:orientation="horizontal"
         android:weightSum="3">
-
         <TextView
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:text="Today"
-            android:id="@+id/textView11"
+            android:id="@+id/pollutant_multiple_linear_view_date_text"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:textAlignment="center" />
@@ -33,28 +31,34 @@
             android:text="Pick time"
             android:layout_weight="1"
             android:id="@+id/pollutant_multiple_linear_view_time"></com.gc.materialdesign.views.ButtonRectangle>
-
     </LinearLayout>
-
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/pollutant_linear_view_line_chart"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="2" />
+        android:layout_weight="2">
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/pollutant_linear_view_line_chart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true" />
+        <com.beto4812.airqueue.ui.customView.OverlayLinearVIew
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/pollutant_linear_view_overlay"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/header_relative_layout"
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="1">
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="false"
             android:id="@+id/relativeLayout1"
             android:layout_alignParentEnd="false">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -69,7 +73,6 @@
                 android:paddingBottom="5dp"
                 android:layout_alignParentBottom="false"
                 android:layout_centerHorizontal="true" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -79,10 +82,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true">
-
             </LinearLayout>
         </RelativeLayout>
-
     </RelativeLayout>
-
 </LinearLayout>

@@ -18,9 +18,11 @@ import android.widget.TextView;
 import com.beto4812.airqueue.R;
 import com.beto4812.airqueue.aws.AWSClientManager;
 import com.beto4812.airqueue.model.Pollutant;
+import com.beto4812.airqueue.model.PollutantThreshold;
 import com.beto4812.airqueue.model.SensorPollutantReadings;
 import com.beto4812.airqueue.model.SensorReading;
 import com.beto4812.airqueue.ui.customView.CheckPollutantView;
+import com.beto4812.airqueue.ui.customView.OverlayLinearVIew;
 import com.borax12.materialdaterangepicker.date.DatePickerDialog;
 import com.borax12.materialdaterangepicker.time.RadialPickerLayout;
 import com.borax12.materialdaterangepicker.time.TimePickerDialog;
@@ -64,6 +66,10 @@ public class MultiplePollutantLinearViewHolder extends RecyclerView.ViewHolder {
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     private HashMap<String, View> checkPollutantViews;
     private boolean pollutantPanelSetup = false;
+    private TextView headerTextView;
+    private OverlayLinearVIew overlayLinearVIew;
+    private MultiplePollutantLinearViewHolder instance;
+    private HashMap<String, PollutantThreshold> pollutantThresholds;
 
 
     public MultiplePollutantLinearViewHolder(View itemView) {
@@ -72,11 +78,22 @@ public class MultiplePollutantLinearViewHolder extends RecyclerView.ViewHolder {
         init();
     }
 
+    public MultiplePollutantLinearViewHolder getInstance(){
+        if(instance==null){
+            this.instance = new MultiplePollutantLinearViewHolder(itemView);
+        }
+
+        return instance;
+    }
+
+
 
     public void init() {
         this.rootView = itemView;
         this.lineChart = (LineChart) rootView.findViewById(R.id.pollutant_linear_view_line_chart);
         this.linearLayout = (ViewGroup) rootView.findViewById(R.id.pollutant_multiple_linear_view_linear_layout);
+        this.headerTextView = (TextView) rootView.findViewById(R.id.pollutant_multiple_linear_view_date_text);
+        this.overlayLinearVIew = (OverlayLinearVIew) rootView.findViewById(R.id.pollutant_linear_view_overlay);
         graphicablePollutants = new TreeSet<>();
         graphicablePollutants.addAll(Pollutant.RENDERED_POLLUTANTS);
         tf = Typeface.createFromAsset(rootView.getContext().getAssets(), "Roboto-Regular.ttf");
@@ -89,6 +106,7 @@ public class MultiplePollutantLinearViewHolder extends RecyclerView.ViewHolder {
                 Log.v(LOG_TAG, "touch from parent: " + code);
                 graphicablePollutants.add(code);
                 setupChart();
+                refreshOverlayPanel();
             }
 
             @Override
@@ -96,6 +114,7 @@ public class MultiplePollutantLinearViewHolder extends RecyclerView.ViewHolder {
                 Log.v(LOG_TAG, "touch from parent: " + code);
                 graphicablePollutants.remove(code);
                 setupChart();
+                refreshOverlayPanel();
             }
 
             public void printGraphicablePollutants() {
@@ -108,10 +127,31 @@ public class MultiplePollutantLinearViewHolder extends RecyclerView.ViewHolder {
         setupPickers();
     }
 
+    public void refreshOverlayPanel(){
+        Log.v(LOG_TAG, "refreshOverlayPanel");
+        Iterator it = checkPollutantViews.values().iterator();
+        int selected = 0;
+        String selectedCode = "";
+        while (it.hasNext()){
+            CheckPollutantView view = (CheckPollutantView)it.next();
+            if(view.isSelected()){
+                selected ++;
+                selectedCode = view.getPollutantCode();
+            }
+        }
+
+        if(selected == 1){
+            overlayLinearVIew.setPollutantThreshold(pollutantThresholds.get(selectedCode));
+            overlayLinearVIew.setEnabled(true);
+        }else{
+            overlayLinearVIew.setEnabled(false);
+        }
+    }
+
     public void setupPickers() {
         //Set from and to to today
         fromCalendar = (GregorianCalendar) Calendar.getInstance();
-        toCalendar = new GregorianCalendar(fromCalendar.get(Calendar.YEAR), fromCalendar.get(Calendar.MONTH), fromCalendar.get(Calendar.DAY_OF_MONTH), fromCalendar.get(Calendar.HOUR) + 2, fromCalendar.get(Calendar.MINUTE));
+        toCalendar = fromCalendar;
 
         dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -165,6 +205,10 @@ public class MultiplePollutantLinearViewHolder extends RecyclerView.ViewHolder {
         });
     }
 
+    public void setPollutantThresholds(HashMap<String, PollutantThreshold> thresholds){
+        this.pollutantThresholds = thresholds;
+    }
+
     public void setReadings(List<SensorReading> sensorReadings) {
         this.sensorReadings = sensorReadings;
         this.sensorPollutantReadings = new ArrayList<>();
@@ -185,6 +229,27 @@ public class MultiplePollutantLinearViewHolder extends RecyclerView.ViewHolder {
             refreshPollutantsPanel();
         }
         setupChart();
+        setupHeaderText();
+    }
+
+    private void setupHeaderText(){
+        String date = "";
+        String hour = "";
+
+        if(this.fromCalendar.get(Calendar.DAY_OF_MONTH)==this.toCalendar.get(Calendar.DAY_OF_MONTH)){
+            date = "Date: Today";
+        }else{
+            date = "Date: "+fromCalendar.get(Calendar.DAY_OF_MONTH)+"/"+fromCalendar.get(Calendar.MONTH)+"-"+toCalendar.get(Calendar.DAY_OF_MONTH)+"/"+toCalendar.get(Calendar.MONTH);
+        }
+        if(fromCalendar.get(Calendar.HOUR)==toCalendar.get(Calendar.HOUR) && fromCalendar.get(Calendar.MINUTE) == toCalendar.get(Calendar.MINUTE)){
+            hour = "";
+        }else{
+            hour = "Time: "+fromCalendar.get(Calendar.HOUR)+":"+fromCalendar.get(Calendar.MINUTE)+"-"+toCalendar.get(Calendar.HOUR)+":"+toCalendar.get(Calendar.MINUTE);
+        }
+
+
+        headerTextView.setText(date+System.getProperty ("line.separator")+hour);
+
     }
 
     private void setupChart() {
@@ -256,7 +321,7 @@ public class MultiplePollutantLinearViewHolder extends RecyclerView.ViewHolder {
                 if (!sensorReadings.hasData()) {
                     checkPollutantView.setDisabled();
                 } else {
-                    checkPollutantView.setSelected();
+                    checkPollutantView.setSelected(true);
                 }
                 checkPollutantView.setListener(pollutantSelectedListener);
                 space = new Space(rootView.getContext());
@@ -279,9 +344,10 @@ public class MultiplePollutantLinearViewHolder extends RecyclerView.ViewHolder {
                 CheckPollutantView checkPollutantView = (CheckPollutantView)checkPollutantViews.get(sensorReadings.getPollutantCode());
                 if (!sensorReadings.hasData()) {
                     checkPollutantView.setDisabled();
+                    checkPollutantView.setSelected(false);
                 } else {
                     checkPollutantView.setEnabled();
-                    checkPollutantView.setSelected();
+                    checkPollutantView.setSelected(true);
                 }
 
             }
