@@ -53,7 +53,7 @@ public class PollutantThreshold {
 
     public String getAboveBlack(){return aboveBlack;}
 
-    public Double getAboveBlackDouble(){return Double.parseDouble(aboveBlack);}
+    public Double getAboveBlackDouble(){return getBlackDouble()+getBlackDouble()*.5;}
 
     public void setCode(String code){
         this.code = code;

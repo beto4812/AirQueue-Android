@@ -1,50 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:orientation="vertical"
     android:weightSum="3">
+
     <LinearLayout
+        android:id="@+id/linear_layout_multiple_linear_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/linear_layout_multiple_linear_view"
         android:orientation="horizontal"
         android:weightSum="3">
+
         <TextView
+            android:id="@+id/pollutant_multiple_linear_view_date_text"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
-            android:text="Today"
-            android:id="@+id/pollutant_multiple_linear_view_date_text"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
+            android:text="Today"
             android:textAlignment="center" />
+
         <com.gc.materialdesign.views.ButtonRectangle
+            android:id="@+id/pollutant_multiple_linear_view_date"
             android:layout_width="0dip"
             android:layout_height="60dp"
-            android:text="Pick date"
             android:layout_weight="1"
-            android:id="@+id/pollutant_multiple_linear_view_date"></com.gc.materialdesign.views.ButtonRectangle>
+            android:text="Pick date"></com.gc.materialdesign.views.ButtonRectangle>
+
         <com.gc.materialdesign.views.ButtonRectangle
+            android:id="@+id/pollutant_multiple_linear_view_time"
             android:layout_width="0dip"
             android:layout_height="60dp"
-            android:text="Pick time"
             android:layout_weight="1"
-            android:id="@+id/pollutant_multiple_linear_view_time"></com.gc.materialdesign.views.ButtonRectangle>
+            android:text="Pick time"></com.gc.materialdesign.views.ButtonRectangle>
     </LinearLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="2">
+
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/pollutant_linear_view_line_chart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentStart="true" />
+
         <com.beto4812.airqueue.ui.customView.OverlayLinearVIew
+            android:id="@+id/pollutant_linear_view_overlay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/pollutant_linear_view_overlay"
             android:layout_alignParentStart="true" />
     </RelativeLayout>
 
@@ -53,36 +59,48 @@
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="1">
+
         <RelativeLayout
+            android:id="@+id/relativeLayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="false"
-            android:id="@+id/relativeLayout1"
-            android:layout_alignParentEnd="false">
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentStart="false">
+
             <TextView
+                android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Select Pollutants"
-                android:id="@+id/textView3"
-                android:layout_alignParentTop="true"
-                android:autoText="false"
+                android:layout_alignParentBottom="false"
                 android:layout_alignParentEnd="false"
                 android:layout_alignParentStart="false"
-                android:textAlignment="center"
-                android:paddingTop="5dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:autoText="false"
                 android:paddingBottom="5dp"
-                android:layout_alignParentBottom="false"
-                android:layout_centerHorizontal="true" />
+                android:paddingTop="5dp"
+                android:text="Select Pollutants"
+                android:textAlignment="center" />
+
+            <ImageView
+                android:id="@+id/imageViewIconInfoPollutantCheck"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/ic_info_outline_white_24dp"
+                android:backgroundTint="@color/black"
+                android:layout_alignBottom="@+id/textView3"
+                android:layout_toEndOf="@+id/textView3" />
+
             <LinearLayout
+                android:id="@+id/pollutant_multiple_linear_view_linear_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/pollutant_multiple_linear_view_linear_layout"
-                android:orientation="horizontal"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
                 android:layout_below="@+id/textView3"
                 android:layout_marginTop="10dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true">
-            </LinearLayout>
+                android:orientation="horizontal"></LinearLayout>
         </RelativeLayout>
     </RelativeLayout>
 </LinearLayout>

@@ -12,14 +12,5 @@
             android:icon="@drawable/ic_settings_black_24dp"
             android:title="@string/action_title_settings"/>
 
-        <item
-            android:id="@+id/nav_visualizations"
-            android:icon="@drawable/ic_home_black_24dp"
-            android:title="@string/action_title_visualizations"/>
-
-        <item
-            android:id="@+id/nav_log_out"
-            android:icon="@drawable/ic_exit_to_app_black_24dp"
-            android:title="@string/action_title_logout"/>
     </group>
 </menu>

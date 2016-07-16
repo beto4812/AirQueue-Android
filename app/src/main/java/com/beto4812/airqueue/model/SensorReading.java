@@ -176,6 +176,10 @@ public class SensorReading {
         return airQualityIndex;
     }
 
+    public int getAirQualityIndexInt(){
+        return Integer.parseInt(airQualityIndex);
+    }
+
     public void setAirQualityIndex(String airQualityIndex){
         this.airQualityIndex = airQualityIndex;
     }

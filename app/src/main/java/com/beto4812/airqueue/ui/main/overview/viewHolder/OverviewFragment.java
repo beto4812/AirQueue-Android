@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.util.Log;
 import android.view.DragEvent;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,6 +39,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
+
+import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip;
 
 public class OverviewFragment extends Fragment implements VisualizationsFragment.FragmentVisibleInterface {
 
@@ -77,8 +80,8 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
         Picasso.with(getContext()).load(sensorReading.getImage()).into(imageViewSensor);
         textViewLastUpdated.setText(sensorReading.getLastUpdated());
         textViewClosestSensor.setText(sensorReading.getSourceID());
-        Constants.setLevel(1, progressBarSensitivity);
-        Constants.setLevel(3, progressBarQualityIndex);
+        //Constants.setLevel(1, progressBarSensitivity);
+        //Constants.setLevel(sensorReading.getAirQualityIndexInt(), progressBarQualityIndex);
         Picasso.with(getContext()).load(sensorReading.getImage()).fit().into(imageViewSensor);
         setupPieChart();
     }
@@ -214,7 +217,7 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
         progressBarQualityIndex = (RoundCornerProgressBar) rootView.findViewById(R.id.overview_air_quality_bar);
         ((TextView) rootView.findViewById(R.id.textViewAdvice)).setTypeface(openSansLight);
         ((TextView) rootView.findViewById(R.id.textViewLivePollutants)).setTypeface(openSansLight);
-        ((TextView) rootView.findViewById(R.id.textView_advice_text)).setTypeface(robotoThin);
+        ((TextView) rootView.findViewById(R.id.textView_advice_text)).setTypeface(openSansBold);
         ((TextView) rootView.findViewById(R.id.textViewPersonalized)).setTypeface(openSansLight);
         ((TextView) rootView.findViewById(R.id.textViewAirQualityIndex)).setTypeface(openSansLight);
         ((TextView) rootView.findViewById(R.id.textViewHeader)).setTypeface(openSansBold);
@@ -227,6 +230,56 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
         if(sensorReading!=null){
             updateUI();
         }
+
+        rootView.findViewById(R.id.imageViewIconInfoPers).setOnTouchListener(
+                new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        new SimpleTooltip.Builder(rootView.getContext())
+                                .anchorView(v)
+                                .text(getString(R.string.personalized_help))
+                                .gravity(Gravity.TOP)
+                                .animated(true)
+                                .build()
+                                .show();
+                        return false;
+                    }
+                }
+        );
+
+        rootView.findViewById(R.id.imageViewIconInfo).setOnTouchListener(
+                new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        new SimpleTooltip.Builder(rootView.getContext())
+                                .anchorView(v)
+                                .text(getString(R.string.air_quality_advice))
+                                .gravity(Gravity.TOP)
+                                .animated(true)
+                                .build()
+                                .show();
+                        return false;
+                    }
+                }
+        );
+
+        //imageViewIconInfoLive
+        rootView.findViewById(R.id.imageViewIconInfoLive).setOnTouchListener(
+                new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        new SimpleTooltip.Builder(rootView.getContext())
+                                .anchorView(v)
+                                .text(getString(R.string.air_quality_live))
+                                .gravity(Gravity.TOP)
+                                .animated(true)
+                                .build()
+                                .show();
+                        return false;
+                    }
+                }
+        );
+
         return rootView;
     }
 

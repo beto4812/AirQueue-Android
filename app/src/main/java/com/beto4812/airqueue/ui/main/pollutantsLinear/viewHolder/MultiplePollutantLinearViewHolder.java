@@ -7,7 +7,9 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -43,6 +45,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+
+import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip;
 
 public class MultiplePollutantLinearViewHolder extends RecyclerView.ViewHolder {
 
@@ -124,6 +128,22 @@ public class MultiplePollutantLinearViewHolder extends RecyclerView.ViewHolder {
                 }
             }
         };
+
+        rootView.findViewById(R.id.imageViewIconInfoPollutantCheck).setOnTouchListener(
+                new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        new SimpleTooltip.Builder(rootView.getContext())
+                                .anchorView(v)
+                                .text(rootView.getContext().getString(R.string.line_pollutantse))
+                                .gravity(Gravity.TOP)
+                                .animated(true)
+                                .build()
+                                .show();
+                        return false;
+                    }
+                }
+        );
         setupPickers();
     }
 
@@ -140,8 +160,11 @@ public class MultiplePollutantLinearViewHolder extends RecyclerView.ViewHolder {
             }
         }
 
+        Log.v(LOG_TAG, "lineChartY: " + lineChart.getData().getYMax());
+
         if(selected == 1){
             overlayLinearVIew.setPollutantThreshold(pollutantThresholds.get(selectedCode));
+            overlayLinearVIew.setMaxYValue((int)lineChart.getData().getYMax());
             overlayLinearVIew.setEnabled(true);
         }else{
             overlayLinearVIew.setEnabled(false);
@@ -367,7 +390,7 @@ public class MultiplePollutantLinearViewHolder extends RecyclerView.ViewHolder {
             sensorPollutant = (SensorPollutantReadings) sensorPollutantReadingsIterator.next();
             if (graphicablePollutants.contains(sensorPollutant.getPollutantCode())) {
 
-                Log.v(LOG_TAG, "adding to line graph: " + sensorPollutant.getPollutantCode());
+                //Log.v(LOG_TAG, "adding to line graph: " + sensorPollutant.getPollutantCode());
                 lastEntryHour = sensorPollutant.getLastEntryHour() > lastEntryHour ? sensorPollutant.getLastEntryHour() : lastEntryHour;
                 sensorPollutant.getLineEntries().size();
                 dataSet = new LineDataSet(sensorPollutant.getLineEntries(), sensorPollutant.getPollutantCode());
@@ -400,7 +423,7 @@ public class MultiplePollutantLinearViewHolder extends RecyclerView.ViewHolder {
             } else {
                 currentHour = sensorReading.getLastUpdatedHour();
             }
-            Log.v(LOG_TAG, "add to xVals: " + sensorReading.getLastUpdatedDay() + "" + currentHour);
+            //Log.v(LOG_TAG, "add to xVals: " + sensorReading.getLastUpdatedDay() + "" + currentHour);
             xVals.add("" + currentHour + "hrs");
         }
 

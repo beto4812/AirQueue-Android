@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 
 import com.beto4812.airqueue.R;
 import com.beto4812.airqueue.aws.AWSClientManager;
@@ -151,6 +152,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected void setupToolbar() {
+        Log.v(LOG_TAG, "setupToolbar");
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             //toolbar.setNavigationIcon(R.drawable.ic_menu_white);

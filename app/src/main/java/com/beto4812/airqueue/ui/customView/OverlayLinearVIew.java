@@ -22,7 +22,7 @@ public class OverlayLinearVIew extends  View{
     private PollutantThreshold pollutantThreshold;
     private Canvas canvas;
     private int alpha = 50;
-    private int renderedPollutantValue = 60;//Max value shown in graph
+    private int maxYValue = 60;//Max value shown in graph
     private int maxHeight;
     boolean enabled = false;
 
@@ -35,21 +35,9 @@ public class OverlayLinearVIew extends  View{
         if(enabled && pollutantThreshold != null){
             Log.v(LOG_TAG, "onDraw");
             super.onDraw(canvas);
-            this.pollutantThreshold = new PollutantThreshold();
-            pollutantThreshold.setGreen("0");
-            pollutantThreshold.setYellow("10");
-            pollutantThreshold.setRed("30");
-            pollutantThreshold.setBlack("50");
-            pollutantThreshold.setAboveBlack("60");
             this.canvas = canvas;
-            //Paint paint = new Paint();
             Paint paint = new Paint();
-            //paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-
-            //simulatedHeight = blackPollutantValue*currentHeight/renderedPollutantValue
-            //renderedPollutantValue = currentHeight
-            //blackPollutantValue = maxHeight
-            maxHeight = (int)(pollutantThreshold.getAboveBlackDouble()*getHeight()/renderedPollutantValue);
+            maxHeight = (int)(pollutantThreshold.getAboveBlackDouble()*getHeight()/ maxYValue);
             Log.v(LOG_TAG, " maxHeight: " + maxHeight);
             int pastHeight=0;
 
@@ -101,8 +89,8 @@ public class OverlayLinearVIew extends  View{
         this.invalidate();
     }
 
-    public void setRenderedPollutantValue(int value){
-        this.renderedPollutantValue = value;
+    public void setMaxYValue(int value){
+        this.maxYValue = value;
     }
 
 }

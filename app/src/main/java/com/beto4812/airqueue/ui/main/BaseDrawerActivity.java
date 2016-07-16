@@ -72,9 +72,6 @@ public class BaseDrawerActivity extends BaseActivity{
                         switch (id) {
                             case R.id.nav_home:
                                 break;
-                            case R.id.nav_log_out:
-                                Log.v("avazquez", "R.id.nav_log_out selected");
-                                break;
                         }
 
                         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

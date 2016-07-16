@@ -18,8 +18,6 @@ import com.beto4812.airqueue.ui.main.home.charts.PieChartsFragment;
 
 public class HomeFragment extends Fragment {
 
-
-
     public HomeFragment() {
 
     }

@@ -28,7 +28,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private static final String LOG_TAG = "MainActivity";
 
     private static AWSDynamoDbManager dynamoDbManager = null;
-    
+
     private FragmentManager mFragmentManager;
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
@@ -49,6 +49,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
@@ -85,12 +86,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             case R.id.nav_settings:
                 mFragmentManager.beginTransaction().replace(R.id.frame_content, SettingsFragment.newInstance()).commit();
                 break;
-            case R.id.nav_visualizations:
-                mFragmentManager.beginTransaction().replace(R.id.frame_content, HomeFragment.newInstance()).commit();
-                break;
-            case R.id.nav_log_out:
-                logout();
-                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -125,5 +120,18 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                         Log.v(LOG_TAG,  Log.getStackTraceString(exception));
                     }
                 });
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.v(LOG_TAG, "onOptionsItemSelected");
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                Log.v(LOG_TAG, "nav_settings");
+                mFragmentManager.beginTransaction().replace(R.id.frame_content, SettingsFragment.newInstance()).commit();
+                break;
+        }
+        return true;
     }
 }
