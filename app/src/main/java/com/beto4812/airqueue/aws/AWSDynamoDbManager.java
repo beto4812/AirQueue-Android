@@ -134,17 +134,20 @@ public class AWSDynamoDbManager {
     public SensorCoordinates getClosestSensorCoordinates(double currentLat, double currentLong){
         List<SensorCoordinates> l = getAllSensorCoordinates();
 
-        Iterator it = l.iterator();
+        if(l!=null){
+            Iterator it = l.iterator();
 
-        SensorCoordinates closestSensor = null, temp;
+            SensorCoordinates closestSensor = null, temp;
 
-        while(it.hasNext()){
-            temp = (SensorCoordinates)it.next();
-            if(closestSensor==null || temp.getDistanceToCoordinates(currentLat, currentLong)<closestSensor.getDistanceToCoordinates(currentLat, currentLong)){
-                closestSensor = temp;
+            while(it.hasNext()){
+                temp = (SensorCoordinates)it.next();
+                if(closestSensor==null || temp.getDistanceToCoordinates(currentLat, currentLong)<closestSensor.getDistanceToCoordinates(currentLat, currentLong)){
+                    closestSensor = temp;
+                }
             }
+            return closestSensor;
         }
-        return closestSensor;
+        return null;
     }
 
     public HashMap<String, PollutantThreshold> getPollutantThresholds(){

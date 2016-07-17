@@ -66,6 +66,7 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
     private TextView textViewAdviceText;
     private int currentSensitivityLevel = 2;
     private int currentAirQualityIndex = 1;
+    private int userAge = 18;
 
     public static OverviewFragment getInstance() {
         if (instance == null) {
@@ -267,7 +268,7 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
                     public boolean onTouch(View v, MotionEvent event) {
                         new SimpleTooltip.Builder(rootView.getContext())
                                 .anchorView(v)
-                                .text(getString(R.string.air_quality_advice))
+                                .text(getString(R.string.air_quality_sensitivity))
                                 .gravity(Gravity.TOP)
                                 .animated(true)
                                 .build()
@@ -293,6 +294,25 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
                     }
                 }
         );
+
+        //imageViewIconInfoLive
+        rootView.findViewById(R.id.imageViewIconInfoAdvice).setOnTouchListener(
+                new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        new SimpleTooltip.Builder(rootView.getContext())
+                                .anchorView(v)
+                                .text(getString(R.string.air_quality_advice))
+                                .gravity(Gravity.TOP)
+                                .animated(true)
+                                .build()
+                                .show();
+                        return false;
+                    }
+                }
+        );
+
+        userAge = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt("userAge", 18);
 
         return rootView;
     }
@@ -355,7 +375,6 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
     }
 
     private void setAirQualityToolbar(float x, TextView textViewAirQuality, RoundCornerProgressBar progressBarQualityIndex) {
-        Log.v(LOG_TAG, "set: " + x + " x: " + x);
         progressBarQualityIndex.setMax(10);
         progressBarQualityIndex.setProgress(x);
 
@@ -394,21 +413,24 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
         protected String doInBackground(Void... p) {
             try {
                 int sensitivity = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt("sensitivityLevel", 2);
-                URL url = new URL("http://ec2-54-93-97-191.eu-central-1.compute.amazonaws.com:8080/Advice/advice?age=" + 18 + "&sensitivity=" + sensitivity + "&airQualityIndex=" + 7 + "");
+                String urlPrefix  = "http://ec2-54-93-97-191.eu-central-1.compute.amazonaws.com:8080/Advice/advice?";
+                String urlQueryParams = "age=" + userAge + "&sensitivity=" + sensitivity + "&airQualityIndex=" + currentAirQualityIndex;
+                Log.v(LOG_TAG, "httpRequest: " + urlPrefix+urlQueryParams);
+                URL url = new URL(urlPrefix+urlQueryParams);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 //InputStreamReader isw = new InputStreamReader(in);
                 //
                 JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
-                Log.v(LOG_TAG, " data: ");
+                //Log.v(LOG_TAG, " data: ");
                 reader.beginObject();
 
-                Log.v(LOG_TAG, "nextName: " + reader.nextName());
+                reader.nextName();
                 reader.beginObject();
-                Log.v(LOG_TAG, "nextName: " +reader.nextName() );
+                reader.nextName();
                 reader.beginObject();
-                Log.v(LOG_TAG, "nextName: " +reader.nextName() );
+                reader.nextName();
                 String advice = reader.nextString();
                 Log.v(LOG_TAG, "advice: " + advice);
                 return advice;

@@ -38,7 +38,7 @@ public class CheckPollutantView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Log.v(LOG_TAG, "onDraw");
+        //Log.v(LOG_TAG, "onDraw");
         super.onDraw(canvas);
         this.canvas = canvas;
         Paint paint = new Paint();

@@ -32,26 +32,7 @@
         android:layout_below="@+id/image_view_profile_picture"
         android:id="@+id/radioButtonGroup"
         android:orientation="horizontal">
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/radioButtonMale"
-            android:checked="false"
-            android:layout_below="@+id/image_view_profile_picture"
-            android:layout_alignParentStart="false"
-            android:text="Male"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp" />
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/radioButtonFemale"
-            android:layout_below="@+id/image_view_profile_picture"
-            android:checked="false"
-            android:text="Female"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_toRightOf="@+id/radioButtonMale" />
+
     </RadioGroup>
 
     <TextView
@@ -75,93 +56,13 @@
         android:layout_alignEnd="@+id/image_view_profile_picture"
         android:layout_marginTop="10dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/asthma_sufferer"
-        android:id="@+id/textViewAsthmaSufferer"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/editTextAge"
-        android:layout_alignStart="@id/image_view_profile_picture" />
-
-    <com.gc.materialdesign.views.CheckBox
-        android:id="@+id/checkBox_asthma_sufferer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#1E88E5"
-        materialdesign:check="true"
-        android:layout_gravity="center_horizontal"
-        android:layout_below="@+id/textViewAsthmaSufferer"
-        android:layout_centerHorizontal="true"
-        android:layout_alignStart="@id/textViewAsthmaSufferer" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/sensibility"
-        android:id="@+id/textViewSensibility"
-        android:layout_gravity="center_horizontal"
-        android:layout_below="@+id/checkBox_asthma_sufferer"
-        android:layout_alignStart="@id/image_view_profile_picture"
-        android:layout_marginTop="10dp" />
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageButton"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/ic_info_black_24dp"
-        android:layout_toRightOf="@+id/textViewSensibility"
-        android:layout_alignTop="@+id/textViewSensibility"
-        android:layout_alignParentEnd="false"
-        android:layout_marginLeft="10dp" />
-
-    <com.gc.materialdesign.views.Slider
-        android:id="@+id/sensibility_slider"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="#1E88E5"
-        materialdesign:max="3"
-        materialdesign:min="0"
-        android:layout_below="@+id/textViewSensibility"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_alignStart="@+id/textViewSensibility"
-        android:layout_alignEnd="@+id/editTextAge" />
-
-    <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
-        android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        app:rcProgress="3.33"
-        app:rcMax="10"
-        app:rcRadius="10dp"
-        app:rcBackgroundPadding="10dp"
-        app:rcReverse="false"
-        app:rcProgressColor="#ffffff"
-        app:rcBackgroundColor="#1E88E5"
-        android:id="@+id/sensibility_bar"
-        android:layout_below="@+id/textViewSensibility"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_alignStart="@id/image_view_profile_picture" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Standard sensibility level."
-        android:id="@+id/textView"
-        android:layout_alignStart="@id/image_view_profile_picture"
-        android:layout_below="@+id/sensibility_bar" />
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_gravity="bottom|end"
         android:tint="@color/white"
         android:backgroundTint="@color/bold_blue"
         style="@style/settings_fab_style"
-        android:layout_below="@+id/sensibility_bar"
-        android:layout_alignParentEnd="true" />
+        android:layout_above="@+id/editTextAge"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="18dp" />
 </RelativeLayout>

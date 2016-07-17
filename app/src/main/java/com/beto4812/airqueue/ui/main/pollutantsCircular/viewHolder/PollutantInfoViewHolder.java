@@ -27,7 +27,6 @@ public class PollutantInfoViewHolder extends RecyclerView.ViewHolder {
     public PollutantInfoViewHolder(View itemView, Integer num) {
         super(itemView);
         this.rootView = itemView;
-        Log.v(LOG_TAG, "num: " + num);
     }
 
     public void setPollutantModel(PollutantCategoryInfo pollutantModel){

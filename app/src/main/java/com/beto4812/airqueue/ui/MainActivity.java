@@ -17,9 +17,8 @@ import com.beto4812.airqueue.R;
 import com.beto4812.airqueue.aws.AWSClientManager;
 import com.beto4812.airqueue.aws.AWSDynamoDbManager;
 import com.beto4812.airqueue.aws.AWSIdentityManager;
-import com.beto4812.airqueue.ui.main.home.HomeFragment;
-import com.beto4812.airqueue.ui.main.settings.SettingsFragment;
 import com.beto4812.airqueue.ui.main.home.VisualizationsFragment;
+import com.beto4812.airqueue.ui.main.settings.SettingsFragment;
 import com.beto4812.airqueue.utils.CircleTransform;
 import com.squareup.picasso.Picasso;
 
@@ -64,12 +63,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         textUserName = (TextView) headerView.findViewById(R.id.textUserName);
         profilePicture = (ImageView) headerView.findViewById(R.id.imageProfilePicture);
 
-        textUserName.setText(getString(R.string.text_full_name, userFirstName, userLastName));
+        //textUserName.setText(getString(R.string.text_full_name, userFirstName, userLastName));
 
-        if(!userProfilePictureUrl.matches("")) {
-            Log.v(LOG_TAG, "onCreate() rendering profile picture");
-            Picasso.with(MainActivity.this).load(userProfilePictureUrl).transform(new CircleTransform()).into(profilePicture);
-        }
+        Log.v(LOG_TAG, "onCreate() rendering profile picture");
+        Picasso.with(MainActivity.this).load(R.drawable.img_logo_white).transform(new CircleTransform()).into(profilePicture);
 
         mFragmentManager = getSupportFragmentManager();
         mFragmentManager.beginTransaction().replace(R.id.frame_content, VisualizationsFragment.newInstance()).commit();
@@ -117,7 +114,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
                     @Override
                     public void handleError(Exception exception) {
-                        Log.v(LOG_TAG,  Log.getStackTraceString(exception));
+                        Log.v(LOG_TAG, Log.getStackTraceString(exception));
                     }
                 });
     }

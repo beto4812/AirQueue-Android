@@ -1,5 +1,6 @@
 package com.beto4812.airqueue.ui.main.home;
 
+import android.app.Dialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -127,8 +128,9 @@ public class VisualizationsFragment extends Fragment {
         //@Override
         protected void onPostExecute(List<SensorReading> s) {
             if (s != null) {
+                Log.v(LOG_TAG, "onP1");
                 if (s.size() > 1) {
-                    //Log.v(LOG_TAG, "onPostExecute: " + s.toString());
+                    Log.v(LOG_TAG, "onPostExecute: " + s.toString());
                     OverviewFragment.getInstance().setSensorReading(s.get(s.size() - 1));
                     CircularVisualizationFragment.getInstance().setSensorReading(s.get(s.size() - 1));
                 }
@@ -145,7 +147,6 @@ public class VisualizationsFragment extends Fragment {
             Log.v(LOG_TAG, "currentLong: " + currentLong);
 
             SensorCoordinates sensorCoordinates = AWSClientManager.defaultMobileClient().getDynamoDbManager().getClosestSensorCoordinates(currentLat, currentLong);
-            PreferenceManager.getDefaultSharedPreferences(getContext()).edit().putString("closestSourceID", sensorCoordinates.getSourceID()).commit();
             HashMap<String, PollutantThreshold> pollutantThresholds = AWSClientManager.defaultMobileClient().getDynamoDbManager().getPollutantThresholds();
             HashMap<String, PollutantCategoryInfo> pollutantCategoriesInfo = AWSClientManager.defaultMobileClient().getDynamoDbManager().getPollutantCategoryInfo();
             LinearVisualizationFragment.getInstance().setPollutantThresholds(pollutantThresholds);
@@ -162,6 +163,7 @@ public class VisualizationsFragment extends Fragment {
 
 
             if(sensorCoordinates!=null){
+                PreferenceManager.getDefaultSharedPreferences(getContext()).edit().putString("closestSourceID", sensorCoordinates.getSourceID()).commit();
                 List<SensorReading> sensorReadings = AWSClientManager.defaultMobileClient().getDynamoDbManager().
                         getReadingsBySourceID(sensorCoordinates.getSourceID(), fromS, toS);
                 return sensorReadings;

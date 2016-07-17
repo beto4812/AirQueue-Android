@@ -33,7 +33,7 @@ public class OverlayLinearVIew extends  View{
     @Override
     protected void onDraw(Canvas canvas) {
         if(enabled && pollutantThreshold != null){
-            Log.v(LOG_TAG, "onDraw");
+            //Log.v(LOG_TAG, "onDraw");
             super.onDraw(canvas);
             this.canvas = canvas;
             Paint paint = new Paint();

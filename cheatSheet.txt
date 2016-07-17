@@ -53,7 +53,8 @@ https://play.google.com/store/apps/details?id=org.cleanairinlondon.cities
 http://yelin.in/works/instano2.html
 
 //TODO:
--Load expert system
--In graphics screen: Change x labels to days isntead of hours when selecting data from distant dates.
+-Configuration screen.
+-Load expert system. Done
+-In graphics screen: Change x labels to days instead of hours when selecting data from distant dates.
 -In pollutant screen. Include pollutants info and sphere even if there is no data. (Informative purpose)
 -In overview screen: Allow to select other sensor in the city.

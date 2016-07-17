@@ -183,7 +183,7 @@ public class CircularVisualizationFragment extends Fragment implements Visualiza
             individualPollutantsIterator = temp.iterator();
             while (individualPollutantsIterator.hasNext()){
                 individualPollutant = (Pollutant)individualPollutantsIterator.next();
-                Log.v(LOG_TAG, "individual pollutant: " + individualPollutant);
+                //Log.v(LOG_TAG, "individual pollutant: " + individualPollutant);
                 if(individualPollutant.isRendereable()){
                     renderList.add(individualPollutant);
                 }

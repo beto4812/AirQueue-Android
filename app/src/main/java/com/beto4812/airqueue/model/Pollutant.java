@@ -249,7 +249,7 @@ public class Pollutant implements Parcelable{
      * @return
      */
     public boolean isRendereable(){
-        Log.v(LOG_TAG, "isRendereable: " + RENDERED_POLLUTANTS.contains(code));
+        //Log.v(LOG_TAG, "isRendereable: " + RENDERED_POLLUTANTS.contains(code));
         return RENDERED_POLLUTANTS.contains(code);
     }
 

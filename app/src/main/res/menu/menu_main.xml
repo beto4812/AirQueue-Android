@@ -11,4 +11,10 @@
         android:orderInCategory="100"
         android:title="Demo mode"
         app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_author"
+        android:orderInCategory="100"
+        android:title="About the author"
+        app:showAsAction="never"/>
 </menu>

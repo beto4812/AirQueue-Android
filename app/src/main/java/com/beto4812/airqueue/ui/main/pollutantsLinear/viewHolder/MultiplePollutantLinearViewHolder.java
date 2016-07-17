@@ -397,7 +397,7 @@ public class MultiplePollutantLinearViewHolder extends RecyclerView.ViewHolder {
                 if (sensorPollutant.getLineEntries().size() > 24) {
 
                 }
-                Log.v(LOG_TAG, "dataset size: " + sensorPollutant.getLineEntries().size());
+                //Log.v(LOG_TAG, "dataset size: " + sensorPollutant.getLineEntries().size());
                 dataSet.setDrawCubic(true); //Line curved
                 dataSet.setDrawCircles(true);
                 dataSet.setCircleRadius(4f);//Circle radius

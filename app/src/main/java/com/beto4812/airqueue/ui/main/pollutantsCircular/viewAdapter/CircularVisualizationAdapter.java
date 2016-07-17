@@ -26,7 +26,6 @@ public class CircularVisualizationAdapter extends RecyclerView.Adapter<RecyclerV
     private int pollutantInfoCount = 0;
 
     public CircularVisualizationAdapter(List<Object> items) {
-        Log.v(LOG_TAG, "constructor");
         this.items = items;
     }
 
