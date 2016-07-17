@@ -128,7 +128,7 @@ public class VisualizationsFragment extends Fragment {
         protected void onPostExecute(List<SensorReading> s) {
             if (s != null) {
                 if (s.size() > 1) {
-                    Log.v(LOG_TAG, "onPostExecute: " + s.toString());
+                    //Log.v(LOG_TAG, "onPostExecute: " + s.toString());
                     OverviewFragment.getInstance().setSensorReading(s.get(s.size() - 1));
                     CircularVisualizationFragment.getInstance().setSensorReading(s.get(s.size() - 1));
                 }
@@ -140,7 +140,9 @@ public class VisualizationsFragment extends Fragment {
         protected List<SensorReading> doInBackground(Void... p) {
 
             double currentLat = Double.parseDouble(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("lastLatitude", "55.9449353"));
+            Log.v(LOG_TAG, "currentLat: " + currentLat);
             double currentLong = Double.parseDouble(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("lastLongitude", "-3.1839465"));
+            Log.v(LOG_TAG, "currentLong: " + currentLong);
 
             SensorCoordinates sensorCoordinates = AWSClientManager.defaultMobileClient().getDynamoDbManager().getClosestSensorCoordinates(currentLat, currentLong);
             PreferenceManager.getDefaultSharedPreferences(getContext()).edit().putString("closestSourceID", sensorCoordinates.getSourceID()).commit();
@@ -159,10 +161,12 @@ public class VisualizationsFragment extends Fragment {
             String fromS = dateFormatter.format(from);
 
 
-            List<SensorReading> sensorReadings = AWSClientManager.defaultMobileClient().getDynamoDbManager().
-                    getReadingsBySourceID(sensorCoordinates.getSourceID(), fromS, toS);
-
-            return sensorReadings;
+            if(sensorCoordinates!=null){
+                List<SensorReading> sensorReadings = AWSClientManager.defaultMobileClient().getDynamoDbManager().
+                        getReadingsBySourceID(sensorCoordinates.getSourceID(), fromS, toS);
+                return sensorReadings;
+            }
+            return null;
         }
     }
 }

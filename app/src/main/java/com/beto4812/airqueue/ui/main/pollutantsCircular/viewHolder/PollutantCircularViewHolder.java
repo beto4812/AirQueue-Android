@@ -128,7 +128,7 @@ public class PollutantCircularViewHolder extends RecyclerView.ViewHolder {
                 label = "Good";
         }
 
-        Log.v(LOG_TAG, "seriesValue: " + seriesValue);
+        //Log.v(LOG_TAG, "seriesValue: " + seriesValue);
 
         seriesItem1 = new SeriesItem.Builder(ContextCompat.getColor(rootView.getContext(), color))
                 .setRange(0, pollutant.getThresholds().getBlackDouble().floatValue()+blackOffset, 0)
@@ -164,7 +164,7 @@ public class PollutantCircularViewHolder extends RecyclerView.ViewHolder {
                 .setLineWidth(10f)
                 .build();
 
-        Log.v(LOG_TAG, "seriesGreen: " + pollutant.getThresholds().getYellowDouble().floatValue());
+        //Log.v(LOG_TAG, "seriesGreen: " + pollutant.getThresholds().getYellowDouble().floatValue());
 
         seriesYellow = new SeriesItem.Builder(ContextCompat.getColor(rootView.getContext(), R.color.yellow_traffic_light))
                 .setRange(0, pollutant.getThresholdMax()+blackOffset, pollutant.getThresholds().getRedDouble().floatValue())
@@ -173,7 +173,7 @@ public class PollutantCircularViewHolder extends RecyclerView.ViewHolder {
                 .setLineWidth(10f)
                 .build();
 
-        Log.v(LOG_TAG, "seriesYellow: " + pollutant.getThresholds().getRedDouble().floatValue());
+        //Log.v(LOG_TAG, "seriesYellow: " + pollutant.getThresholds().getRedDouble().floatValue());
 
         seriesRed = new SeriesItem.Builder(ContextCompat.getColor(rootView.getContext(), R.color.red_traffic_light))
                 .setRange(0, pollutant.getThresholdMax()+blackOffset, pollutant.getThresholds().getBlackDouble().floatValue())
@@ -182,7 +182,7 @@ public class PollutantCircularViewHolder extends RecyclerView.ViewHolder {
                 .setLineWidth(10f)
                 .build();
 
-        Log.v(LOG_TAG, "seriesRed: " + pollutant.getThresholds().getBlackDouble().floatValue());
+        //Log.v(LOG_TAG, "seriesRed: " + pollutant.getThresholds().getBlackDouble().floatValue());
 
         seriesBlack = new SeriesItem.Builder(ContextCompat.getColor(rootView.getContext(), R.color.black))
                 .setRange(0, pollutant.getThresholdMax()+blackOffset, pollutant.getThresholds().getBlackDouble().floatValue()+blackOffset)
@@ -191,7 +191,7 @@ public class PollutantCircularViewHolder extends RecyclerView.ViewHolder {
                 .setLineWidth(10f)
                 .build();
 
-        Log.v(LOG_TAG, "seriesBlack: " + pollutant.getThresholds().getBlackDouble().floatValue()+blackOffset);
+        //Log.v(LOG_TAG, "seriesBlack: " + pollutant.getThresholds().getBlackDouble().floatValue()+blackOffset);
 
         int seriesIndexGreen, seriesIndexYellow, seriesIndexRed, seriesIndexBlack;
         seriesIndexBlack = decoView.addSeries(seriesBlack);

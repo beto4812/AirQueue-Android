@@ -60,7 +60,7 @@ public class SettingsFragment extends Fragment {
         profilePicture.requestFocus();
 
         if(userProfilePictureUrl!="") {
-            Log.v(LOG_TAG, "onCreate() rendering profile picture");
+            //Log.v(LOG_TAG, "onCreate() rendering profile picture");
             Picasso.with(getContext()).load(userProfilePictureUrl).into(profilePicture);
         }
 

@@ -98,6 +98,7 @@ public class Pollutant implements Parcelable{
     public Pollutant(String name, float value, String measureUnit) {
         this.code = name;
         this.floatValue = value;
+        this.value = new String(""+(int)floatValue);
         this.measureUnit = measureUnit;
         setCategory();
     }
@@ -219,7 +220,7 @@ public class Pollutant implements Parcelable{
     }
 
     public void setThreshold(PollutantThreshold pollutantThreshold){
-        Log.v(LOG_TAG, "setThreshold: "  + pollutantThreshold);
+        //Log.v(LOG_TAG, "setThreshold: "  + pollutantThreshold);
         this.threshold = pollutantThreshold;
     }
 

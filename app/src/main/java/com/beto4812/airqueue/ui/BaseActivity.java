@@ -67,8 +67,8 @@ public class BaseActivity extends AppCompatActivity {
                     try{
                         Location location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
                         if (location != null) {
-                            sharedPreferences.edit().putString("lastLatitude", String.valueOf(location.getLatitude()));
-                            sharedPreferences.edit().putString("lastLongitude", String.valueOf(location.getLongitude()));
+                            sharedPreferences.edit().putString("lastLatitude", String.valueOf(location.getLatitude())).commit();
+                            sharedPreferences.edit().putString("lastLongitude", String.valueOf(location.getLongitude())).commit();
                             Log.v(LOG_TAG, "lastLocation: " + String.valueOf(location.getLatitude()) + " , " + String.valueOf(location.getLongitude()));
                         }else{
                             Log.v(LOG_TAG, "null location");
