@@ -16,21 +16,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.beto4812.airqueue.R;
-import com.beto4812.airqueue.model.Pollutant;
 import com.beto4812.airqueue.model.PollutantThreshold;
-import com.beto4812.airqueue.model.SensorPollutantReadings;
 import com.beto4812.airqueue.model.SensorReading;
 import com.beto4812.airqueue.ui.main.home.VisualizationsFragment;
 import com.beto4812.airqueue.ui.main.pollutantsLinear.viewAdapter.LinearVisualizationAdapter;
+import com.beto4812.airqueue.utils.DataSingelton;
+import com.beto4812.airqueue.utils.GetDataNew;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
-public class LinearVisualizationFragment extends Fragment implements VisualizationsFragment.FragmentVisibleInterface {
+public class LinearVisualizationFragment extends Fragment implements VisualizationsFragment.FragmentVisibleInterface, GetDataNew.OnDataReceivedListener {
 
     private static final String LOG_TAG = "LinearVisualizationFrag";
 
@@ -39,7 +37,6 @@ public class LinearVisualizationFragment extends Fragment implements Visualizati
     private LinearVisualizationAdapter linearVisualizationAdapter;
     private View rootView;
     private static Calendar c = Calendar.getInstance();
-    private static LinearVisualizationFragment instance;
     private RelativeLayout headerLayout;
     private List<SensorReading> readings;
     private HashMap<String, PollutantThreshold> pollutantThresholds;
@@ -54,10 +51,10 @@ public class LinearVisualizationFragment extends Fragment implements Visualizati
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView =  inflater.inflate(R.layout.fragment_pollutants_linear_view, container, false);
         initRecyclerView();
-        if(readings!=null){
-            updateUI();
+        if(!DataSingelton.getInstance().isEmpty()){
+            setPollutantThresholds(DataSingelton.getInstance().getPollutantThresholds());
+            setreadings(DataSingelton.getInstance().getSensorReadings());
         }
-
 
         Typeface openSansBold = Typeface.createFromAsset(rootView.getContext().getAssets(), "OpenSans-Bold.ttf");
         ((TextView) rootView.findViewById(R.id.textViewDescription)).setTypeface(openSansBold);
@@ -71,6 +68,10 @@ public class LinearVisualizationFragment extends Fragment implements Visualizati
             }
         });
 
+        if (!DataSingelton.getInstance().isEmpty()) {
+            onDataReady();
+            updateUI();
+        }
         return rootView;
     }
 
@@ -81,11 +82,8 @@ public class LinearVisualizationFragment extends Fragment implements Visualizati
         recyclerView.setLayoutManager(layoutManager);
     }
 
-    public static LinearVisualizationFragment getInstance(){
-        if(instance==null){
-            instance =  new LinearVisualizationFragment();
-        }
-        return instance;
+    public static LinearVisualizationFragment newInstance(){
+        return new LinearVisualizationFragment();
     }
 
     public void setreadings(List<SensorReading> readings){
@@ -105,6 +103,13 @@ public class LinearVisualizationFragment extends Fragment implements Visualizati
     }
 
 
+    @Override
+    public void onDataReady() {
+        Log.v(LOG_TAG, "onDataReady");
+        setPollutantThresholds(DataSingelton.getInstance().getPollutantThresholds());
+        setreadings(DataSingelton.getInstance().getSensorReadings());
+    }
+
 
     public void updateUI(){
         List<Object> renderList = new ArrayList<>();
@@ -116,18 +121,20 @@ public class LinearVisualizationFragment extends Fragment implements Visualizati
 
     @Override
     public void fragmentBecameVisible() {
-        headerLayout.setTranslationY(0);
+        if(headerLayout!=null){
+            headerLayout.setTranslationY(0);
 
-        new CountDownTimer(3000, 1000) {
-            public void onTick(long millisUntilFinished) {
-                //mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
-            }
+            new CountDownTimer(3000, 1000) {
+                public void onTick(long millisUntilFinished) {
+                    //mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
+                }
 
-            public void onFinish() {
-                Log.v(LOG_TAG, "finish");
-                headerLayout.animate().translationY(-headerLayout.getHeight()).setInterpolator(new AccelerateInterpolator(2));
-            }
-        }.start();
+                public void onFinish() {
+                    Log.v(LOG_TAG, "finish");
+                    headerLayout.animate().translationY(-headerLayout.getHeight()).setInterpolator(new AccelerateInterpolator(2));
+                }
+            }.start();
+        }
     }
 
     public class RenderedObject{

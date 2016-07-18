@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:layout_above="@+id/radioButtonGroup"
+        android:background="@drawable/gradient1"
+        android:layout_alignParentEnd="true" />
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:id="@+id/image_view_profile_picture"
+        android:background="@drawable/avm_avatar"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="false"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp" />
+
+    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="false"
+        android:layout_below="@+id/image_view_profile_picture"
+        android:id="@+id/radioButtonGroup"
+        android:orientation="horizontal">
+
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" This is part of my MSc project at The University of Edinburgh."
+        android:id="@+id/textViewAge"
+        android:layout_alignStart="@id/image_view_profile_picture"
+        android:layout_below="@+id/radioButtonGroup"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_marginTop="10dp"
+        android:textSize="26dp"
+        android:layout_marginRight="30dp"
+        android:textColor="@color/black"
+        android:layout_toStartOf="@+id/imageView6" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView6"
+        android:background="@drawable/edin_logo"
+        android:layout_alignTop="@+id/radioButtonGroup"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="For more info about the project and myself:  "
+        android:id="@+id/textView"
+        android:textSize="20dp"
+        android:layout_below="@+id/textViewAge"
+        android:layout_alignStart="@+id/textViewAge"
+        android:layout_marginTop="20dp"
+        android:layout_toStartOf="@+id/imageView6" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="http://albertovazquez.nfshost.com/"
+        android:id="@+id/textView13"
+        android:layout_below="@+id/textView"
+        android:layout_alignStart="@+id/textView"
+        android:autoLink="web"
+        android:textSize="20dp"
+        android:layout_marginTop="20dp" />
+
+</RelativeLayout>

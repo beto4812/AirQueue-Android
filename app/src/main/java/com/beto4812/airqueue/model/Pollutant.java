@@ -58,6 +58,17 @@ public class Pollutant implements Parcelable{
             new String[] {NITROGEN_DIOXIDE,PARTICULATE_MATTER_10_MICROMETRE, PARTICULATE_MATTER_2_5_MICROMETRE, CARBON_MONOXIDE, OZONE, SULPHUR_DIOXIDE}
     ));
 
+    public static final Set<Pollutant> RENDERED_POLLUTANTS_OBJECTS = new HashSet<>(Arrays.asList(
+            new Pollutant[] {
+                    new Pollutant(NITROGEN_DIOXIDE),
+                    new Pollutant(PARTICULATE_MATTER_10_MICROMETRE),
+                    new Pollutant(PARTICULATE_MATTER_2_5_MICROMETRE),
+                    new Pollutant(CARBON_MONOXIDE),
+                    new Pollutant(OZONE),
+                    new Pollutant(SULPHUR_DIOXIDE)
+            }
+    ));
+
     public static final HashMap<String, String> allPollutants(){
         LinkedHashMap<String, String> list = new LinkedHashMap<>();
         list.put(NITRIC_OXIDE, NITRIC_OXIDE_NAME);
@@ -100,6 +111,11 @@ public class Pollutant implements Parcelable{
         this.floatValue = value;
         this.value = new String(""+(int)floatValue);
         this.measureUnit = measureUnit;
+        setCategory();
+    }
+
+    public Pollutant(String name){
+        this.code = name;
         setCategory();
     }
 

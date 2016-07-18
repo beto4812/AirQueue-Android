@@ -25,6 +25,7 @@ import com.beto4812.airqueue.model.SensorPollutantReadings;
 import com.beto4812.airqueue.model.SensorReading;
 import com.beto4812.airqueue.ui.customView.CheckPollutantView;
 import com.beto4812.airqueue.ui.customView.OverlayLinearVIew;
+import com.beto4812.airqueue.utils.GetDataNew;
 import com.borax12.materialdaterangepicker.date.DatePickerDialog;
 import com.borax12.materialdaterangepicker.time.RadialPickerLayout;
 import com.borax12.materialdaterangepicker.time.TimePickerDialog;
@@ -48,7 +49,7 @@ import java.util.TreeSet;
 
 import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip;
 
-public class MultiplePollutantLinearViewHolder extends RecyclerView.ViewHolder {
+public class MultiplePollutantLinearViewHolder extends RecyclerView.ViewHolder{
 
     private static final String LOG_TAG = "PollutantLinearViewHold";
 
@@ -436,6 +437,7 @@ public class MultiplePollutantLinearViewHolder extends RecyclerView.ViewHolder {
         }
         lineChart.setData(lineData);
     }
+
 
     public interface OnPollutantSelectedListener {
         void onPollutantSelected(String code);

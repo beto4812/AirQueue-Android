@@ -25,6 +25,8 @@ import com.beto4812.airqueue.R;
 import com.beto4812.airqueue.model.Pollutant;
 import com.beto4812.airqueue.model.SensorReading;
 import com.beto4812.airqueue.ui.main.home.VisualizationsFragment;
+import com.beto4812.airqueue.utils.DataSingelton;
+import com.beto4812.airqueue.utils.GetDataNew;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
@@ -49,10 +51,9 @@ import java.util.TreeMap;
 
 import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip;
 
-public class OverviewFragment extends Fragment implements VisualizationsFragment.FragmentVisibleInterface {
+public class OverviewFragment extends Fragment implements VisualizationsFragment.FragmentVisibleInterface, GetDataNew.OnDataReceivedListener {
 
     private static final String LOG_TAG = "OverviewFragment";
-    private static OverviewFragment instance;
     private View rootView;
     private SensorReading sensorReading;
     private ImageView imageViewSensor;
@@ -68,11 +69,8 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
     private int currentAirQualityIndex = 1;
     private int userAge = 18;
 
-    public static OverviewFragment getInstance() {
-        if (instance == null) {
-            instance = new OverviewFragment();
-        }
-        return instance;
+    public static OverviewFragment newInstance() {
+        return new OverviewFragment();
     }
 
     @Override
@@ -81,8 +79,9 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
     }
 
     public void setSensorReading(SensorReading sensorReading) {
+        Log.v(LOG_TAG, "setSensorReading");
         this.sensorReading = sensorReading;
-        if (rootView != null) {
+        if (this.rootView != null) {
             updateUI();
         }
     }
@@ -98,7 +97,7 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
         this.currentAirQualityIndex = sensorReading.getAirQualityIndexInt();
         Picasso.with(getContext()).load(sensorReading.getImage()).fit().into(imageViewSensor);
         setupPieChart();
-        new GetData().execute();
+        new GetAdviceData().execute();
     }
 
     private void setupPieChart() {
@@ -155,7 +154,7 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.v(LOG_TAG, "onCreateView");
-        rootView = inflater.inflate(R.layout.fragment_overview, container, false);
+        this.rootView = inflater.inflate(R.layout.fragment_overview, container, false);
         Typeface handOfSean = Typeface.createFromAsset(rootView.getContext().getAssets(), "hos.ttf");
         Typeface openSansRegular = Typeface.createFromAsset(rootView.getContext().getAssets(), "OpenSans-Regular.ttf");
         Typeface openSansLight = Typeface.createFromAsset(rootView.getContext().getAssets(), "OpenSans-Light.ttf");
@@ -242,10 +241,6 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
         ((TextView) rootView.findViewById(R.id.textViewAirQuality)).setTypeface(openSansBold);
 
         pieChart = (PieChart) rootView.findViewById(R.id.pollutants_chart);
-        if (sensorReading != null) {
-            updateUI();
-        }
-
         rootView.findViewById(R.id.imageViewIconInfoPers).setOnTouchListener(
                 new View.OnTouchListener() {
                     @Override
@@ -314,6 +309,10 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
 
         userAge = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt("userAge", 18);
 
+        if (!DataSingelton.getInstance().isEmpty()) {
+            onDataReady();
+            updateUI();
+        }
         return rootView;
     }
 
@@ -340,7 +339,7 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
             PreferenceManager.getDefaultSharedPreferences(getContext()).edit().putInt("sensitivityLevel", 1).commit();
         }
         if(currentSensitivityLevel!=PreferenceManager.getDefaultSharedPreferences(getContext()).getInt("sensitivityLevel", 2)){
-            new GetData().execute();
+            new GetAdviceData().execute();
             currentSensitivityLevel = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt("sensitivityLevel", 2);
         }
     }
@@ -397,7 +396,17 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
         }
     }
 
-    private class GetData extends AsyncTask<Void, Void, String> {
+    @Override
+    public void onDataReady() {
+        Log.v(LOG_TAG, "receiving data");
+        if(DataSingelton.getInstance().getSensorReadings().size()>1){
+            Log.v(LOG_TAG, "1");
+            Log.v(LOG_TAG, DataSingelton.getInstance().getSensorReadings().get(DataSingelton.getInstance().getSensorReadings().size() - 1).toString());
+            setSensorReading(DataSingelton.getInstance().getSensorReadings().get(DataSingelton.getInstance().getSensorReadings().size() - 1));
+        }
+    }
+
+    private class GetAdviceData extends AsyncTask<Void, Void, String> {
         //@Override
 
         @Override

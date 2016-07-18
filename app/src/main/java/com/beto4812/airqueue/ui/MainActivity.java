@@ -18,6 +18,7 @@ import com.beto4812.airqueue.aws.AWSClientManager;
 import com.beto4812.airqueue.aws.AWSDynamoDbManager;
 import com.beto4812.airqueue.aws.AWSIdentityManager;
 import com.beto4812.airqueue.ui.main.home.VisualizationsFragment;
+import com.beto4812.airqueue.ui.main.settings.AboutFragment;
 import com.beto4812.airqueue.ui.main.settings.SettingsFragment;
 import com.beto4812.airqueue.utils.CircleTransform;
 import com.squareup.picasso.Picasso;
@@ -69,16 +70,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         Picasso.with(MainActivity.this).load(R.drawable.img_logo_white).transform(new CircleTransform()).into(profilePicture);
 
         mFragmentManager = getSupportFragmentManager();
-        mFragmentManager.beginTransaction().replace(R.id.frame_content, VisualizationsFragment.newInstance()).commit();
+        mFragmentManager.beginTransaction().replace(R.id.frame_content, new VisualizationsFragment()).commit();
     }
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         switch (id) {
             case R.id.nav_home:
-                mFragmentManager.beginTransaction().replace(R.id.frame_content, VisualizationsFragment.newInstance()).commit();
+                mFragmentManager.beginTransaction().replace(R.id.frame_content, new VisualizationsFragment(), "VISUALIZATIONS").commit();
                 break;
             case R.id.nav_settings:
                 mFragmentManager.beginTransaction().replace(R.id.frame_content, SettingsFragment.newInstance()).commit();
@@ -126,7 +126,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         switch (item.getItemId()) {
             case R.id.action_settings:
                 Log.v(LOG_TAG, "nav_settings");
-                mFragmentManager.beginTransaction().replace(R.id.frame_content, SettingsFragment.newInstance()).commit();
+                mFragmentManager.beginTransaction().replace(R.id.frame_content, SettingsFragment.newInstance(), "TAG").commit();
+                break;
+            case R.id.action_author:
+                Log.v(LOG_TAG, "nav_author");
+                mFragmentManager.beginTransaction().replace(R.id.frame_content, AboutFragment.newInstance()).commit();
+                break;
+            case R.id.action_demo:
+                Log.v(LOG_TAG, "demo");
+                //this.visualizationsFragment.setDemoMode(!visualizationsFragment.getDemoMode());
                 break;
         }
         return true;

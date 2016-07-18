@@ -22,6 +22,8 @@ import com.beto4812.airqueue.model.PollutantThreshold;
 import com.beto4812.airqueue.model.SensorReading;
 import com.beto4812.airqueue.ui.main.home.VisualizationsFragment;
 import com.beto4812.airqueue.ui.main.pollutantsCircular.viewAdapter.CircularVisualizationAdapter;
+import com.beto4812.airqueue.utils.DataSingelton;
+import com.beto4812.airqueue.utils.GetDataNew;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,22 +33,22 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-public class CircularVisualizationFragment extends Fragment implements VisualizationsFragment.FragmentVisibleInterface {
+public class CircularVisualizationFragment extends Fragment implements VisualizationsFragment.FragmentVisibleInterface, GetDataNew.OnDataReceivedListener {
 
     private static final String LOG_TAG = "CircularVisualizationF";
-
-
-    private RecyclerView recyclerView;
-
-    private View rootView;
     public GridLayoutManager layoutManager;
     public CircularVisualizationAdapter circularVisualizationsAdapter;
-    private static CircularVisualizationFragment instance;
+    private RecyclerView recyclerView;
+    private View rootView;
     private SensorReading sensorReading;
     private HashMap<String, PollutantThreshold> pollutantThresholds;
     private HashMap<String, PollutantCategoryInfo> pollutantCategoryInfo;
     private TextView textViewDescription;
     private RelativeLayout headerLayout;
+
+    public static CircularVisualizationFragment newInstance() {
+        return new CircularVisualizationFragment();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,8 +58,8 @@ public class CircularVisualizationFragment extends Fragment implements Visualiza
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView =  inflater.inflate(R.layout.fragment_pollutants_circular_view, container, false);
-        headerLayout = (RelativeLayout)rootView.findViewById(R.id.circular_view_header_relative_layout);
+        rootView = inflater.inflate(R.layout.fragment_pollutants_circular_view, container, false);
+        headerLayout = (RelativeLayout) rootView.findViewById(R.id.circular_view_header_relative_layout);
 
         Typeface handOfSean = Typeface.createFromAsset(rootView.getContext().getAssets(), "hos.ttf");
         Typeface openSansRegular = Typeface.createFromAsset(rootView.getContext().getAssets(), "OpenSans-Regular.ttf");
@@ -66,10 +68,11 @@ public class CircularVisualizationFragment extends Fragment implements Visualiza
         Typeface robotoRegular = Typeface.createFromAsset(rootView.getContext().getAssets(), "Roboto-Regular.ttf");
         Typeface robotoThin = Typeface.createFromAsset(rootView.getContext().getAssets(), "Roboto-Thin.ttf");
         ((TextView) rootView.findViewById(R.id.textViewDescription)).setTypeface(openSansBold);
-        textViewDescription = (TextView)rootView.findViewById(R.id.textViewDescription);
+        textViewDescription = (TextView) rootView.findViewById(R.id.textViewDescription);
 
         initRecyclerView();
-        if(sensorReading!=null){
+        if (!DataSingelton.getInstance().isEmpty()) {
+            onDataReady();
             updateUI();
         }
         return rootView;
@@ -84,13 +87,13 @@ public class CircularVisualizationFragment extends Fragment implements Visualiza
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                switch(circularVisualizationsAdapter.getItemViewType(position)){
+                switch (circularVisualizationsAdapter.getItemViewType(position)) {
                     case CircularVisualizationAdapter.POLLUTANT_INFO:
                         return 2;
                     case CircularVisualizationAdapter.POLLUTANT_VIEW:
-                        if(circularVisualizationsAdapter.getPollutant(position).getCategory()==Pollutant.PollutantCategory.PARTICULATE_MATTER){
+                        if (circularVisualizationsAdapter.getPollutant(position).getCategory() == Pollutant.PollutantCategory.PARTICULATE_MATTER) {
                             return 1;
-                        }else{
+                        } else {
                             return 2;
                         }
                     default:
@@ -99,7 +102,7 @@ public class CircularVisualizationFragment extends Fragment implements Visualiza
             }
         });
 
-        recyclerView.addOnScrollListener( new RecyclerView.OnScrollListener(){
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             private static final int HIDE_THRESHOLD = 20;
             private int scrolledDistance = 0;
@@ -121,7 +124,7 @@ public class CircularVisualizationFragment extends Fragment implements Visualiza
                     scrolledDistance = 0;
                 }
 
-                if((controlsVisible && dy>0) || (!controlsVisible && dy<0)) {
+                if ((controlsVisible && dy > 0) || (!controlsVisible && dy < 0)) {
                     scrolledDistance += dy;
                 }
             }
@@ -130,44 +133,39 @@ public class CircularVisualizationFragment extends Fragment implements Visualiza
         recyclerView.setLayoutManager(layoutManager);
     }
 
-    public static CircularVisualizationFragment getInstance(){
-        if(instance==null){
-            instance =  new CircularVisualizationFragment();
-        }
-        return instance;
-    }
-
-    public void setSensorReading(SensorReading s){
+    public void setSensorReading(SensorReading s) {
         this.sensorReading = s;
-        if(rootView!=null){
+        if (rootView != null) {
             updateUI();
         }
     }
 
-    public void setPollutantThresholds(HashMap<String, PollutantThreshold> pollutantThresholds){
+    public void setPollutantThresholds(HashMap<String, PollutantThreshold> pollutantThresholds) {
         this.pollutantThresholds = pollutantThresholds;
     }
 
-    public void setPollutantCategoryInfo(HashMap<String, PollutantCategoryInfo> pollutantCategoryInfo){
+    public void setPollutantCategoryInfo(HashMap<String, PollutantCategoryInfo> pollutantCategoryInfo) {
         this.pollutantCategoryInfo = pollutantCategoryInfo;
     }
 
-    public void updateUI(){
+    public void updateUI() {
         Log.v(LOG_TAG, "onPostExecute() closestSensorID: " + sensorReading.getSourceID() + " lastUpdated: " + sensorReading.getLastUpdated());
-        Iterator it = sensorReading.getAvailablePollutants().iterator();
         List<Object> renderList = new ArrayList<>();
-        Map<Integer, List<Pollutant>> pollutantsByCategory= new TreeMap<>();
-        Pollutant p;
-        while(it.hasNext()){
-            p = (Pollutant)it.next();
-            if(pollutantThresholds!=null){
-                p.setThreshold(pollutantThresholds.get(p.getCode()));
+        Map<Integer, List<Pollutant>> pollutantsByCategory = new TreeMap<>();
+        Iterator iteratorRedneredPollutants = Pollutant.RENDERED_POLLUTANTS_OBJECTS.iterator();
+        Pollutant renderedPollutant;
+        while (iteratorRedneredPollutants.hasNext()) {
+            renderedPollutant = (Pollutant) iteratorRedneredPollutants.next();
+            if (sensorReading.getAvailablePollutantsCodes().contains(renderedPollutant.getCode())) {
+                renderedPollutant = sensorReading.getPollutant(renderedPollutant.getCode());
             }
-            //list.add(p);
-            if(!pollutantsByCategory.containsKey(p.getCategory())){
-                pollutantsByCategory.put(p.getCategory(), new ArrayList<Pollutant>());
+            if (pollutantThresholds != null) {
+                renderedPollutant.setThreshold(pollutantThresholds.get(renderedPollutant.getCode()));
             }
-            pollutantsByCategory.get(p.getCategory()).add(p);
+            if (!pollutantsByCategory.containsKey(renderedPollutant.getCategory())) {
+                pollutantsByCategory.put(renderedPollutant.getCategory(), new ArrayList<Pollutant>());
+            }
+            pollutantsByCategory.get(renderedPollutant.getCategory()).add(renderedPollutant);
         }
 
         Set<Integer> keys = pollutantsByCategory.keySet();
@@ -175,16 +173,16 @@ public class CircularVisualizationFragment extends Fragment implements Visualiza
         Iterator individualPollutantsIterator = null;
         Pollutant individualPollutant = null;
 
-        for(int k: keys){
+        for (int k : keys) {
             Log.v(LOG_TAG, "pollutantCategoryInt: " + k);
             (pollutantCategoryInfo.get(Pollutant.PollutantCategory.getPollutantCategoryString(k))).setPollutantCategory(k);
             renderList.add(pollutantCategoryInfo.get(Pollutant.PollutantCategory.getPollutantCategoryString(k)));
             temp = pollutantsByCategory.get(k);
             individualPollutantsIterator = temp.iterator();
-            while (individualPollutantsIterator.hasNext()){
-                individualPollutant = (Pollutant)individualPollutantsIterator.next();
-                //Log.v(LOG_TAG, "individual pollutant: " + individualPollutant);
-                if(individualPollutant.isRendereable()){
+            while (individualPollutantsIterator.hasNext()) {
+                individualPollutant = (Pollutant) individualPollutantsIterator.next();
+                Log.v(LOG_TAG, "individual pollutant: " + individualPollutant);
+                if (individualPollutant.isRendereable()) {
                     renderList.add(individualPollutant);
                 }
             }
@@ -197,5 +195,13 @@ public class CircularVisualizationFragment extends Fragment implements Visualiza
     @Override
     public void fragmentBecameVisible() {
 
+    }
+
+    @Override
+    public void onDataReady() {
+        Log.v(LOG_TAG, "onDataReady");
+        setPollutantThresholds(DataSingelton.getInstance().getPollutantThresholds());
+        setPollutantCategoryInfo(DataSingelton.getInstance().getPollutantCategoriesInfo());
+        setSensorReading(DataSingelton.getInstance().getSensorReadings().get(DataSingelton.getInstance().getSensorReadings().size() - 1));
     }
 }

@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 @DynamoDBTable(tableName = AWSConstants.SENSOR_READINGS_TABLE_NAME)
 /**
@@ -337,6 +338,10 @@ public class SensorReading {
 
     public Collection<Pollutant> getAvailablePollutants(){
         return pollutants.values();
+    }
+
+    public Set<String> getAvailablePollutantsCodes(){
+        return pollutants.keySet();
     }
 
     public Pollutant getPollutantByCode(String code){

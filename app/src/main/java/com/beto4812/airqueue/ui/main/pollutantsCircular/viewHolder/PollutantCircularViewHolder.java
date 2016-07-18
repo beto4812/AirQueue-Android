@@ -67,26 +67,11 @@ public class PollutantCircularViewHolder extends RecyclerView.ViewHolder {
         pollutantNameTextView.setText(pollutant.getName());
         pollutantNameTextView.setTypeface(openSansRegular);
 
-        pollutantValueTextView.setText(pollutant.getValue()+" "+ pollutant.getMeasureUnit());
-
-        /*pollutantCenterColor = (ImageButton) rootView.findViewById(R.id.pollutant_center_color);
-
-        switch (pollutant.getCurrentColorLevel()) {
-            case 4:
-                Picasso.with(rootView.getContext()).load(R.drawable.pollutant_view_black).transform(new CircleTransform()).fit().into(pollutantCenterColor);
-                break;
-            case 3:
-                Picasso.with(rootView.getContext()).load(R.drawable.pollutant_view_red).transform(new CircleTransform()).fit().into(pollutantCenterColor);
-                break;
-            case 2:
-                Picasso.with(rootView.getContext()).load(R.drawable.pollutant_view_yellow).transform(new CircleTransform()).fit().into(pollutantCenterColor);
-                break;
-            case 1:
-                Picasso.with(rootView.getContext()).load(R.drawable.pollutant_view_green).transform(new CircleTransform()).fit().into(pollutantCenterColor);
-                break;
-            default:
-                Picasso.with(rootView.getContext()).load(R.drawable.pollutant_view_black).transform(new CircleTransform()).fit().into(pollutantCenterColor);
-        }*/
+        if(pollutant.getValue()!=null){
+            pollutantValueTextView.setText(pollutant.getValue()+" "+ pollutant.getMeasureUnit());
+        }else{
+            pollutantValueTextView.setText("No data");
+        }
     }
 
     private void setupDecoView() {
@@ -97,7 +82,7 @@ public class PollutantCircularViewHolder extends RecyclerView.ViewHolder {
                 .setRange(0, 100, 100)
                 .setInitialVisibility(true)
                 .setLineWidth(30f)
-                .build()  
+                .build()
         );
 
         SeriesItem seriesItem1 = null;
@@ -140,11 +125,11 @@ public class PollutantCircularViewHolder extends RecyclerView.ViewHolder {
                 .setLineWidth(32f)
                 .build();
 
-        int series1Index = decoView.addSeries(seriesItem1);
-        Random r = new Random();
-
-        decoView.addEvent(new DecoEvent.Builder(new Float(seriesValue)).setIndex(series1Index).build());
-        decoView.invalidate();
+        if(pollutant.getValue()!=null){
+            int series1Index = decoView.addSeries(seriesItem1);
+            decoView.addEvent(new DecoEvent.Builder(new Float(seriesValue)).setIndex(series1Index).build());
+            decoView.invalidate();
+        }
 
         decoView = (DecoView) rootView.findViewById(R.id.single_circular_chart2);
         decoView.addSeries(new SeriesItem.Builder(ContextCompat.getColor(rootView.getContext(), R.color.white))

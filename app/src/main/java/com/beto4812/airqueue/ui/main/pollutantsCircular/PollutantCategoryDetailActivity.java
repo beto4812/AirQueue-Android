@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Slide;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebView;
@@ -53,6 +54,7 @@ public class PollutantCategoryDetailActivity extends AppCompatActivity {
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingToolbarLayout.setTitle("What is it?");
         collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
@@ -91,6 +93,18 @@ public class PollutantCategoryDetailActivity extends AppCompatActivity {
             transition.excludeTarget(android.R.id.statusBarBackground, true);
             getWindow().setEnterTransition(transition);
             getWindow().setReturnTransition(transition);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // app icon in action bar clicked; goto parent activity.
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }
