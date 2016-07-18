@@ -68,9 +68,10 @@ public class LinearVisualizationFragment extends Fragment implements Visualizati
             }
         });
 
-        if (!DataSingelton.getInstance().isEmpty()) {
+        if(DataSingelton.getInstance().isEmpty()){
+            GetDataNew.executeGetData(getContext(), this);
+        }else{
             onDataReady();
-            updateUI();
         }
         return rootView;
     }
@@ -88,9 +89,6 @@ public class LinearVisualizationFragment extends Fragment implements Visualizati
 
     public void setreadings(List<SensorReading> readings){
         this.readings = readings;
-        if(rootView!=null){
-            updateUI();
-        }
     }
 
     public void setPollutantThresholds(HashMap<String, PollutantThreshold> pollutantThresholds){
@@ -108,6 +106,9 @@ public class LinearVisualizationFragment extends Fragment implements Visualizati
         Log.v(LOG_TAG, "onDataReady");
         setPollutantThresholds(DataSingelton.getInstance().getPollutantThresholds());
         setreadings(DataSingelton.getInstance().getSensorReadings());
+        if(rootView!=null){
+            updateUI();
+        }
     }
 
 

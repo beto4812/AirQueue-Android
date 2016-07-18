@@ -16,7 +16,8 @@ import java.util.List;
 
 public class GetDataNew extends AsyncTask<Void, Void, Void> {
 
-    private List<OnDataReceivedListener> listeners = new ArrayList<>();
+    //private List<OnDataReceivedListener> listeners = new ArrayList<>();
+    private OnDataReceivedListener listener;
     private Object data;
     private String latitude, longitude;
     private String closestSourceID;
@@ -28,7 +29,11 @@ public class GetDataNew extends AsyncTask<Void, Void, Void> {
     }
 
     public void setListener(OnDataReceivedListener listener) {
-        this.listeners.add(listener);
+        this.listener = listener;
+    }
+
+    public void addListener(OnDataReceivedListener listener){
+        //this.listeners.add(listener);
     }
 
     public void setLastKnownCoordinates(String latitude, String longitude){
@@ -36,6 +41,15 @@ public class GetDataNew extends AsyncTask<Void, Void, Void> {
         this.longitude = longitude;
     }
 
+    public static void executeGetData(Context context, OnDataReceivedListener listener){
+        Log.v(LOG_TAG, "----------------------------executeGetData-------------");
+        GetDataNew getDataNew = new GetDataNew();
+        getDataNew.setAppContext(context);
+        getDataNew.setLastKnownCoordinates(PreferenceManager.getDefaultSharedPreferences(context).getString("lastLatitude", "55.9449353"),
+                PreferenceManager.getDefaultSharedPreferences(context).getString("lastLongitude", "-3.1839465"));
+        getDataNew.setListener(listener);
+        getDataNew.execute();
+    }
 
     @Override
     protected void onPostExecute(Void v) {
@@ -46,10 +60,11 @@ public class GetDataNew extends AsyncTask<Void, Void, Void> {
                 Log.v(LOG_TAG, DataSingelton.getInstance().getSensorReadings().get(DataSingelton.getInstance().getSensorReadings().size()-1).toString());
             }
         }
-        Iterator it = listeners.iterator();
+        listener.onDataReady();
+        /*Iterator it = listeners.iterator();
         while(it.hasNext()){
             ((OnDataReceivedListener)it.next()).onDataReady();
-        }
+        }*/
     }
 
     @Override

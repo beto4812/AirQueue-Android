@@ -81,9 +81,6 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
     public void setSensorReading(SensorReading sensorReading) {
         Log.v(LOG_TAG, "setSensorReading");
         this.sensorReading = sensorReading;
-        if (this.rootView != null) {
-            updateUI();
-        }
     }
 
     private void updateUI() {
@@ -309,9 +306,10 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
 
         userAge = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt("userAge", 18);
 
-        if (!DataSingelton.getInstance().isEmpty()) {
+        if(DataSingelton.getInstance().isEmpty()){
+            GetDataNew.executeGetData(getContext(), this);
+        }else{
             onDataReady();
-            updateUI();
         }
         return rootView;
     }
@@ -398,11 +396,13 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
 
     @Override
     public void onDataReady() {
-        Log.v(LOG_TAG, "receiving data");
+        Log.v(LOG_TAG, "dataReady");
         if(DataSingelton.getInstance().getSensorReadings().size()>1){
-            Log.v(LOG_TAG, "1");
             Log.v(LOG_TAG, DataSingelton.getInstance().getSensorReadings().get(DataSingelton.getInstance().getSensorReadings().size() - 1).toString());
             setSensorReading(DataSingelton.getInstance().getSensorReadings().get(DataSingelton.getInstance().getSensorReadings().size() - 1));
+        }
+        if (this.rootView != null) {
+            updateUI();
         }
     }
 

@@ -1,7 +1,6 @@
 package com.beto4812.airqueue.ui.main.home;
 
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -17,14 +16,12 @@ import com.beto4812.airqueue.R;
 import com.beto4812.airqueue.ui.main.overview.viewHolder.OverviewFragment;
 import com.beto4812.airqueue.ui.main.pollutantsCircular.CircularVisualizationFragment;
 import com.beto4812.airqueue.ui.main.pollutantsLinear.LinearVisualizationFragment;
-import com.beto4812.airqueue.utils.GetDataNew;
 
 public class VisualizationsFragment extends Fragment {
 
     private static final String LOG_TAG = "VisualizationsFragment";
     private boolean demoMode = false;
     private View rootView;
-    private GetDataNew getData;
 
     public static VisualizationsFragment newInstance(){
         return new VisualizationsFragment();
@@ -38,9 +35,6 @@ public class VisualizationsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        getData = new GetDataNew();
-        getData.setLastKnownCoordinates(PreferenceManager.getDefaultSharedPreferences(getContext()).getString("lastLatitude", "55.9449353"), PreferenceManager.getDefaultSharedPreferences(getContext()).getString("lastLongitude", "-3.1839465"));
-        getData.setAppContext(getContext());
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
         final ViewPager pager = (ViewPager) rootView.findViewById(R.id.viewpager);
@@ -66,7 +60,7 @@ public class VisualizationsFragment extends Fragment {
             }
         });
         tabLayout.setupWithViewPager(pager);
-        getData.execute();
+        //getData.execute();
         return rootView;
     }
 
@@ -103,15 +97,15 @@ public class VisualizationsFragment extends Fragment {
             switch (position) {
                 case 0:
                     OverviewFragment overviewFragment = OverviewFragment.newInstance();
-                    getData.setListener(overviewFragment);
+                    //getData.setListener(overviewFragment);
                     return overviewFragment;
                 case 1:
                     CircularVisualizationFragment circularVisualizationFragment = CircularVisualizationFragment.newInstance();
-                    getData.setListener(circularVisualizationFragment);
+                    //getData.setListener(circularVisualizationFragment);
                     return circularVisualizationFragment;
                 case 2:
                     LinearVisualizationFragment linearVisualizationFragment = LinearVisualizationFragment.newInstance();
-                    getData.setListener(linearVisualizationFragment);
+                    //getData.setListener(linearVisualizationFragment);
                     return linearVisualizationFragment;
                 default:
                     return CircularVisualizationFragment.newInstance();
