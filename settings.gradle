@@ -1,1 +1,7 @@
-include ':app'
+include ':app', ':decoviewlib', ':MaterialDesign', ':android-simple-tooltip', ':MPChartLib', ':MPChartExample', ':library', ':libraryRoundCroner'
+project(':decoviewlib').projectDir = new File('libs/decoviewlib')
+project(':MaterialDesign').projectDir = new File('libs/MaterialDesign')
+project(':android-simple-tooltip').projectDir = new File('libs/android-simple-tooltip')
+project(':MPChartLib').projectDir = new File('libs/MPAndroidChart/MPChartLib')
+project(':library').projectDir = new File('libs/MaterialDateRangePicker/library')
+project(':libraryRoundCroner').projectDir = new File('libs/Android-RoundCornerProgressBar/library')

@@ -71,9 +71,9 @@ public class CircularVisualizationFragment extends Fragment implements Visualiza
         textViewDescription = (TextView) rootView.findViewById(R.id.textViewDescription);
 
         initRecyclerView();
-        if(DataSingelton.getInstance().isEmpty()){
+        if (DataSingelton.getInstance().isEmpty()) {
             GetDataNew.executeGetData(getContext(), this);
-        }else{
+        } else {
             onDataReady();
         }
         return rootView;
@@ -200,7 +200,9 @@ public class CircularVisualizationFragment extends Fragment implements Visualiza
         Log.v(LOG_TAG, "onDataReady");
         setPollutantThresholds(DataSingelton.getInstance().getPollutantThresholds());
         setPollutantCategoryInfo(DataSingelton.getInstance().getPollutantCategoriesInfo());
-        setSensorReading(DataSingelton.getInstance().getSensorReadings().get(DataSingelton.getInstance().getSensorReadings().size() - 1));
+        if (DataSingelton.getInstance().getSensorReadings() != null) {
+            setSensorReading(DataSingelton.getInstance().getSensorReadings().get(DataSingelton.getInstance().getSensorReadings().size() - 1));
+        }
         if (rootView != null) {
             updateUI();
         }

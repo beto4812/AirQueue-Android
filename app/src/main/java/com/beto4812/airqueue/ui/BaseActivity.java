@@ -16,7 +16,6 @@ import com.beto4812.airqueue.aws.AWSClientManager;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
-import butterknife.ButterKnife;
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -106,7 +105,6 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected void bindViews() {
-        ButterKnife.bind(this);
         setupToolbar();
     }
 

@@ -13,15 +13,12 @@ import android.view.View;
 import com.beto4812.airqueue.R;
 import com.beto4812.airqueue.ui.BaseActivity;
 
-import butterknife.Bind;
 
 public class BaseDrawerActivity extends BaseActivity{
 
     private static final String LOG_TAG = "BaseDrawerActivity";
 
-    @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
-    @Bind(R.id.nav_view)
     NavigationView vNavigation;
     ActionBarDrawerToggle drawerToggle;
 

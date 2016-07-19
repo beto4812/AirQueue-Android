@@ -1,0 +1,3 @@
+[submodule "MPAndroidChart"]
+	path = MPAndroidChart
+	url = https://github.com/PhilJay/MPAndroidChart

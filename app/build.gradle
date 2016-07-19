@@ -8,6 +8,10 @@ repositories {
 }
 
 android {
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
+
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
 
@@ -17,12 +21,13 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            debuggable false
+            debuggable true
         }
     }
 
@@ -40,23 +45,22 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
+    compile 'com.android.support:multidex:1.0.0'
+    compile project(':decoviewlib')
+    compile project(':MaterialDesign')
+    compile project(':android-simple-tooltip')
+    compile project(':MPChartLib')
+    compile project(':library')
+    compile project(':libraryRoundCroner')
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support:recyclerview-v7:23.4.0'
     compile 'com.android.support:design:23.4.0'
     compile 'com.amazonaws:aws-android-sdk-core:2.+'
     compile 'com.amazonaws:aws-android-sdk-cognito:2.+'
-    compile 'com.amazonaws:aws-android-sdk-s3:2.+'
     compile 'com.amazonaws:aws-android-sdk-ddb:2.+'
     compile 'com.amazonaws:aws-android-sdk-ddb-mapper:2.2.+'
     compile 'com.google.android.gms:play-services:9.0.2'
     compile 'com.android.support:cardview-v7:23.+'
-    compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.github.bmarrdev:android-DecoView-charting:v0.9.3'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.github.PhilJay:MPAndroidChart:v2.2.5'
-    compile 'com.github.vajro:MaterialDesignLibrary:1.6'
-    compile 'com.github.douglasjunior:android-simple-tooltip:master-SNAPSHOT'
-    compile 'com.akexorcist:RoundCornerProgressBar:2.0.3'
     compile 'com.android.support:palette-v7:23.3.0'
-    compile 'com.borax12.materialdaterangepicker:library:1.6'
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }
