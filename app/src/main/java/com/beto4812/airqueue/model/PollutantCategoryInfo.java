@@ -68,4 +68,9 @@ public class PollutantCategoryInfo {
                 ", code='" + code + '\'' +
                 '}';
     }
+
+    public PollutantCategoryInfo(String code, String url) {
+        this.code = code;
+        this.url = url;
+    }
 }

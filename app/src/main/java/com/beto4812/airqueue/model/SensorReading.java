@@ -357,4 +357,26 @@ public class SensorReading {
         out += " image: " + image;
         return out;
     }
+
+    public SensorReading(String image, List<String> coordinates, String dateInserted, String lastUpdated, String source, String sourceID, String airQualityIndex, List<String> no, List<String> no_2, List<String> no_x, List<String> pm_10, List<String> v_pm_10, List<String> pm_2p5, List<String> pm_1, List<String> nv_pm_2p5, List<String> v_pm_2p5, List<String> so_2, List<String> co, List<String> o3) {
+        this.image = image;
+        this.coordinates = coordinates;
+        this.dateInserted = dateInserted;
+        this.lastUpdated = lastUpdated;
+        this.source = source;
+        this.sourceID = sourceID;
+        this.airQualityIndex = airQualityIndex;
+        this.setNo(no);
+        this.setNo2(no_2);
+        this.setNox(no_x);
+        this.setPm10(pm_10);
+        this.setVpm10(v_pm_10);
+        this.setPm2p5(pm_2p5);
+        this.setPm1(pm_1);
+        this.setNvpm2p5(nv_pm_2p5);
+        this.setVpm2p5(v_pm_2p5);
+        this.setSo2(so_2);
+        this.setCo(co);
+        this.setO3(o3);
+    }
 }

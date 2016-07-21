@@ -17,6 +17,10 @@ public class SensorCoordinates {
     private String sourceID;
     private List<String> coordinates;
 
+    public SensorCoordinates(String sourceID, List<String> coordinates) {
+        this.sourceID = sourceID;
+        this.coordinates = coordinates;
+    }
 
     public String getSourceID() {
         return sourceID;

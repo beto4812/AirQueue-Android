@@ -8,11 +8,8 @@ import android.util.Log;
 import com.beto4812.airqueue.aws.AWSClientManager;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
 
 public class GetDataNew extends AsyncTask<Void, Void, Void> {
 
@@ -20,9 +17,9 @@ public class GetDataNew extends AsyncTask<Void, Void, Void> {
     private OnDataReceivedListener listener;
     private Object data;
     private String latitude, longitude;
-    private String closestSourceID;
     private Context appContext;
     private static final String LOG_TAG = "OverviewFragment";
+    private static Boolean usingSimulatedData = false;
 
     public void setAppContext(Context context){
         this.appContext = context;
@@ -41,14 +38,43 @@ public class GetDataNew extends AsyncTask<Void, Void, Void> {
         this.longitude = longitude;
     }
 
+    private static void setUsingSimulatedData(boolean set){
+        usingSimulatedData = set;
+    }
+
+    /**
+     * Role of doInBackground filling data singleton from data simulator
+     */
+    private void fillSimulatedData(){
+        DataSimulator sim = new DataSimulator();
+        DataSingelton.getInstance().setPollutantThresholds(sim.getPollutantThresholds());
+        DataSingelton.getInstance().setPollutantCategoriesInfo(sim.getPollutantCategoriesInfo());
+        DataSingelton.getInstance().setSensorReadings(sim.getSensorReadings());
+    }
+
+    /**
+     * Notifies listeners
+     */
+    private void simulateExecution(){
+        listener.onDataReady();
+    }
+
     public static void executeGetData(Context context, OnDataReceivedListener listener){
         Log.v(LOG_TAG, "----------------------------executeGetData-------------");
+
         GetDataNew getDataNew = new GetDataNew();
-        getDataNew.setAppContext(context);
-        getDataNew.setLastKnownCoordinates(PreferenceManager.getDefaultSharedPreferences(context).getString("lastLatitude", "55.9449353"),
-                PreferenceManager.getDefaultSharedPreferences(context).getString("lastLongitude", "-3.1839465"));
-        getDataNew.setListener(listener);
-        getDataNew.execute();
+        if(!usingSimulatedData){
+
+            getDataNew.setAppContext(context);
+            getDataNew.setLastKnownCoordinates(PreferenceManager.getDefaultSharedPreferences(context).getString("lastLatitude", "55.9449353"),
+                    PreferenceManager.getDefaultSharedPreferences(context).getString("lastLongitude", "-3.1839465"));
+            getDataNew.setListener(listener);
+            getDataNew.execute();
+        }else{
+            getDataNew.fillSimulatedData();
+            getDataNew.setListener(listener);
+            getDataNew.simulateExecution();
+        }
     }
 
     @Override
@@ -61,10 +87,6 @@ public class GetDataNew extends AsyncTask<Void, Void, Void> {
             }
         }
         listener.onDataReady();
-        /*Iterator it = listeners.iterator();
-        while(it.hasNext()){
-            ((OnDataReceivedListener)it.next()).onDataReady();
-        }*/
     }
 
     @Override
