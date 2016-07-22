@@ -16,6 +16,7 @@ public class DataSingelton {
     private HashMap<String, PollutantCategoryInfo> pollutantCategoriesInfo;
     private List<SensorReading> sensorReadings;
     private static DataSingelton instance;
+    private static Boolean simulated = false;
 
     public static DataSingelton getInstance(){
         if(instance == null){
@@ -61,6 +62,14 @@ public class DataSingelton {
         if(sensorReadings==null){
             return true;
         }else return false;
+    }
+
+    public static void setSimulated(boolean simulated_){
+        simulated = simulated_;
+    }
+
+    public static boolean isSimulated(){
+        return  simulated;
     }
 
 }

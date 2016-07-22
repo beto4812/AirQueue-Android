@@ -192,7 +192,9 @@ public class CircularVisualizationFragment extends Fragment implements Visualiza
 
     @Override
     public void fragmentBecameVisible() {
-
+        if(DataSingelton.isSimulated()){
+            updateUI();
+        }
     }
 
     @Override

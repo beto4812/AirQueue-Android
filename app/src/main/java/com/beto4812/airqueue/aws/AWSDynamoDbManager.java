@@ -65,7 +65,7 @@ public class AWSDynamoDbManager {
      * @return
      */
     public List<SensorReading> getReadingsBySourceID(String sourceID, String since, String to) {
-        Log.v(LOG_TAG, "getReadingsBySourceID("+sourceID+") since: "+ since+ " to: " + to);
+        //Log.v(LOG_TAG, "getReadingsBySourceID("+sourceID+") since: "+ since+ " to: " + to);
 
         SensorReading sens = new SensorReading();
         sens.setSourceID(sourceID);

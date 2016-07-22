@@ -109,7 +109,7 @@ public class AWSIdentityManager {
      * @param handler handles the unique identifier for the user
      */
     public void getUserID(final IdentityHandler handler) {
-        Log.v(LOG_TAG, "getUserID()");
+        //Log.v(LOG_TAG, "getUserID()");
         new Thread(new Runnable() {
             Exception exception = null;
 

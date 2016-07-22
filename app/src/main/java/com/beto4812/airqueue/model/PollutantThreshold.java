@@ -15,14 +15,6 @@ public class PollutantThreshold {
     private String yellow;
     private String aboveBlack;
 
-    public PollutantThreshold(String code, String green, String black, String red, String yellow, String aboveBlack) {
-        this.code = code;
-        this.green = green;
-        this.black = black;
-        this.red = red;
-        this.yellow = yellow;
-        this.aboveBlack = aboveBlack;
-    }
 
     public String getCode(){
         return code;
@@ -102,5 +94,9 @@ public class PollutantThreshold {
                 return getAboveBlackDouble()*100/getAboveBlackDouble();
         }
         return -1;
+    }
+
+    public PollutantThreshold(){
+
     }
 }

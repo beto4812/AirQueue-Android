@@ -113,7 +113,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected void setupToolbar() {
-        Log.v(LOG_TAG, "setupToolbar");
+        //Log.v(LOG_TAG, "setupToolbar");
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             //toolbar.setNavigationIcon(R.drawable.ic_menu_white);

@@ -45,7 +45,7 @@ public class PollutantCircularViewHolder extends RecyclerView.ViewHolder {
 
     public void setPollutant(Pollutant pollutant) {
         this.pollutant = pollutant;
-        Log.v(LOG_TAG, "setPollutant: " + pollutant.getCode());
+        //Log.v(LOG_TAG, "setPollutant: " + pollutant.getCode());
         setupDecoView();
         setupTextViews();
     }

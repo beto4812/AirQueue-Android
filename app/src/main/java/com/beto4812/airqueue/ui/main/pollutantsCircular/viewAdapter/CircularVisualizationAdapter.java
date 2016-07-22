@@ -39,7 +39,7 @@ public class CircularVisualizationAdapter extends RecyclerView.Adapter<RecyclerV
                 View pollutantView = layoutInflater.inflate(R.layout.pollutant_circular_view, parent, false);
                 return new PollutantCircularViewHolder(pollutantView);
             case POLLUTANT_INFO:
-                Log.v(LOG_TAG, "onCreateViewHolder POLLUTANT_INFO - pollutantInfoCount: " + pollutantInfoCount);
+                //Log.v(LOG_TAG, "onCreateViewHolder POLLUTANT_INFO - pollutantInfoCount: " + pollutantInfoCount);
                 View pollutantInfo = layoutInflater.inflate(R.layout.pollutant_info_view, parent, false);
                 pollutantInfoCount ++;
                 return new PollutantInfoViewHolder(pollutantInfo, pollutantInfoCount);

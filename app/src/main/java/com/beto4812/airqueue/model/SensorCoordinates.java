@@ -50,4 +50,8 @@ public class SensorCoordinates {
                 ", coordinates=" + coordinates +
                 '}';
     }
+
+    public SensorCoordinates(){
+
+    }
 }

@@ -242,7 +242,7 @@ public class MultiplePollutantLinearViewHolder extends RecyclerView.ViewHolder{
         //The pollutants over time objects are constructed here. There should be a better way to save them since they are queried from amazon
         for (int i = 0; it.hasNext(); i++) {
             String pollutantCode = (String) it.next();
-            Log.v(LOG_TAG, "setupUI " + i + " " + pollutantCode);
+            //Log.v(LOG_TAG, "setupUI " + i + " " + pollutantCode);
             reading = new SensorPollutantReadings(sensorReadings, pollutantCode);
             this.sensorPollutantReadings.add(reading);
         }
@@ -293,7 +293,7 @@ public class MultiplePollutantLinearViewHolder extends RecyclerView.ViewHolder{
         lineChart.getAxisLeft().setDrawLabels(true);//Label on the left line Y axis
 
         lineChart.getXAxis().setEnabled(true); //Top x axis legends
-        Log.v(LOG_TAG, "xVals size: " + xVals.size());
+        //Log.v(LOG_TAG, "xVals size: " + xVals.size());
         if (xVals.size() < 24) {
             lineChart.getXAxis().setLabelsToSkip(0);
         } else {
@@ -328,7 +328,7 @@ public class MultiplePollutantLinearViewHolder extends RecyclerView.ViewHolder{
         while (sensorPollutantReadingsIterator.hasNext()) {
             sensorReadings = (SensorPollutantReadings) sensorPollutantReadingsIterator.next();
             if(Pollutant.RENDERED_POLLUTANTS.contains(sensorReadings.getPollutantCode())){
-                Log.v(LOG_TAG, "adding to panel: " + sensorReadings.getPollutantCode());
+                //Log.v(LOG_TAG, "adding to panel: " + sensorReadings.getPollutantCode());
                 View pollutantCheckView = LayoutInflater.from(rootView.getContext()).inflate(R.layout.pollutant_check_view, linearLayout, false);
                 CheckPollutantView checkPollutantView = (CheckPollutantView) pollutantCheckView.findViewById(R.id.checkPollutantView);
                 RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
@@ -339,7 +339,7 @@ public class MultiplePollutantLinearViewHolder extends RecyclerView.ViewHolder{
                 checkPollutantView.setLayoutParams(params);
                 checkPollutantView.setTextView((TextView) pollutantCheckView.findViewById(R.id.textViewNoData));
                 //pollutantName.setText(sensorReadings.getPollutantCode());//sensorReadings.getPollutantCode()
-                Log.v(LOG_TAG, "pollutantCode: " + sensorReadings.getPollutantCode());
+                //Log.v(LOG_TAG, "pollutantCode: " + sensorReadings.getPollutantCode());
                 checkPollutantView.setColor(Pollutant.allPollutantColors().get(sensorReadings.getPollutantCode()));
                 checkPollutantView.setPollutantCode(sensorReadings.getPollutantCode());
                 if (!sensorReadings.hasData()) {

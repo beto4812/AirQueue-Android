@@ -49,7 +49,7 @@ public class PollutantCategoryInfo {
     }
 
     public int getImage(){
-        Log.v(LOG_TAG, "getImage: " + Pollutant.PollutantCategory.getCategories().indexOf(pollutantCategory) + " pollutantCategory: " + pollutantCategory);
+        //Log.v(LOG_TAG, "getImage: " + Pollutant.PollutantCategory.getCategories().indexOf(pollutantCategory) + " pollutantCategory: " + pollutantCategory);
         return images[Pollutant.PollutantCategory.getCategories().indexOf(pollutantCategory)];
     }
 
@@ -69,8 +69,6 @@ public class PollutantCategoryInfo {
                 '}';
     }
 
-    public PollutantCategoryInfo(String code, String url) {
-        this.code = code;
-        this.url = url;
+    public PollutantCategoryInfo() {
     }
 }

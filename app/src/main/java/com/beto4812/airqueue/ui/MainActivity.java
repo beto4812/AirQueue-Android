@@ -2,6 +2,8 @@ package com.beto4812.airqueue.ui;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -21,6 +23,7 @@ import com.beto4812.airqueue.ui.main.home.VisualizationsFragment;
 import com.beto4812.airqueue.ui.main.settings.AboutFragment;
 import com.beto4812.airqueue.ui.main.settings.SettingsFragment;
 import com.beto4812.airqueue.utils.CircleTransform;
+import com.beto4812.airqueue.utils.GetDataNew;
 import com.squareup.picasso.Picasso;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -66,7 +69,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         //textUserName.setText(getString(R.string.text_full_name, userFirstName, userLastName));
 
-        Log.v(LOG_TAG, "onCreate() rendering profile picture");
+        //Log.v(LOG_TAG, "onCreate() rendering profile picture");
         Picasso.with(MainActivity.this).load(R.drawable.img_logo_white).transform(new CircleTransform()).into(profilePicture);
 
         mFragmentManager = getSupportFragmentManager();
@@ -101,7 +104,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     private void fetchUserIdentity() {
-        Log.d(LOG_TAG, "fetchUserIdentity");
+        //Log.d(LOG_TAG, "fetchUserIdentity");
 
         AWSClientManager.defaultMobileClient()
                 .getIdentityManager()
@@ -133,8 +136,23 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 mFragmentManager.beginTransaction().replace(R.id.frame_content, AboutFragment.newInstance()).commit();
                 break;
             case R.id.action_demo:
-                Log.v(LOG_TAG, "demo");
-                //this.visualizationsFragment.setDemoMode(!visualizationsFragment.getDemoMode());
+                Fragment fragment = mFragmentManager.findFragmentById(R.id.frame_content);
+                if(fragment instanceof VisualizationsFragment){
+                    VisualizationsFragment visualizationsFragment = (VisualizationsFragment)fragment;
+                    //Log.v(LOG_TAG, "getCurrentItem: " + visualizationsFragment.getViewPager().getCurrentItem());
+                    Fragment currentFragment = visualizationsFragment.getChildFragmentManager().findFragmentByTag("android:switcher:"+R.id.viewpager+":"+visualizationsFragment.getViewPager().getCurrentItem());
+                    //Log.v(LOG_TAG, "currentFragment: " + currentFragment + " tag: "  +"android:switcher:"+R.id.viewpager+":"+visualizationsFragment.getViewPager().getCurrentItem());
+                    GetDataNew.setSimulated(!GetDataNew.isSimulated());
+                    GetDataNew.executeGetData(this, (GetDataNew.OnDataReceivedListener) currentFragment);
+                    //Log.v(LOG_TAG, "currentFragmentContext: " + visualizationsFragment.getContext());
+                    if(GetDataNew.isSimulated()){
+                        Snackbar.make(visualizationsFragment.getView(), "Simulated mode activated", Snackbar.LENGTH_SHORT).show();
+                    }else{
+                        Snackbar.make(visualizationsFragment.getView(), "Deactivated simulated mode", Snackbar.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Snackbar.make(fragment.getView(), "Not allowed here", Snackbar.LENGTH_SHORT).show();
+                }
                 break;
         }
         return true;

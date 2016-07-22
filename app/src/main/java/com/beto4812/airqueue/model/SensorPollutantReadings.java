@@ -26,7 +26,7 @@ public class SensorPollutantReadings {
     private int lastEntryHour = 0;
 
     public SensorPollutantReadings(List<SensorReading> readings, String pollutantCode){
-        Log.v(LOG_TAG, " pollutantCode: " + pollutantCode);
+        //Log.v(LOG_TAG, " pollutantCode: " + pollutantCode);
         pollutants = new HashMap<>();
         lineEntries = new ArrayList<>();
         this.pollutantCode = pollutantCode;

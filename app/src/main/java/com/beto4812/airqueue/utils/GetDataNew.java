@@ -19,7 +19,7 @@ public class GetDataNew extends AsyncTask<Void, Void, Void> {
     private String latitude, longitude;
     private Context appContext;
     private static final String LOG_TAG = "OverviewFragment";
-    private static Boolean usingSimulatedData = false;
+    private static Boolean simulated = false;
 
     public void setAppContext(Context context){
         this.appContext = context;
@@ -29,17 +29,14 @@ public class GetDataNew extends AsyncTask<Void, Void, Void> {
         this.listener = listener;
     }
 
-    public void addListener(OnDataReceivedListener listener){
-        //this.listeners.add(listener);
-    }
 
     public void setLastKnownCoordinates(String latitude, String longitude){
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
-    private static void setUsingSimulatedData(boolean set){
-        usingSimulatedData = set;
+    public static void setSimulated(boolean set){
+        simulated = set;
     }
 
     /**
@@ -50,20 +47,26 @@ public class GetDataNew extends AsyncTask<Void, Void, Void> {
         DataSingelton.getInstance().setPollutantThresholds(sim.getPollutantThresholds());
         DataSingelton.getInstance().setPollutantCategoriesInfo(sim.getPollutantCategoriesInfo());
         DataSingelton.getInstance().setSensorReadings(sim.getSensorReadings());
+
     }
 
     /**
      * Notifies listeners
      */
     private void simulateExecution(){
+        Log.v(LOG_TAG, "simulateExecution");
         listener.onDataReady();
+    }
+
+    public static boolean isSimulated(){
+        return simulated;
     }
 
     public static void executeGetData(Context context, OnDataReceivedListener listener){
         Log.v(LOG_TAG, "----------------------------executeGetData-------------");
 
         GetDataNew getDataNew = new GetDataNew();
-        if(!usingSimulatedData){
+        if(!simulated){
 
             getDataNew.setAppContext(context);
             getDataNew.setLastKnownCoordinates(PreferenceManager.getDefaultSharedPreferences(context).getString("lastLatitude", "55.9449353"),
@@ -80,9 +83,9 @@ public class GetDataNew extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void v) {
         if (DataSingelton.getInstance().getSensorReadings() != null) {
-            Log.v(LOG_TAG, "onP1");
+            //Log.v(LOG_TAG, "onP1");
             if (DataSingelton.getInstance().getSensorReadings().size() > 1) {
-                Log.v(LOG_TAG, "onPostExecute: " + DataSingelton.getInstance().getSensorReadings().toString());
+                //Log.v(LOG_TAG, "onPostExecute: " + DataSingelton.getInstance().getSensorReadings().toString());
                 Log.v(LOG_TAG, DataSingelton.getInstance().getSensorReadings().get(DataSingelton.getInstance().getSensorReadings().size()-1).toString());
             }
         }

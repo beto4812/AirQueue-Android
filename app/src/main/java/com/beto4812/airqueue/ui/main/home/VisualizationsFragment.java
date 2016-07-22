@@ -2,7 +2,6 @@ package com.beto4812.airqueue.ui.main.home;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,8 +19,9 @@ import com.beto4812.airqueue.ui.main.pollutantsLinear.LinearVisualizationFragmen
 public class VisualizationsFragment extends Fragment {
 
     private static final String LOG_TAG = "VisualizationsFragment";
-    private boolean demoMode = false;
     private View rootView;
+    private ViewPagerAdapter mPagerAdapter;
+    private ViewPager pager;
 
     public static VisualizationsFragment newInstance(){
         return new VisualizationsFragment();
@@ -35,10 +35,10 @@ public class VisualizationsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_home, container, false);
+        this.rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
-        final ViewPager pager = (ViewPager) rootView.findViewById(R.id.viewpager);
-        final ViewPagerAdapter mPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
+        pager = (ViewPager) rootView.findViewById(R.id.viewpager);
+        mPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
 
         TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.home_tabs);
         pager.setAdapter(mPagerAdapter);
@@ -64,23 +64,16 @@ public class VisualizationsFragment extends Fragment {
         return rootView;
     }
 
-    public void setDemoMode(boolean demoMode){
-        this.demoMode = demoMode;
-        if(rootView!=null){
-            if(demoMode){
-                Snackbar.make(rootView, "Set demo mode", Snackbar.LENGTH_SHORT).show();
-            }else{
-                Snackbar.make(rootView, "Unset demo mode", Snackbar.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    public boolean getDemoMode(){
-        return demoMode;
-    }
-
     public interface FragmentVisibleInterface {
         void fragmentBecameVisible();
+    }
+
+    public ViewPager getViewPager(){
+        return pager;
+    }
+
+    public FragmentPagerAdapter getFragmentPageAdapter(){
+        return mPagerAdapter;
     }
 
     private class ViewPagerAdapter extends FragmentPagerAdapter {

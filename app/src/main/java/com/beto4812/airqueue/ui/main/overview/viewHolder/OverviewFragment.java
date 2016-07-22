@@ -54,7 +54,7 @@ import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip;
 public class OverviewFragment extends Fragment implements VisualizationsFragment.FragmentVisibleInterface, GetDataNew.OnDataReceivedListener {
 
     private static final String LOG_TAG = "OverviewFragment";
-    private View rootView;
+    protected View rootView;
     private SensorReading sensorReading;
     private ImageView imageViewSensor;
     private TextView textViewClosestSensor;
@@ -89,7 +89,7 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
         textViewLastUpdated.setText(sensorReading.getLastUpdated());
         textViewClosestSensor.setText(sensorReading.getSourceID());
         //Constants.setLevel(1, progressBarSensitivity); //Comes from user configuration
-
+        Log.v(LOG_TAG, "airQualityIndex: " + sensorReading.getAirQualityIndexInt());
         setAirQualityToolbar(sensorReading.getAirQualityIndexInt(), textViewAirQuality, progressBarQualityIndex);
         this.currentAirQualityIndex = sensorReading.getAirQualityIndexInt();
         Picasso.with(getContext()).load(sensorReading.getImage()).fit().into(imageViewSensor);
@@ -316,8 +316,12 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
 
     @Override
     public void fragmentBecameVisible() {
-        if (progressBarSensitivity != null) progressBarSensitivity.animate();
-        if (pieChart != null) pieChart.animateY(1400, Easing.EasingOption.EaseInCubic);
+        if(DataSingelton.isSimulated()){
+            updateUI();
+        }else{
+            if (progressBarSensitivity != null) progressBarSensitivity.animate();
+            if (pieChart != null) pieChart.animateY(1400, Easing.EasingOption.EaseInCubic);
+        }
     }
 
     private void setSensitivityToolbar(float x, TextView textViewSensitivity, RoundCornerProgressBar progressBarSensibility) {
@@ -394,7 +398,6 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
         }
     }
 
-    @Override
     public void onDataReady() {
         Log.v(LOG_TAG, "dataReady");
         if(DataSingelton.getInstance().getSensorReadings().size()>1){
