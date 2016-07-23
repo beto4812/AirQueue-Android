@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
+    <!--<item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"
-        app:showAsAction="never"/>
+        app:showAsAction="never"/>-->
     <item
         android:id="@+id/action_demo"
         android:orderInCategory="100"
         android:title="Demo mode"
         app:showAsAction="never"/>
 
-    <item
+    <!--<item
         android:id="@+id/action_author"
         android:orderInCategory="100"
         android:title="About the author"
+        app:showAsAction="never"/>-->
+    <item
+        android:id="@+id/wipe_data"
+        android:orderInCategory="100"
+        android:title="Reset data"
         app:showAsAction="never"/>
 </menu>

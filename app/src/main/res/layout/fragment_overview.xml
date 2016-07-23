@@ -119,13 +119,14 @@
         android:layout_toRightOf="@+id/imageViewIconPersonalized" />
 
     <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:id="@+id/imageViewIconInfoPers"
-        android:layout_toRightOf="@+id/textViewPersonalized"
-        android:layout_alignTop="@+id/textViewPersonalized"
         android:background="@drawable/ic_info_outline_white_24dp"
-        android:layout_marginLeft="10dp" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_alignBottom="@+id/imageViewIconPersonalized"
+        android:layout_toEndOf="@+id/textViewPersonalized" />
 
     <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
         android:layout_width="fill_parent"
@@ -175,13 +176,13 @@
         android:layout_marginLeft="3dp" />
 
     <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:id="@+id/imageViewIconInfo"
-        android:layout_toRightOf="@+id/textViewAirQualityIndex"
-        android:layout_alignTop="@+id/textViewAirQualityIndex"
         android:background="@drawable/ic_info_outline_white_24dp"
-        android:layout_marginLeft="10dp" />
+        android:layout_marginLeft="10dp"
+        android:layout_alignBottom="@+id/imageViewIconPollutionIndex"
+        android:layout_toRightOf="@+id/textViewAirQualityIndex" />
 
     <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
         android:layout_width="fill_parent"
@@ -258,13 +259,13 @@
         android:layout_toRightOf="@+id/imageView4" />
 
     <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:id="@+id/imageViewIconInfoAdvice"
-        android:layout_toRightOf="@+id/textViewAdvice"
-        android:layout_alignTop="@+id/textViewAdvice"
         android:background="@drawable/ic_info_outline_white_24dp"
-        android:layout_marginLeft="10dp" />
+        android:layout_marginLeft="10dp"
+        android:layout_alignBottom="@+id/imageView4"
+        android:layout_toRightOf="@+id/textViewAdvice" />
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/pollutants_chart"
@@ -324,13 +325,14 @@
         android:textSize="15sp" />
 
     <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:id="@+id/imageViewIconInfoLive"
-        android:layout_toRightOf="@+id/textViewLivePollutants"
-        android:layout_alignTop="@+id/textViewLivePollutants"
         android:background="@drawable/ic_info_outline_white_24dp"
-        android:layout_marginLeft="10dp" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_alignBottom="@+id/imageView3"
+        android:layout_toRightOf="@+id/textViewLivePollutants" />
 
     <TextView
         android:layout_width="wrap_content"

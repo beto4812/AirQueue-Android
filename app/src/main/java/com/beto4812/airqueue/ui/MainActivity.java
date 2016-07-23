@@ -1,6 +1,8 @@
 package com.beto4812.airqueue.ui;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -125,18 +127,19 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Fragment fragment = mFragmentManager.findFragmentById(R.id.frame_content);
+
         Log.v(LOG_TAG, "onOptionsItemSelected");
         switch (item.getItemId()) {
-            case R.id.action_settings:
-                Log.v(LOG_TAG, "nav_settings");
-                mFragmentManager.beginTransaction().replace(R.id.frame_content, SettingsFragment.newInstance(), "TAG").commit();
-                break;
-            case R.id.action_author:
-                Log.v(LOG_TAG, "nav_author");
-                mFragmentManager.beginTransaction().replace(R.id.frame_content, AboutFragment.newInstance()).commit();
-                break;
+            //case R.id.action_settings:
+            //    Log.v(LOG_TAG, "nav_settings");
+            //    mFragmentManager.beginTransaction().replace(R.id.frame_content, SettingsFragment.newInstance(), "TAG").commit();
+            //    break;
+            //case R.id.action_author:
+            //    Log.v(LOG_TAG, "nav_author");
+            //    mFragmentManager.beginTransaction().replace(R.id.frame_content, AboutFragment.newInstance()).commit();
+            //    break;
             case R.id.action_demo:
-                Fragment fragment = mFragmentManager.findFragmentById(R.id.frame_content);
                 if(fragment instanceof VisualizationsFragment){
                     VisualizationsFragment visualizationsFragment = (VisualizationsFragment)fragment;
                     //Log.v(LOG_TAG, "getCurrentItem: " + visualizationsFragment.getViewPager().getCurrentItem());
@@ -153,6 +156,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 }else{
                     Snackbar.make(fragment.getView(), "Not allowed here", Snackbar.LENGTH_SHORT).show();
                 }
+                break;
+            case R.id.wipe_data:
+                PreferenceManager.getDefaultSharedPreferences(fragment.getContext()).edit().clear().commit();
+                Snackbar.make(fragment.getView(), "Data erased from device", Snackbar.LENGTH_SHORT).show();
                 break;
         }
         return true;

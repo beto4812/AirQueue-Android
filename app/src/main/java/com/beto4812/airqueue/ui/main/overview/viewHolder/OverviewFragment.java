@@ -68,6 +68,7 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
     private int currentSensitivityLevel = 2;
     private int currentAirQualityIndex = 1;
     private int userAge = 18;
+    private boolean firstTime = true;
 
     public static OverviewFragment newInstance() {
         return new OverviewFragment();
@@ -311,6 +312,9 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
         }else{
             onDataReady();
         }
+
+        showInitialTooltip();
+
         return rootView;
     }
 
@@ -321,6 +325,21 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
         }else{
             if (progressBarSensitivity != null) progressBarSensitivity.animate();
             if (pieChart != null) pieChart.animateY(1400, Easing.EasingOption.EaseInCubic);
+        }
+    }
+
+    private void showInitialTooltip(){
+        boolean initialTooltip = PreferenceManager.getDefaultSharedPreferences(rootView.getContext()).getBoolean("initialTooltip", false);
+
+        if(!initialTooltip){
+            new SimpleTooltip.Builder(rootView.getContext())
+                    .anchorView(rootView.findViewById(R.id.imageViewIconInfoPers))
+                    .text(getString(R.string.personalized_help))
+                    .gravity(Gravity.TOP)
+                    .animated(true)
+                    .build()
+                    .show();
+            PreferenceManager.getDefaultSharedPreferences(rootView.getContext()).edit().putBoolean("initialTooltip", true).commit();
         }
     }
 
