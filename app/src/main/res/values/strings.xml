@@ -52,7 +52,7 @@
     <string-array name="vis_tabs_titles">
         <item>Overview</item>
         <item>Pollutants</item>
-        <item>Graphics</item>
+        <item>Graphs</item>
     </string-array>
 
     <!-- Facebook -->

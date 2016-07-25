@@ -395,6 +395,7 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
     }
 
     private void setAirQualityToolbar(float x, TextView textViewAirQuality, RoundCornerProgressBar progressBarQualityIndex) {
+        Log.v(LOG_TAG, "setAirQualityToolbar: " + x);
         progressBarQualityIndex.setMax(10);
         progressBarQualityIndex.setProgress(x);
 

@@ -17,23 +17,24 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_weight="1"
+            android:layout_weight="1.60"
             android:text="Today"
             android:textAlignment="center" />
-
-        <com.gc.materialdesign.views.ButtonRectangle
-            android:id="@+id/pollutant_multiple_linear_view_date"
-            android:layout_width="0dip"
-            android:layout_height="60dp"
-            android:layout_weight="1"
-            android:text="Pick date"></com.gc.materialdesign.views.ButtonRectangle>
 
         <com.gc.materialdesign.views.ButtonRectangle
             android:id="@+id/pollutant_multiple_linear_view_time"
             android:layout_width="0dip"
             android:layout_height="60dp"
             android:layout_weight="1"
-            android:text="Pick time"></com.gc.materialdesign.views.ButtonRectangle>
+            android:text="Pick time"
+            android:visibility="gone"></com.gc.materialdesign.views.ButtonRectangle>
+
+        <com.gc.materialdesign.views.ButtonRectangle
+            android:id="@+id/pollutant_multiple_linear_view_date"
+            android:layout_width="0dip"
+            android:layout_height="60dp"
+            android:layout_weight="1.43"
+            android:text="Pick date"></com.gc.materialdesign.views.ButtonRectangle>
     </LinearLayout>
 
     <RelativeLayout
@@ -81,16 +82,6 @@
                 android:paddingTop="5dp"
                 android:text="Select Pollutants"
                 android:textAlignment="center" />
-
-            <ImageView
-                android:id="@+id/imageViewIconInfoPollutantCheck"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/ic_info_outline_white_24dp"
-                android:backgroundTint="@color/black"
-                android:layout_alignBottom="@+id/textView3"
-                android:layout_toEndOf="@+id/textView3" />
 
             <LinearLayout
                 android:id="@+id/pollutant_multiple_linear_view_linear_layout"

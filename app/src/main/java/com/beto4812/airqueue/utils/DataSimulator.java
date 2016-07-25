@@ -1,5 +1,7 @@
 package com.beto4812.airqueue.utils;
 
+import android.util.Log;
+
 import com.beto4812.airqueue.model.Pollutant;
 import com.beto4812.airqueue.model.PollutantCategoryInfo;
 import com.beto4812.airqueue.model.PollutantThreshold;
@@ -17,6 +19,8 @@ import java.util.Random;
 import java.util.Set;
 
 public class DataSimulator {
+
+    private static final String LOG_TAG = "PollutantLinearViewHold";
 
     private static String closestSimulatedSourceID = "ED3";
     private HashMap<String, String[]> pollutant_thresholds_data;
@@ -98,41 +102,49 @@ public class DataSimulator {
         List<SensorReading> sensorReadings = new ArrayList<>();
         //Start hour
         GregorianCalendar sensorIDLastUpdated = (GregorianCalendar) Calendar.getInstance();
+        GregorianCalendar currentTime = (GregorianCalendar) Calendar.getInstance();
         sensorIDLastUpdated.set(Calendar.HOUR, 1);
+        Log.v(LOG_TAG, "HOUR: " + currentTime.get(Calendar.HOUR));
+        Log.v(LOG_TAG, "HOUR_OF_DAY: " + currentTime.get(Calendar.HOUR_OF_DAY));
         Random r = new Random();
-        for(int i = 1; i<=24; i++){
-            HashMap<String, String> pollutantValues = new HashMap<>();
+        boolean firstTime = true;
+        HashMap<String, String> pollutantValues = new HashMap<>();
+        HashMap<String, Integer> pastPollutantValues = new HashMap<>();
+        for(int i = 1; i<=currentTime.get(Calendar.HOUR_OF_DAY); i++){
             Set<String> renderedPollutants = Pollutant.RENDERED_POLLUTANTS;
             Iterator it = renderedPollutants.iterator();
             while(it.hasNext()){
                 String currentPollutant = (String) it.next();
-                int currentPollutantValue = 0;
-                int usingThreshold = r.nextInt(3)+1;
-                int deviation = r.nextInt(49)+1;
-                boolean sum = r.nextBoolean();
+                int currentPollutantValue;
+                int deviation = r.nextBoolean()? r.nextInt(49)+1: -r.nextInt(49)+1;
                 PollutantThreshold currentPollutantThreshold = pollutantThresholds.get(currentPollutant);
                 int thresholdValue = 0;
-                switch(usingThreshold){
-                    case 1:
-                        thresholdValue = Integer.parseInt(currentPollutantThreshold.getGreen());
-                        break;
-                    case 2:
-                        thresholdValue = Integer.parseInt(currentPollutantThreshold.getYellow());
-                        break;
-                    case 3:
-                        thresholdValue = Integer.parseInt(currentPollutantThreshold.getRed());
-                        break;
-                    case 4:
-                        thresholdValue = Integer.parseInt(currentPollutantThreshold.getBlack());
-                        break;
-                }
-                if(sum){
+                if(firstTime){
+                    int usingThreshold = r.nextInt(3)+1;
+                    switch(usingThreshold){
+                        case 1:
+                            thresholdValue = Integer.parseInt(currentPollutantThreshold.getGreen());
+                            break;
+                        case 2:
+                            thresholdValue = Integer.parseInt(currentPollutantThreshold.getYellow());
+                            break;
+                        case 3:
+                            thresholdValue = Integer.parseInt(currentPollutantThreshold.getRed());
+                            break;
+                        case 4:
+                            thresholdValue = Integer.parseInt(currentPollutantThreshold.getBlack());
+                            break;
+                    }
                     currentPollutantValue = thresholdValue + deviation;
                 }else{
-                    currentPollutantValue = thresholdValue - deviation;
+                    Log.v(LOG_TAG, "get: " + currentPollutant);
+                    currentPollutantValue = pastPollutantValues.get(currentPollutant)+deviation;
                 }
+                Log.v(LOG_TAG, "put: " + currentPollutant + "," + currentPollutantValue);
                 pollutantValues.put(currentPollutant, ""+currentPollutantValue);
+                pastPollutantValues.put(currentPollutant, currentPollutantValue);
             }
+            firstTime = false;
             SensorReading sensorReadingObj = new SensorReading();
             sensorReadingObj.setImage(dummyImages[r.nextInt(dummyImages.length-1)]);
             sensorReadingObj.setCoordinates(Arrays.asList(dummyCoordinates));
@@ -140,7 +152,7 @@ public class DataSimulator {
             sensorReadingObj.setLastUpdated(dateFormatter.format(sensorIDLastUpdated.getTime()));
             sensorReadingObj.setSource(dummySource);
             sensorReadingObj.setSourceID("ED3");
-            sensorReadingObj.setAirQualityIndex(""+(r.nextInt(9)+1));
+            sensorReadingObj.setAirQualityIndex(""+(r.nextInt(7)+2));
             sensorReadingObj.setNo(Arrays.asList(new String[]{"0", "ugm"}));
             sensorReadingObj.setNo2(Arrays.asList(new String[]{pollutantValues.get("NO2"), "ugm"}));
             sensorReadingObj.setNox(Arrays.asList(new String[]{"0", "ugm"}));
@@ -155,8 +167,8 @@ public class DataSimulator {
             sensorReadingObj.setO3(Arrays.asList(new String[]{pollutantValues.get("O3"), "ugm"}));
 
             sensorReadings.add(sensorReadingObj);
-            dateFormatter.format(sensorIDLastUpdated.getTime());
-            sensorIDLastUpdated.set(Calendar.HOUR,sensorIDLastUpdated.get(Calendar.HOUR)+1);
+            //dateFormatter.format(sensorIDLastUpdated.getTime());
+            sensorIDLastUpdated.set(Calendar.HOUR_OF_DAY, sensorIDLastUpdated.get(Calendar.HOUR_OF_DAY)+1);
         }
         return sensorReadings;
     }

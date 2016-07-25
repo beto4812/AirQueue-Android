@@ -1,5 +1,8 @@
 package com.beto4812.airqueue.model;
 
+import android.util.Log;
+
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBAttribute;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
 import com.beto4812.airqueue.aws.AWSConstants;
 
@@ -13,7 +16,7 @@ public class PollutantThreshold {
     private String black;
     private String red;
     private String yellow;
-    private String aboveBlack;
+    private String above_black;
 
 
     public String getCode(){
@@ -52,9 +55,10 @@ public class PollutantThreshold {
         return Double.parseDouble(yellow);
     }
 
-    public String getAboveBlack(){return aboveBlack;}
+    @DynamoDBAttribute(attributeName = "above_black")
+    public String getAboveBlack(){return above_black;}
 
-    public Double getAboveBlackDouble(){return getBlackDouble()+getBlackDouble()*.5;}
+    public Double getAboveBlackDouble(){return Double.parseDouble(above_black);}
 
     public void setCode(String code){
         this.code = code;
@@ -76,10 +80,13 @@ public class PollutantThreshold {
         this.yellow = value;
     }
 
-    public void setAboveBlack(String value){this.aboveBlack = value;}
+    public void setAboveBlack(String value){
+        Log.v(LOG_TAG, "setAboveBlack: " + value);
+        this.above_black = value;
+    }
 
     public String toString(){
-        return " code: " + code + " green: " + green + " yellow: " + yellow + " red: " + red + " black: " + black;
+        return " code: " + code + " green: " + green + " yellow: " + yellow + " red: " + red + " black: " + black + " aboveBlack: " + above_black;
     }
 
     public double getPercentage(String color){

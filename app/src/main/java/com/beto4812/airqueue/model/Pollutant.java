@@ -85,12 +85,12 @@ public class Pollutant implements Parcelable{
 
     public static final HashMap<String, Integer> allPollutantColors(){
         LinkedHashMap<String, Integer> list = new LinkedHashMap<>();
-        list.put(NITROGEN_DIOXIDE, Color.rgb(207, 49, 4));//Orange
-        list.put(PARTICULATE_MATTER_10_MICROMETRE, Color.rgb(61, 187, 237));//Blue
-        list.put(PARTICULATE_MATTER_2_5_MICROMETRE, Color.rgb(202, 224, 1));//Green
-        list.put(CARBON_MONOXIDE, Color.rgb(240, 216, 0));//Yellow
-        list.put(OZONE, Color.rgb(196, 41, 21));//Red
-        list.put(SULPHUR_DIOXIDE, Color.rgb(54,122,212));//Clear blue
+        list.put(NITROGEN_DIOXIDE, Color.rgb(153, 51, 153));//Purple
+        list.put(PARTICULATE_MATTER_10_MICROMETRE, Color.rgb(60, 79, 118));//Independence blue
+        list.put(PARTICULATE_MATTER_2_5_MICROMETRE, Color.rgb(83, 55, 69));//Dark purple
+        list.put(CARBON_MONOXIDE, Color.rgb(216, 30, 91));//Rose
+        list.put(OZONE, Color.rgb(99, 204, 202));//Medium turquoise
+        list.put(SULPHUR_DIOXIDE, Color.rgb(56,114,108));//Clear blue
         return list;
     }
 
@@ -274,8 +274,8 @@ public class Pollutant implements Parcelable{
     }
 
     public static class PollutantCategory{
-        public static final int PARTICULATE_MATTER = 20;
-        public static final int NITROGEN_OXIDES = 10;
+        public static final int PARTICULATE_MATTER = 10;
+        public static final int NITROGEN_OXIDES = 20;
         public static final int CARBON_MONOXIDE = 30;
         public static final int OZONE = 40;
         public static final int SULPHUR_DIOXIDE = 50;

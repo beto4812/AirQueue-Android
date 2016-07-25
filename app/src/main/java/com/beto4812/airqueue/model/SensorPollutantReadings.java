@@ -31,16 +31,21 @@ public class SensorPollutantReadings {
         lineEntries = new ArrayList<>();
         this.pollutantCode = pollutantCode;
 
+        //Iterate one until lastUpdated
+        Log.v(LOG_TAG, "pollutantCode: " + pollutantCode);
+
         for(int i = 0; i <readings.size(); i++){
             if(readings.get(i).getPollutant(pollutantCode)!=null){
                 empty = false;
-                //Log.v(LOG_TAG, " readings: : " + readings.get(i));
+                Log.v(LOG_TAG, " readings: : " + readings.get(i));
                 pollutants.put(readings.get(i).getLastUpdated(), readings.get(i).getPollutant(pollutantCode));
-                lineEntries.add(new Entry(readings.get(i).getPollutant(pollutantCode).getFloatValue(), i));
+                lineEntries.add(new Entry(readings.get(i).getPollutant(pollutantCode).getFloatValue(), readings.get(i).getLastUpdatedHour()));
                 lastEntryHour = readings.get(i).getLastUpdatedHour()>lastEntryHour? readings.get(i).getLastUpdatedHour(): lastEntryHour;
-                //Log.v(LOG_TAG, " entry: : " + new Entry(readings.get(i).getPollutant(pollutantCode).getFloatValue(), readings.get(i).getLastUpdatedHour()));
+                Log.v(LOG_TAG, " entry: : " + new Entry(readings.get(i).getPollutant(pollutantCode).getFloatValue(), readings.get(i).getLastUpdatedHour()));
             }
         }
+
+        Log.v(LOG_TAG, "lineEntries.size: " + lineEntries.size());
     }
 
     public Boolean hasData(){

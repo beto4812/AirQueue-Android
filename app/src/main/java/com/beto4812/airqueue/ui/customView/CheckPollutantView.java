@@ -49,7 +49,7 @@ public class CheckPollutantView extends View {
         radialPaint.setShader(new RadialGradient(getWidth() / 2, getHeight() / 2,
                 getHeight() / 3, Color.WHITE, color, Shader.TileMode.CLAMP));
 
-        paint.setColor(Color.YELLOW);
+        paint.setColor(Color.rgb(255, 255, 51));
         if(selected){
             canvas.drawCircle(radius, radius, radius, paint);
         }
@@ -69,14 +69,7 @@ public class CheckPollutantView extends View {
     public boolean onTouchEvent(MotionEvent event) {
         Log.v(LOG_TAG, "touch");
         if(!disabled){
-            selected = !selected;
-            if(selected){
-                listener.onPollutantSelected(pollutantCode);
-                textView.setText("Selected");
-            }else{
-                listener.onPollutantDeSelected(pollutantCode);
-                textView.setText("");
-            }
+            listener.onPollutantSelected(pollutantCode);
         }
         invalidate();
         return false;
@@ -121,6 +114,13 @@ public class CheckPollutantView extends View {
 
     public void setSelected(boolean selected){
         this.selected = selected;
+        if(selected){
+            textView.setText("Selected");
+        }else{
+            if(!disabled)
+            textView.setText("");
+        }
+        invalidate();
     }
 
     public boolean isSelected(){

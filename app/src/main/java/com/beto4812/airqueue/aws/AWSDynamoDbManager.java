@@ -65,7 +65,7 @@ public class AWSDynamoDbManager {
      * @return
      */
     public List<SensorReading> getReadingsBySourceID(String sourceID, String since, String to) {
-        //Log.v(LOG_TAG, "getReadingsBySourceID("+sourceID+") since: "+ since+ " to: " + to);
+        Log.v(LOG_TAG, "getReadingsBySourceID("+sourceID+") since: "+ since+ " to: " + to);
 
         SensorReading sens = new SensorReading();
         sens.setSourceID(sourceID);
@@ -78,8 +78,9 @@ public class AWSDynamoDbManager {
 
         try{
             List<SensorReading> latestReplies = dynamoDBMapper.query(SensorReading.class, queryExpression);
-            for (SensorReading up : latestReplies) {
-                results.add(up);
+            for (SensorReading reading : latestReplies) {
+                Log.v(LOG_TAG, "result: "+ reading);
+                results.add(reading);
             }
 
         }catch(Exception ex){
@@ -161,7 +162,7 @@ public class AWSDynamoDbManager {
 
             HashMap<String, PollutantThreshold> resultList = new HashMap<>();
             for (PollutantThreshold up : result) {
-                //Log.v(LOG_TAG, up.toString());
+                Log.v(LOG_TAG, "threshold: " + up.toString());
                 resultList.put(up.getCode(), up);
             }
             return resultList;

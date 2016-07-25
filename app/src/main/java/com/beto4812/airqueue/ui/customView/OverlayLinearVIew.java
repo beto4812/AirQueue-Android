@@ -38,7 +38,7 @@ public class OverlayLinearVIew extends  View{
             this.canvas = canvas;
             Paint paint = new Paint();
             maxHeight = (int)(pollutantThreshold.getAboveBlackDouble()*getHeight()/ maxYValue);
-            Log.v(LOG_TAG, " maxHeight: " + maxHeight);
+            //Log.v(LOG_TAG, " maxHeight: " + maxHeight);
             int pastHeight=0;
 
             //green height
@@ -46,8 +46,8 @@ public class OverlayLinearVIew extends  View{
             int color = ContextCompat.getColor(getContext(), R.color.green_traffic_light);
             paint.setColor(Color.argb(50, Color.red(color), Color.green(color), Color.blue(color)));
             canvas.drawRect(0, (getHeight()-height), getWidth(), (getHeight()-height)+height, paint);
-            Log.v(LOG_TAG, "green getPercentage: " + pollutantThreshold.getPercentage("green") + " drawHeight: " + height + " canvasHeight: " + getHeight() + " pastHeight: " + pastHeight);
-            Log.v(LOG_TAG, "draw: " + "0, "+(getHeight()-height)+", "+getWidth()+", "+((getHeight()-height)+height) );
+            //Log.v(LOG_TAG, "green getPercentage: " + pollutantThreshold.getPercentage("green") + " drawHeight: " + height + " canvasHeight: " + getHeight() + " pastHeight: " + pastHeight);
+            //Log.v(LOG_TAG, "draw: " + "0, "+(getHeight()-height)+", "+getWidth()+", "+((getHeight()-height)+height) );
             pastHeight=(getHeight()-height);
 
 
@@ -55,8 +55,8 @@ public class OverlayLinearVIew extends  View{
             color = ContextCompat.getColor(getContext(), R.color.yellow_traffic_light);
             paint.setColor(Color.argb(50, Color.red(color), Color.green(color), Color.blue(color)));
             canvas.drawRect(0, (getHeight()-height), getWidth(), pastHeight, paint);
-            Log.v(LOG_TAG, "yellow getPercentage: " + pollutantThreshold.getPercentage("yellow") + " drawHeight: " + height + " canvasHeight: " + getHeight() + " pastHeight: " + pastHeight);
-            Log.v(LOG_TAG, "draw: " + "0, "+(getHeight()-height)+", "+getWidth()+", "+pastHeight);
+            //Log.v(LOG_TAG, "yellow getPercentage: " + pollutantThreshold.getPercentage("yellow") + " drawHeight: " + height + " canvasHeight: " + getHeight() + " pastHeight: " + pastHeight);
+            //Log.v(LOG_TAG, "draw: " + "0, "+(getHeight()-height)+", "+getWidth()+", "+pastHeight);
             pastHeight=(getHeight()-height);
 
 
@@ -64,8 +64,8 @@ public class OverlayLinearVIew extends  View{
             color = ContextCompat.getColor(getContext(), R.color.red_traffic_light);
             paint.setColor(Color.argb(50, Color.red(color), Color.green(color), Color.blue(color)));
             canvas.drawRect(0, (getHeight()-height), getWidth(), pastHeight, paint);
-            Log.v(LOG_TAG, "red getPercentage: " + pollutantThreshold.getPercentage("red") + " drawHeight: " + height + " canvasHeight: " + getHeight() + " pastHeight: " + pastHeight);
-            Log.v(LOG_TAG, "draw: " + "0, "+(getHeight()-height)+", "+getWidth()+", "+pastHeight);
+            //Log.v(LOG_TAG, "red getPercentage: " + pollutantThreshold.getPercentage("red") + " drawHeight: " + height + " canvasHeight: " + getHeight() + " pastHeight: " + pastHeight);
+            //Log.v(LOG_TAG, "draw: " + "0, "+(getHeight()-height)+", "+getWidth()+", "+pastHeight);
             pastHeight=(getHeight()-height);
 
 
@@ -73,8 +73,8 @@ public class OverlayLinearVIew extends  View{
             color = ContextCompat.getColor(getContext(), R.color.black);
             paint.setColor(Color.argb(50, Color.red(color), Color.green(color), Color.blue(color)));
             canvas.drawRect(0, (getHeight()-height), getWidth(), pastHeight, paint);
-            Log.v(LOG_TAG, "black getPercentage: " + pollutantThreshold.getPercentage("black") + " drawHeight: " + height + " canvasHeight: " + getHeight() + " pastHeight: " + pastHeight);
-            Log.v(LOG_TAG, "draw: " + "0, "+(getHeight()-height)+", "+getWidth()+", "+pastHeight);
+            //Log.v(LOG_TAG, "black getPercentage: " + pollutantThreshold.getPercentage("black") + " drawHeight: " + height + " canvasHeight: " + getHeight() + " pastHeight: " + pastHeight);
+            //Log.v(LOG_TAG, "draw: " + "0, "+(getHeight()-height)+", "+getWidth()+", "+pastHeight);
             //getBackground().setAlpha(45);
             pastHeight=(getHeight()-height);
         }
