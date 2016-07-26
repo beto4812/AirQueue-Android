@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -41,6 +43,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -85,7 +88,11 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
     }
 
     private void updateUI() {
-        Log.v(LOG_TAG, "updateUI");
+        if(sensorReading==null){
+            this.sensorReading = DataSingelton.getInstance().getSensorReadings().get(DataSingelton.getInstance().getSensorReadings().size()-1);
+        }
+        Log.v(LOG_TAG, "updateUI getImage: " + sensorReading.getImage());
+        Log.v(LOG_TAG, "imageViewSensor: " + imageViewSensor);
         Picasso.with(getContext()).load(sensorReading.getImage()).into(imageViewSensor);
         textViewLastUpdated.setText(sensorReading.getLastUpdated());
         textViewClosestSensor.setText(sensorReading.getSourceID());
@@ -102,32 +109,40 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
         ArrayList<Entry> yVals = new ArrayList<Entry>();
         ArrayList<String> xVals = new ArrayList<String>();
         ArrayList<Integer> colors = new ArrayList<Integer>();
-        for (int c : ColorTemplate.COLORFUL_COLORS)
-            colors.add(c);
-        long seed = System.nanoTime();
-        Collections.shuffle(colors, new Random(seed));
+        //for (int c : ColorTemplate.COLORFUL_COLORS)
+            //colors.add(c);
+        //long seed = System.nanoTime();
+        //Collections.shuffle(colors, new Random(seed));
 
-        Iterator it = sensorReading.getAvailablePollutants().iterator();
-        Map<Integer, List<Pollutant>> pollutantsByCategory = new TreeMap<>();
-        Pollutant p;
-        while (it.hasNext()) {
-            p = (Pollutant) it.next();
-            if (!pollutantsByCategory.containsKey(p.getCategory())) {
-                pollutantsByCategory.put(p.getCategory(), new ArrayList<Pollutant>());
-            }
-            pollutantsByCategory.get(p.getCategory()).add(p);
-        }
-
-        Set<Integer> keys = pollutantsByCategory.keySet();
-
-        int mult = 100;
+        //Map<Integer, List<Pollutant>> pollutantsByCategory = new TreeMap<>();
+        Iterator availablePollutants = sensorReading.getAvailablePollutants().iterator();
+        Pollutant pollutant;
         int i = 0;
+        int mult = 100;
 
-        for (int k : keys) {
-            yVals.add(new Entry((float) (Math.random() * mult) + mult / 5, i));
-            xVals.add(Pollutant.PollutantCategory.getPollutantCategoryString(k));
-            i++;
+
+
+        while (availablePollutants.hasNext()) {
+            pollutant = (Pollutant) availablePollutants.next();
+            if(Pollutant.RENDERED_POLLUTANTS.contains(pollutant.getCode())) {
+                Log.v(LOG_TAG, "availablePollutant: " + pollutant);
+                colors.add(Pollutant.allPollutantColors().get(pollutant.getCode()));
+                yVals.add(new Entry(1, i));
+                xVals.add(pollutant.getCode());
+                i++;
+            }
         }
+
+        //Set<Integer> keys = pollutantsByCategory.keySet();
+
+        //int mult = 100;
+        //int i = 0;
+
+        //for (int k : keys) {
+            //yVals.add(new Entry((float) (Math.random() * mult) + mult / 5, i));
+            //xVals.add(Pollutant.PollutantCategory.getPollutantCategoryString(k));
+        //    i++;
+        //}
 
         PieDataSet dataSet = new PieDataSet(yVals, "Pollutants");
         dataSet.setColors(colors);
@@ -288,6 +303,22 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
                 }
         );
 
+        rootView.findViewById(R.id.imageView_advice).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                new CountDownTimer(1000, 500) {
+                    public void onTick(long millisUntilFinished) {
+                        ((TextView) rootView.findViewById(R.id.textView_advice_text)).setTextColor(Color.YELLOW);
+                    }
+                    public void onFinish() {
+                        Log.v(LOG_TAG, "finish");
+                        ((TextView) rootView.findViewById(R.id.textView_advice_text)).setTextColor(getResources().getColor(R.color.bold_blue));
+                    }
+                }.start();
+                return false;
+            }
+        });
+
         //imageViewIconInfoLive
         rootView.findViewById(R.id.imageViewIconInfoAdvice).setOnTouchListener(
                 new View.OnTouchListener() {
@@ -308,8 +339,10 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
         userAge = PreferenceManager.getDefaultSharedPreferences(getContext()).getInt("userAge", 18);
 
         if(DataSingelton.getInstance().isEmpty()){
+            Log.v(LOG_TAG, "1");
             GetDataNew.executeGetData(getContext(), this);
         }else{
+            Log.v(LOG_TAG, "2");
             onDataReady();
         }
 
@@ -400,19 +433,19 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
         progressBarQualityIndex.setProgress(x);
 
         if (x <= 3) {
-            textViewAirQuality.setText("Low");
+            textViewAirQuality.setText("Good");
             progressBarQualityIndex.setProgressColor(ContextCompat.getColor(progressBarQualityIndex.getContext(), R.color.green_traffic_light));
             textViewAirQuality.setTextColor(ContextCompat.getColor(rootView.getContext(), R.color.green_traffic_light));
         } else if (x <= 6) {
-            textViewAirQuality.setText("Moderate");
+            textViewAirQuality.setText("Regular");
             progressBarQualityIndex.setProgressColor(ContextCompat.getColor(progressBarQualityIndex.getContext(), R.color.yellow_traffic_light));
             textViewAirQuality.setTextColor(ContextCompat.getColor(rootView.getContext(), R.color.yellow_traffic_light));
         } else if (x <= 9) {
-            textViewAirQuality.setText("High");
+            textViewAirQuality.setText("Bad");
             progressBarQualityIndex.setProgressColor(ContextCompat.getColor(progressBarQualityIndex.getContext(), R.color.red_traffic_light));
             textViewAirQuality.setTextColor(ContextCompat.getColor(rootView.getContext(), R.color.red_traffic_light));
         } else if (x <= 10) {
-            textViewAirQuality.setText("Very High");
+            textViewAirQuality.setText("Very Bad");
             progressBarQualityIndex.setProgressColor(ContextCompat.getColor(progressBarQualityIndex.getContext(), R.color.black));
             textViewAirQuality.setTextColor(ContextCompat.getColor(rootView.getContext(), R.color.black));
         }

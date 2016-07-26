@@ -102,7 +102,7 @@ public class MultiplePollutantLinearViewHolder extends RecyclerView.ViewHolder{
         openSansBold = Typeface.createFromAsset(rootView.getContext().getAssets(), "OpenSans-Bold.ttf");
         TextView textView = (TextView)(rootView.findViewById(R.id.textView3));
         textView.setTypeface(openSansBold);
-        closestSensorID = PreferenceManager.getDefaultSharedPreferences(rootView.getContext()).getString("closestSourceID", null);
+        closestSensorID = PreferenceManager.getDefaultSharedPreferences(rootView.getContext()).getString("closestSourceID", "ED3");
         Log.v(LOG_TAG, "closestSensorID: " + closestSensorID);
 
         pollutantSelectedListener = new OnPollutantSelectedListener() {

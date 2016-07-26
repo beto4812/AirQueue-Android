@@ -169,7 +169,8 @@ public class SensorReading {
     }
 
     public void setImage(String image){
-        this.image = image;
+        //this.image = image;
+        this.image = image.split("&")[0]+"&"+image.split("&")[1]+"&"+image.split("&")[2]+"&"+image.split("&")[4];
     }
 
     @DynamoDBAttribute(attributeName = "air_quality_index")
