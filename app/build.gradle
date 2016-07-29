@@ -19,13 +19,13 @@ android {
         applicationId "com.beto4812.airqueue"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 3
+        versionCode 4
         versionName "1.2"
         multiDexEnabled true
     }
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable false
         }

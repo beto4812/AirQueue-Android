@@ -1,5 +1,7 @@
 package com.beto4812.airqueue.utils;
 
+import android.util.Log;
+
 import com.beto4812.airqueue.model.PollutantCategoryInfo;
 import com.beto4812.airqueue.model.PollutantThreshold;
 import com.beto4812.airqueue.model.SensorCoordinates;
@@ -10,6 +12,8 @@ import java.util.List;
 
 
 public class DataSingelton {
+
+    private static final String LOG_TAG = "DataSingelton";
 
     private HashMap<String, PollutantThreshold> pollutantThresholds;
     private SensorCoordinates sensorCoordinates;
@@ -59,7 +63,7 @@ public class DataSingelton {
     }
 
     public boolean isEmpty(){
-        if(sensorReadings==null){
+        if(sensorReadings == null || sensorReadings.size()==0){
             return true;
         }else return false;
     }

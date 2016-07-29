@@ -3,6 +3,7 @@ package com.beto4812.airqueue.utils;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 
 import com.beto4812.airqueue.aws.AWSClientManager;

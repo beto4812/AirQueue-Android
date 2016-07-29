@@ -2,7 +2,9 @@ package com.beto4812.airqueue.ui.main.pollutantsCircular;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -200,13 +202,19 @@ public class CircularVisualizationFragment extends Fragment implements Visualiza
     @Override
     public void onDataReady() {
         Log.v(LOG_TAG, "onDataReady");
-        setPollutantThresholds(DataSingelton.getInstance().getPollutantThresholds());
-        setPollutantCategoryInfo(DataSingelton.getInstance().getPollutantCategoriesInfo());
-        if (DataSingelton.getInstance().getSensorReadings() != null) {
+        if (!DataSingelton.getInstance().isEmpty()) {
+            setPollutantThresholds(DataSingelton.getInstance().getPollutantThresholds());
+            setPollutantCategoryInfo(DataSingelton.getInstance().getPollutantCategoriesInfo());
             setSensorReading(DataSingelton.getInstance().getSensorReadings().get(DataSingelton.getInstance().getSensorReadings().size() - 1));
         }
         if (rootView != null) {
-            updateUI();
+            if(!DataSingelton.getInstance().isEmpty()){
+                updateUI();
+            }else{
+                Snackbar.make(getView(), "No internet connection found", Snackbar.LENGTH_INDEFINITE).show();
+            }
+        }else{
+            Log.v(LOG_TAG, "Empty data");
         }
     }
 }

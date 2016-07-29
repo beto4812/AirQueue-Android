@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MotionEventCompat;
@@ -453,12 +454,16 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
 
     public void onDataReady() {
         Log.v(LOG_TAG, "dataReady");
-        if(DataSingelton.getInstance().getSensorReadings().size()>1){
+        if(!DataSingelton.getInstance().isEmpty() && DataSingelton.getInstance().getSensorReadings().size()>1){
             Log.v(LOG_TAG, DataSingelton.getInstance().getSensorReadings().get(DataSingelton.getInstance().getSensorReadings().size() - 1).toString());
             setSensorReading(DataSingelton.getInstance().getSensorReadings().get(DataSingelton.getInstance().getSensorReadings().size() - 1));
         }
         if (this.rootView != null) {
-            updateUI();
+            if(!DataSingelton.getInstance().isEmpty()){
+                updateUI();
+            }else{
+                Snackbar.make(getView(), "No internet connection found", Snackbar.LENGTH_INDEFINITE).show();
+            }
         }
     }
 
