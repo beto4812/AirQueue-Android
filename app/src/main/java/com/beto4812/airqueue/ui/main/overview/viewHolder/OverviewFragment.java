@@ -255,6 +255,18 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
         ((TextView) rootView.findViewById(R.id.textViewAirQuality)).setTypeface(openSansBold);
 
         pieChart = (PieChart) rootView.findViewById(R.id.pollutants_chart);
+        pieChart.setOnTouchListener(
+                new View.OnTouchListener()
+                {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        VisualizationsFragment.pager.setCurrentItem(2);
+                        return false;
+                    }
+                }
+
+        );
+
         rootView.findViewById(R.id.imageViewIconInfoPers).setOnTouchListener(
                 new View.OnTouchListener() {
                     @Override

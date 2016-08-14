@@ -21,7 +21,7 @@ public class VisualizationsFragment extends Fragment {
     private static final String LOG_TAG = "VisualizationsFragment";
     private View rootView;
     private ViewPagerAdapter mPagerAdapter;
-    private ViewPager pager;
+    public static ViewPager pager;
 
     public static VisualizationsFragment newInstance(){
         return new VisualizationsFragment();
@@ -60,6 +60,7 @@ public class VisualizationsFragment extends Fragment {
             }
         });
         tabLayout.setupWithViewPager(pager);
+
         //getData.execute();
         return rootView;
     }

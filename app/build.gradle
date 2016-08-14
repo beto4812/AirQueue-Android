@@ -19,7 +19,7 @@ android {
         applicationId "com.beto4812.airqueue"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 4
+        versionCode 7
         versionName "1.2"
         multiDexEnabled true
     }

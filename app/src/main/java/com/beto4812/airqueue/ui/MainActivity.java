@@ -1,6 +1,5 @@
 package com.beto4812.airqueue.ui;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
@@ -22,10 +21,8 @@ import com.beto4812.airqueue.aws.AWSClientManager;
 import com.beto4812.airqueue.aws.AWSDynamoDbManager;
 import com.beto4812.airqueue.aws.AWSIdentityManager;
 import com.beto4812.airqueue.ui.main.home.VisualizationsFragment;
-import com.beto4812.airqueue.ui.main.settings.AboutFragment;
 import com.beto4812.airqueue.ui.main.settings.SettingsFragment;
 import com.beto4812.airqueue.utils.CircleTransform;
-import com.beto4812.airqueue.utils.GetDataNew;
 import com.squareup.picasso.Picasso;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
