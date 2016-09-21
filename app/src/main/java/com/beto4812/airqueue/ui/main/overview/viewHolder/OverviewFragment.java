@@ -517,7 +517,7 @@ public class OverviewFragment extends Fragment implements VisualizationsFragment
                 Log.v(LOG_TAG, "advice: " + advice);
                 return advice;
             } catch (Exception e) {
-                Log.v(LOG_TAG, e.getLocalizedMessage());
+                Log.v(LOG_TAG, e.toString());//
 
             } finally {
                 //urlConnection.disconnect();
